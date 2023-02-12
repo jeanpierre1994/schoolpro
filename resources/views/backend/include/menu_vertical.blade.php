@@ -13,6 +13,11 @@
       </a>
     </li><!-- End Dashboard Nav -->  
 
+@if (Auth()->user()->profil_id == 2)
+    
+@elseif (Auth()->user()->profil_id == 3)
+
+@else
     
 <!-- dossier -->
 <li class="nav-item">
@@ -52,20 +57,21 @@
   </a>
   <ul id="optimisation-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
     <li>
-      <a href="#" style="text-decoration: none;">
+      <a href="{{route('vider_cache')}}" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Vider le cache</span>
       </a>
     </li>
     <li>
-      <a href="#" style="text-decoration: none;">
+      <a href="{{route('active_storage')}}" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Lien symbolique</span>
       </a>
     </li> 
   </ul>
 </li><!-- End Paiement Nav -->  
  
+@endif
 <li class="nav-item">
-  <a class="nav-link collapsed" href="#" style="text-decoration: none;">
+  <a class="nav-link collapsed" href="{{route('signout')}}" style="text-decoration: none;">
     <i class="ri-logout-box-r-line"></i>
     <span>Se déconnecter</span>
   </a>

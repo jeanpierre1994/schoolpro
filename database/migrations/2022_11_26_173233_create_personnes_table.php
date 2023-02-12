@@ -13,30 +13,30 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_personnes', function (Blueprint $table) {
-            $table->unsignedBigInteger("pers_id")->autoIncrement();
-            $table->string('pers_matricule',20)->unique();
-            $table->string('pers_nom',100); 
-            $table->string('pers_prenoms',100); 
-            $table->string('pers_surnom',100)->nullable();
-            $table->string('pers_nomjeunefille',100)->nullable(); 
-            $table->unsignedBigInteger('pers_genre'); 
-            $table->date('pers_ddn')->nullable(); 
-            $table->date('pers_lieunais')->nullable(); 
-            $table->date('pers_nationalite')->nullable(); 
-            $table->string('pers_tel',20);  
-            $table->string('pers_linkedin',100)->nullable(); 
-            $table->string('pers_email',100); 
-            $table->string('pers_adresse',100)->nullable(); 
-            $table->date('pers_photo')->nullable(); 
-            $table->boolean('pers_famille')->default(false);  
-            $table->unsignedBigInteger('pers_statut_id');
-            $table->unsignedBigInteger('pers_created_by');
-            $table->unsignedBigInteger('pers_updated_by')->nullable(); 
-            $table->foreign('pers_genre')->references('gen_id')->on('tb_genres');
-            $table->foreign('pers_statut_id')->references('stat_id')->on('tb_statuts');
-            $table->foreign('pers_created_by')->references('id')->on('users');
-            $table->foreign('pers_updated_by')->references('id')->on('users'); 
+        Schema::create('personnes', function (Blueprint $table) {
+            $table->unsignedBigInteger("id")->autoIncrement();
+            $table->string('matricule',20)->unique();
+            $table->string('nom',100); 
+            $table->string('prenoms',100); 
+            $table->string('surnom',100)->nullable();
+            $table->string('nomjeunefille',100)->nullable(); 
+            $table->unsignedBigInteger('genre'); 
+            $table->date('ddn')->nullable(); 
+            $table->string('lieunais')->nullable(); 
+            $table->string('nationalite')->nullable(); 
+            $table->string('tel',20);  
+            $table->string('linkedin',100)->nullable(); 
+            $table->string('email',100); 
+            $table->string('adresse',100)->nullable(); 
+            $table->string('photo')->nullable(); 
+            $table->boolean('famille')->default(false);  
+            $table->unsignedBigInteger('statut_id');
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable(); 
+            $table->foreign('genre')->references('id')->on('genres');
+            $table->foreign('statut_id')->references('id')->on('statuts');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users'); 
             $table->timestamps();
         });
     }

@@ -4,7 +4,8 @@
         $('body').toggleClass('noscroll');
       })
     });
-  </script>
+</script>
+  
   <!-- jQuery first, then Popper.js") }}, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
@@ -15,14 +16,17 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
-  
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <!-- Template JavaScript -->
   <script src="{{ asset("frontpage/assets/js/all.js") }}"></script>
   <!-- Smooth scrolling -->
   <!-- <script src="{{ asset("frontpage/assets/js/smoothscroll.js") }}"></script> -->
   <script src="{{ asset("frontpage/assets/js/owl.carousel.js") }}"></script>
-  
   <!-- script for -->
+  <!-- bmda --> 
+  <script type="text/javascript" src="{{ asset('frontpage/bmad/js/mdb.min.js')}}"></script>
+  <!-- end bmad -->
   <script>
     $(document).ready(function () {
       $('.owl-one').owlCarousel({

@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_genres', function (Blueprint $table) {
-            $table->unsignedBigInteger("gen_id")->autoIncrement();
-            $table->string('gen_libelle',20)->unique();
-            $table->string('gen_description')->nullable(); 
-            $table->unsignedBigInteger('gen_statut_id'); 
-            $table->foreign('gen_statut_id')->references('stat_id')->on('tb_statuts');
+        Schema::create('genres', function (Blueprint $table) {
+            $table->unsignedBigInteger("id")->autoIncrement();
+            $table->string('libelle',20)->unique();
+            $table->string('description')->nullable(); 
+            $table->unsignedBigInteger('statut_id'); 
+            $table->foreign('statut_id')->references('id')->on('statuts');
             $table->timestamps();
         });
     }

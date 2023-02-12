@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_profils', function (Blueprint $table) {
-            $table->unsignedBigInteger("prf_id")->autoIncrement();
-            $table->string('prf_libelle',20)->unique();
-            $table->string('prf_description')->nullable(); 
-            $table->unsignedBigInteger('prf_statut_id'); 
-            $table->foreign('prf_statut_id')->references('stat_id')->on('tb_statuts');
+        Schema::create('profils', function (Blueprint $table) {
+            $table->unsignedBigInteger("id")->autoIncrement();
+            $table->string('libelle',20)->unique();
+            $table->string('description')->nullable(); 
+            $table->unsignedBigInteger('statut_id'); 
+            $table->foreign('statut_id')->references('id')->on('statuts');
             $table->timestamps();
         });
     }

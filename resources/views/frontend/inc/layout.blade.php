@@ -15,7 +15,14 @@ Author URL: http://w3layouts.com
 @include('frontend.inc.top_menu')
 <!-- end Top Menu 1 -->
 
-@yield("main-slide")
+@yield("main-slide") 
+
+<!-- inc flash-alert -->
+@include('flash-message')
+@include('sweetalert::alert')
+
+<!-- end inc flash-alert -->
+
 
 @yield("contenu")
 
@@ -32,6 +39,7 @@ Author URL: http://w3layouts.com
 <!-- //script -->
 
 @yield("js-script")
+
 
 </body>
 

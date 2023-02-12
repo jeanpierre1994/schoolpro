@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'enable',
+        'profil_id', 
+        'first_connexion',
+        'last_connexion',
+        'login_count'
     ];
 
     /**
@@ -41,4 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getProfil()
+    {
+        return $this->belongsTo(Profil::class,'profil_id');
+    }
 }

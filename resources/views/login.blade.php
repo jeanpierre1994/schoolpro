@@ -13,7 +13,7 @@ Accueil || {{env('APP_NAME')}}
         <p><a href="{{route('index')}}">Accueil</a> &nbsp; / &nbsp; Connexion</p>
       </div>
     </div>
-  </section>
+</section>
   <!-- contact -->
   <section class="w3l-contacts-12" id="contact">
       <div class="contact-top pt-5">

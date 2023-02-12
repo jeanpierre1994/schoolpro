@@ -1,8 +1,24 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\CyclesController;
+use App\Http\Controllers\EtablissementsController;
+use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\FilieresController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\GenresController;
+use App\Http\Controllers\NiveauxController;
+use App\Http\Controllers\ParentsController;
+use App\Http\Controllers\PolesController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SitesController;
+use App\Http\Controllers\StatutjuridiquesController;
+use App\Http\Controllers\StatutsController;
+use App\Http\Controllers\TypesponsorsController;
+use App\Models\Etablissements;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,15 +31,34 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// ajax requetes
+Route::post('ajax_requete', [AdminController::class, 'ajaxRequete'])->name('ajax_requete');
 
 Route::get("/",[FrontendController::class,'index'])->name("index");
 Route::get("/connexion",[FrontendController::class,'connexion'])->name("connexion");
 Route::get("/inscription",[FrontendController::class,'inscription'])->name("inscription");
 Route::post("/inscription/form",[FrontendController::class,'inscriptionForm'])->name("inscription-form"); 
-Route::post("/inscription/parent/etudiant",[FrontendController::class,'inscriptionParentEtudiant'])->name("parent_etudiant"); 
+Route::get("/inscription/parent/{id}/etudiant",[FrontendController::class,'inscriptionParentEtudiant'])->name("parent_etudiant"); 
 
-Route::any('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-Route::get('/admin/parametres', [AdminController::class, 'parametres'])->name('admin.parametres');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboard')->middleware("auth");
+Route::get('/admin/parametres', [AdminController::class, 'parametres'])->name('admin.parametres')->middleware("auth");
+// dashboard étudiant 
+Route::get('/admin/dashboard/etudiant', [AdminController::class, 'dashboardEtudiant'])->name('dashboard_etudiant')->middleware("auth");
+// dashboard parent 
+Route::get('/admin/dashboard/parent', [AdminController::class, 'dashboardParent'])->name('dashboard_parent')->middleware("auth");
+ 
+// authentification routes 
+Route::get('/authentification', [CustomAuthController::class, 'login'])->name('authentification');
+Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
+Route::get('registration', [CustomAuthController::class, 'registration'])->name('register-user');
+Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom'); 
+Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout'); 
+// check code activation compte 
+Route::get('/activation/compte/user/{code_activation}', [CustomAuthController::class, 'checkmailConfirmation'])->name('tojumi.checkmailActivation');
+
+// route activation & desactivation
+Route::get('/admin/update/{id}/{table}/{statut}', [AdminController::class, 'newUpdate'])->name('admin.update-parametre')->middleware('auth');
+ 
 
 // Lien symbolique vers dossier de stockage
 Route::get('/ActiveStorage', function () {
@@ -31,8 +66,7 @@ Route::get('/ActiveStorage', function () {
     $resultat = Artisan::output();
     $search = 'already';
     $error = 'Lien symbolique existant, Bien vouloir vérifier le contenu !';
-
-
+ 
     if (strpos($resultat, $search) === false) {
         return back()->with('success', $resultat);
     } else {
@@ -54,3 +88,115 @@ Route::get('/ClearCache', function () {
     }
 })->name('vider_cache');
 
+
+Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
+    Route::resource('statuts', StatutsController::class);
+    Route::resource('profils', ProfilController::class);
+    Route::resource('genres', GenresController::class);
+    Route::resource('etablissements', EtablissementsController::class);
+    Route::resource('statutjuridiques', StatutjuridiquesController::class);
+    Route::resource('sites', SitesController::class); 
+    Route::resource('niveaux', NiveauxController::class); 
+    Route::resource('filieres', FilieresController::class); 
+    Route::resource('poles', PolesController::class); 
+    Route::resource('cycles', CyclesController::class); 
+    Route::resource('typesponsors', TypesponsorsController::class); 
+    // ajax requête
+ });
+
+
+Auth::routes();
+// check_dashboard
+Route::get('admin/check/dashboard', [AdminController::class, 'checkDashboard'])->name('check_dashboard'); 
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// store inscription
+Route::post('inscription/store', [FrontendController::class, 'store'])->name('inscription.store'); 
+
+// enregistrement des étudiants 
+Route::post('inscription/store/etudiant', [FrontendController::class, 'storeEtudiant'])->name('inscription.store_etudiant'); 
+// enregistrement des parents
+Route::post('inscription/store/parent', [FrontendController::class, 'storeParent'])->name('inscription.store_parent'); 
+// 
+Route::post('inscription/store/parent/etudiant', [FrontendController::class, 'storeParentEtudiant'])->name('inscription.store_parent_etudiant'); 
+// profil
+Route::get('profil', [FrontendController::class, 'profil'])->name('profil'); 
+// ajouter étudiant
+Route::get('parent/ajouter/etudiant', [FrontendController::class, 'ajouterEtudiant'])->name('ajouter-etudiant'); 
+// store ajouter étudiant
+Route::post('parent/enregistrer/etudiant', [FrontendController::class, 'saveEtudiant'])->name('save-etudiant'); 
+ 
+//route etudiant
+Route::get('admin/etudiant/identite', [EtudiantController::class, 'identite'])->name('etudiant.identite')->middleware("auth");
+// route parent identite
+Route::get('admin/parent/identite', [ParentsController::class, 'identite'])->name('parent.identite')->middleware("auth");
+// edit profil etudiant
+Route::get('admin/etudiant/edit/{id}/profil', [EtudiantController::class, 'editProfil'])->name('etudiant.edit_profil')->middleware("auth");
+// store edit profil
+Route::post('admin/etudiant/edit/profil/store', [EtudiantController::class, 'editProfilStore'])->name('etudiant.edit_profil-store')->middleware("auth");
+// edit profil parent
+Route::get('admin/parent/edit/{id}/profil', [ParentsController::class, 'editProfil'])->name('parent.edit_profil')->middleware("auth");
+// parent store edit profil
+Route::post('admin/parent/edit/profil/store', [ParentsController::class, 'editProfilStore'])->name('parent.edit_profil-store')->middleware("auth");
+// parent etudiant 
+Route::get('admin/parent/etudiants', [ParentsController::class, 'etudiants'])->name('parent.etudiants')->middleware("auth");
+// parent ajouter etudiant 
+Route::get('admin/parent/add/etudiant', [ParentsController::class, 'addEtudiant'])->name('parent.add-etudiant')->middleware("auth");
+// store etudiant 
+Route::post('admin/parent/store/etudiant', [ParentsController::class, 'storeEtudiant'])->name('parent.etudiant-store')->middleware("auth");
+// parent add dossier 
+Route::get('admin/parent/nouveau/{id}/dossier/etudiant', [ParentsController::class, 'newDossier'])->name('parent.new-dossier-etudiant')->middleware("auth");
+// parent store dossier 
+Route::post('admin/parent/store/dossier/etudiant', [ParentsController::class, 'storeDossier'])->name('parent.dossier-store')->middleware("auth");
+// parent dossiers 
+Route::get('admin/parent/dossiers/etudiants', [ParentsController::class, 'dossiers'])->name('parent.dossiers')->middleware("auth");
+// parent inscriptions 
+Route::get('admin/parent/inscriptions/etudiants', [ParentsController::class, 'inscriptions'])->name('parents.inscriptions')->middleware("auth");
+
+
+Route::get('admin/etudiant/dossiers', [EtudiantController::class, 'dossiers'])->name('etudiant.dossiers')->middleware("auth");
+//nouveau dossier
+Route::get('admin/etudiant/nouveau/dossiers', [EtudiantController::class, 'newDossier'])->name('etudiant.new-dossier')->middleware("auth");
+// save dossier 
+Route::post('admin/etudiant/store/dossiers', [EtudiantController::class, 'saveDossier'])->name('etudiant.dossier-store')->middleware("auth");
+// dossier valide : inscription
+Route::get('admin/etudiant/inscriptions', [EtudiantController::class, 'dossierValide'])->name('etudiant.dossiers-valide')->middleware("auth");
+
+//...
+ 
+ // Lien symbolique vers dossier de stockage
+ Route::get('/ActiveStorage', function () {
+    Artisan::call('storage:link');
+    $resultat = Artisan::output();
+     $search = 'already';
+     $error = 'Lien symbolique existant, Bien vouloir vérifier le contenu !';
+  
+  
+    if(strpos($resultat, $search) === false) {
+        return redirect()->back()->with('success', $resultat);
+  
+    }else{
+       return redirect()->back()->with('error', $error);
+    }
+  
+  
+  })->name('active_storage');
+  
+  
+  // Purger tous les caches à une opération unique
+  Route::get('/ClearCache', function()  {
+    Artisan::call('optimize:clear');
+    $resultat = Artisan::output();
+    $search = 'successfully';
+    $error = 'Echec de nettoyage de caches';
+  
+  
+    if(strpos($resultat, $search) === false) {
+      return redirect()->back()->with('success', $resultat);
+      
+  }else{
+     return redirect()->back()->with('error', $error);
+  }
+  
+  })->name('vider_cache'); 
+  

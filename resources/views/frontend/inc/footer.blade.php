@@ -5,9 +5,9 @@
                 <div class="footer-list-29 footer-1">
                     <h6 class="footer-title-29">Contact Us</h6>
                     <ul>
-                        <li><p><span class="fa fa-map-marker"></span> Estate Business, #32841 block, #221DRS Real estate business building, UK.</p></li>
-                        <li><a href="tel:+7-800-999-800"><span class="fa fa-phone"></span> +(229) 51000000</a></li>
-                        <li><a href="mailto:corporate-mail@support.com" class="mail"><span class="fa fa-envelope-open-o"></span> corporate-mail@support.com</a></li>
+                        <li><p><span class="fa fa-map-marker"></span> {{$etablissement->sigle ? $etablissement->sigle : ''}}</p></li>
+                        <li><a href="#"><span class="fa fa-phone"></span> +(229) {{$etablissement->telephone ? $etablissement->telephone : '97000000'}}</a></li>
+                        <li><a href="mailto:{{$etablissement->email ? $etablissement->email : 'info@mail.com'}}" class="mail"><span class="fa fa-envelope-open-o"></span> {{$etablissement->email ? $etablissement->email : 'info@mail.com'}}</a></li>
                     </ul>
                     <div class="main-social-footer-29">
                         <a href="#facebook" class="facebook"><span class="fa fa-facebook"></span></a>
@@ -19,12 +19,9 @@
                 </div>
                 <div class="footer-list-29 footer-2">
                     <ul>
-                        <h6 class="footer-title-29">Featured Links</h6>
-                        <li><a href="#">Graduation</a></li>
-                        <li><a href="#">Admissions</a></li>
-                        <li><a href="#">Book Store</a></li>
-                        <li><a href="#">International</a></li>
-                        <li><a href="#">Courses</a></li>
+                        <h6 class="footer-title-29">Liens</h6>
+                        <li><a href="#">Evenemment</a></li>
+                        <li><a href="#">Calendrie</a></li> 
                     </ul>
                 </div>
                 <div class="footer-list-29 footer-3">
@@ -34,28 +31,26 @@
               <input type="email" name="email" placeholder="Email" required="">
               <button><span class="fa fa-envelope-o"></span></button>
             </form>
-            <p>Subscribe and get our weekly newsletter</p>
-            <p>We'll never share your email address</p>
+            <p></p>
+            <p></p>
           
                 </div>
                 <div class="footer-list-29 footer-4">
                     <ul>
-                        <h6 class="footer-title-29">Quick Links</h6>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="#"> Blog</a></li>
+                        <h6 class="footer-title-29">Lien utile</h6>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#">A propos</a></li>
+                        <li><a href="#">FAQ</a></li> 
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="d-grid grid-col-2 bottom-copies">
-                <p class="copy-footer-29">© 2022 School Pro. All rights reserved | Designed by <a href="#">- - -</a></p>
+                <p class="copy-footer-29">© 2022 - {{date('Y')}} {{$etablissement->sigle ? $etablissement->sigle : 'School Pro'}}. All rights reserved | Designed by <a href="#">- - -</a></p>
                  <ul class="list-btm-29">
-                        <li><a href="#link">Privacy policy</a></li>
-                        <li><a href="#link">Terms of service</a></li>
-                        
-                    </ul>
+                        <li><a href="#link"></a></li>
+                        <li><a href="#link"></a></li>                        
+                  </ul>
             </div>
         </div>
     </div>

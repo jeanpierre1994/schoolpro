@@ -14,19 +14,19 @@ return new class extends Migration
     public function up()
     {
         // table statuts
-        Schema::table('tb_statuts', function (Blueprint $table) {
-            $table->unsignedBigInteger('stat_created_by');
-            $table->unsignedBigInteger('stat_updated_by')->nullable(); 
-            $table->foreign('stat_created_by')->references('id')->on('users');
-            $table->foreign('stat_updated_by')->references('id')->on('users');        
+        Schema::table('statuts', function (Blueprint $table) {
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable(); 
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');        
          });
 
          // table statuts
-        Schema::table('tb_profils', function (Blueprint $table) {
-            $table->unsignedBigInteger('prf_created_by');
-            $table->unsignedBigInteger('prf_updated_by')->nullable(); 
-            $table->foreign('prf_created_by')->references('id')->on('users');
-            $table->foreign('prf_updated_by')->references('id')->on('users');        
+        Schema::table('profils', function (Blueprint $table) {
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable(); 
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');        
          });
     }
 

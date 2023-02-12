@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_statuts', function (Blueprint $table) {
-            $table->unsignedBigInteger("stat_id")->autoIncrement();
-            $table->string('stat_libelle',20)->unique();
-            $table->string('stat_description')->nullable();  
+        Schema::create('statuts', function (Blueprint $table) {
+            $table->unsignedBigInteger("id")->autoIncrement();
+            $table->string('libelle',20)->unique();
+            $table->string('description')->nullable();  
             $table->timestamps();
         });
     }
