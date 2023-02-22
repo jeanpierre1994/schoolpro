@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cycles;
-use App\Models\Dossiers;
-use App\Models\Etablissements;
-use App\Models\Genres;
-use App\Models\Parents;
-use App\Models\Personnes;
-use App\Models\Poles;
-use App\Models\Profil;
-use App\Models\Statuttraitements;
-use App\Models\Typesponsors;
+use App\Models\Pays;
 use App\Models\User;
+use App\Models\Poles;
+use App\Models\Cycles;
+use App\Models\Genres;
+use App\Models\Profil;
+use App\Models\Parents;
+use App\Models\Dossiers;
+use App\Models\Personnes;
+use App\Models\Typesponsors;
 use Illuminate\Http\Request;
+use App\Models\Etablissements;
+use App\Models\Statuttraitements;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert as Alert;
 
@@ -139,8 +140,9 @@ class ParentsController extends Controller
      */
     public function addEtudiant()
     { 
+        $pays = Pays::all();
         $genres = Genres::where("statut_id",1)->get(); 
-        return view("frontend.parents.add_etudiant", compact("genres"));
+        return view("frontend.parents.add_etudiant", compact("genres", 'pays'));
     }
 
       /**

@@ -171,14 +171,22 @@
                                                  <span id="country-code"></span>
                                             </span>
 
-                                            <input type="text" class="form-control" id="pays" value=""
+                                            <input list="items" type="text" class="form-control" id="pays" value=""
                                                 required aria-describedby="inputGroupPrepend" required name="pays"
                                                 minlength="2" maxlength="150" oninput="updateFlag();" />
-
+                                                
+                                            <datalist id="items">
+                                                @foreach ($pays as $item )
+                                                <option value="{{$item->nom_pays}}"></option>
+                                                @endforeach
+                                            </datalist>
                                             <label for="nom" class="form-label">Pays de Nationalité <i class="text-danger">*</i></label>
                                             <div class="invalid-feedback">Champ obligatoire.</div>
                                             <div class="valid-feedback"></div>
+                                            
                                         </div>
+
+                                        
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="input-group form-outline">
