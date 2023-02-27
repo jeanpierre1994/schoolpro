@@ -17,7 +17,8 @@
     .invalid-feedback {
         margin-left: calc(2em + 0.25rem + 1.5rem);
     }
-    #country-flag{
+
+    #country-flag {
         width: 2em;
     }
 </style>
@@ -80,9 +81,9 @@
                                             <div class="invalid-feedback">Champ obligatoire.</div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                                
+
                                 <div class="form-row">
                                     <div class="col-md-6 mb-2">
                                         <div class="input-group form-outline">
@@ -114,9 +115,9 @@
                                         <div class="input-group form-outline">
                                             <span class="input-group-text" id="inputGroupPrepend"><i
                                                     class="fas fa-map-marker-alt fa-fw me-3"></i></span>
-                                            <input type="text" class="form-control" id="lieu_naissance" value=""
-                                                required aria-describedby="inputGroupPrepend" name="lieu_naissance"
-                                                minlength="2" maxlength="150" required />
+                                            <input type="text" class="form-control" id="lieu_naissance"
+                                                value="" required aria-describedby="inputGroupPrepend"
+                                                name="lieu_naissance" minlength="2" maxlength="150" required />
                                             <label for="lieu_naissance" class="form-label">Lieu naissance <i
                                                     class="text-danger">*</i></label>
                                             <div class="invalid-feedback"></div>
@@ -136,57 +137,53 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-row" >
-                                        <div class="col-md-6 mb-2">
-                                            <div class="input-group form-outline">
-                                                <span class="input-group-text" id="inputGroupPrepend"><i
-                                                        class="fas fa-mobile-alt fa-fw me-3"></i></span>
-                                                <input type="text" class="form-control" id="telephone" required
-                                                    aria-describedby="inputGroupPrepend" required name="telephone"
-                                                    maxlength="20" value="" />
-                                                <label for="telephone" class="form-label">Téléphone <i
-                                                        class="text-danger">*</i></label>
-                                                <div class="invalid-feedback">Champ obligatoire.</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <div class="input-group form-outline">
-                                                <span class="input-group-text" id="inputGroupPrepend"><i
-                                                        class="fas fa-envelope fa-fw me-3"></i></span>
-                                                <input type="text" class="form-control" id="email" value=""
-                                                    required aria-describedby="inputGroupPrepend" required name="email"
-                                                    minlength="2" maxlength="150" />
-                                                <label for="email" class="form-label">E-mail <i
-                                                        class="text-danger">*</i></label>
-                                                <div class="invalid-feedback">Champ obligatoire.</div>
-                                            </div>
-                                        </div>
-                                </div>
                                 <div class="form-row">
-                                    
                                     <div class="col-md-6 mb-2">
                                         <div class="input-group form-outline">
-                                            <span class="input-group-text" id="inputGroupPrepend" > 
-                                                 <img id="country-flag" src="" alt="" > - 
-                                                 <span id="country-code"></span>
-                                            </span>
-
-                                            <input list="items" type="text" class="form-control" id="pays" value=""
-                                                required aria-describedby="inputGroupPrepend" required name="pays"
-                                                minlength="2" maxlength="150" oninput="updateFlag();" />
-                                                
-                                            <datalist id="items">
-                                                @foreach ($pays as $item )
-                                                <option value="{{$item->nom_pays}}"></option>
-                                                @endforeach
-                                            </datalist>
-                                            <label for="nom" class="form-label">Pays de Nationalité <i class="text-danger">*</i></label>
+                                            <span class="input-group-text" id="inputGroupPrepend"><i
+                                                    class="fas fa-mobile-alt fa-fw me-3"></i></span>
+                                            <input type="text" class="form-control" id="telephone" required
+                                                aria-describedby="inputGroupPrepend" required name="telephone"
+                                                maxlength="20" value="" />
+                                            <label for="telephone" class="form-label">Téléphone <i
+                                                    class="text-danger">*</i></label>
                                             <div class="invalid-feedback">Champ obligatoire.</div>
-                                            <div class="valid-feedback"></div>
-                                            
                                         </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="input-group form-outline">
+                                            <span class="input-group-text" id="inputGroupPrepend"><i
+                                                    class="fas fa-envelope fa-fw me-3"></i></span>
+                                            <input type="text" class="form-control" id="email" value=""
+                                                required aria-describedby="inputGroupPrepend" required name="email"
+                                                minlength="2" maxlength="150" />
+                                            <label for="email" class="form-label">E-mail <i
+                                                    class="text-danger">*</i></label>
+                                            <div class="invalid-feedback">Champ obligatoire.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
 
-                                        
+                                    <div class="col-md-6 mb-2">
+                                       
+
+                                        <select class="browser-default custom-select" name="pays" id="pays"
+                                            required onchange="updateNationalite()">
+                                            <option value="" selected>Choisissez votre pays</option>
+                                            @foreach ($pays as $item)
+                                                <option value="{{ $item->id }}"
+                                                    data-nationalite="{{ $item->nationalite }}"
+                                                    data-name="{{ $item->nom_pays }}"><span class="input-group-text"
+                                                        id="inputGroupPrepend">
+                                                        <img id="country-flag"
+                                                            src="storage/imgs/flags/" alt="">
+
+                                                    </span> {{ $item->nom_pays }} ({{ $item->code_iso }})</option>
+                                            @endforeach
+                                        </select>
+
+
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="input-group form-outline">
@@ -344,11 +341,15 @@
 @section('js-script')
     <script>
         $(document).ready(function() {
-
+            $('#pays').select2();
             // remove menu active 
             $("div a").removeClass('active');
             // active menu   
             $("#dossier_etudiant").addClass('active');
+
+
+
+
         });
 
         // validate form
@@ -391,128 +392,116 @@
                 let num = document.querySelector(".num");
                 let specialChar = document.querySelector(".special-char");
                 const specialChars = "!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?`~";
-                const numbers = "0123456789";
+            const numbers = "0123456789";
 
-                requirements.forEach((element) => element.classList.add("wrong"));
+            requirements.forEach((element) => element.classList.add("wrong"));
 
-                password.addEventListener("focus", () => {
-                    passwordAlert.classList.remove("d-none");
-                    if (!password.classList.contains("is-valid")) {
-                        password.classList.add("is-invalid");
-                    }
-                });
-
-                password.addEventListener("input", () => {
-                    let value = password.value;
-                    if (value.length < 8) {
-                        lengBoolean = false;
-                    } else if (value.length > 7) {
-                        lengBoolean = true;
-                    }
-
-                    if (value.toLowerCase() == value) {
-                        bigLetterBoolean = false;
-                    } else {
-                        bigLetterBoolean = true;
-                    }
-
-                    numBoolean = false;
-                    for (let i = 0; i < value.length; i++) {
-                        for (let j = 0; j < numbers.length; j++) {
-                            if (value[i] == numbers[j]) {
-                                numBoolean = true;
-                            }
-                        }
-                    }
-
-                    specialCharBoolean = false;
-                    for (let i = 0; i < value.length; i++) {
-                        for (let j = 0; j < specialChars.length; j++) {
-                            if (value[i] == specialChars[j]) {
-                                specialCharBoolean = true;
-                            }
-                        }
-                    }
-
-                    if (lengBoolean == true && bigLetterBoolean == true && numBoolean == true &&
-                        specialCharBoolean == true) {
-                        password.classList.remove("is-invalid");
-                        password.classList.add("is-valid");
-
-                        requirements.forEach((element) => {
-                            element.classList.remove("wrong");
-                            element.classList.add("good");
-                        });
-                        passwordAlert.classList.remove("alert-warning");
-                        passwordAlert.classList.add("alert-success");
-                    } else {
-                        password.classList.remove("is-valid");
-                        password.classList.add("is-invalid");
-
-                        passwordAlert.classList.add("alert-warning");
-                        passwordAlert.classList.remove("alert-success");
-
-                        if (lengBoolean == false) {
-                            leng.classList.add("wrong");
-                            leng.classList.remove("good");
-                        } else {
-                            leng.classList.add("good");
-                            leng.classList.remove("wrong");
-                        }
-
-                        if (bigLetterBoolean == false) {
-                            bigLetter.classList.add("wrong");
-                            bigLetter.classList.remove("good");
-                        } else {
-                            bigLetter.classList.add("good");
-                            bigLetter.classList.remove("wrong");
-                        }
-
-                        if (numBoolean == false) {
-                            num.classList.add("wrong");
-                            num.classList.remove("good");
-                        } else {
-                            num.classList.add("good");
-                            num.classList.remove("wrong");
-                        }
-
-                        if (specialCharBoolean == false) {
-                            specialChar.classList.add("wrong");
-                            specialChar.classList.remove("good");
-                        } else {
-                            specialChar.classList.add("good");
-                            specialChar.classList.remove("wrong");
-                        }
-                    }
-                });
-
-                password.addEventListener("blur", () => {
-                    passwordAlert.classList.add("d-none");
-                });
+            password.addEventListener("focus", () => {
+                passwordAlert.classList.remove("d-none");
+                if (!password.classList.contains("is-valid")) {
+                    password.classList.add("is-invalid");
+                }
             });
 
+            password.addEventListener("input", () => {
+                let value = password.value;
+                if (value.length < 8) {
+                    lengBoolean = false;
+                } else if (value.length > 7) {
+                    lengBoolean = true;
+                }
+
+                if (value.toLowerCase() == value) {
+                    bigLetterBoolean = false;
+                } else {
+                    bigLetterBoolean = true;
+                }
+
+                numBoolean = false;
+                for (let i = 0; i < value.length; i++) {
+                    for (let j = 0; j < numbers.length; j++) {
+                        if (value[i] == numbers[j]) {
+                            numBoolean = true;
+                        }
+                    }
+                }
+
+                specialCharBoolean = false;
+                for (let i = 0; i < value.length; i++) {
+                    for (let j = 0; j < specialChars.length; j++) {
+                        if (value[i] == specialChars[j]) {
+                            specialCharBoolean = true;
+                        }
+                    }
+                }
+
+                if (lengBoolean == true && bigLetterBoolean == true && numBoolean == true &&
+                    specialCharBoolean == true) {
+                    password.classList.remove("is-invalid");
+                    password.classList.add("is-valid");
+
+                    requirements.forEach((element) => {
+                        element.classList.remove("wrong");
+                        element.classList.add("good");
+                    });
+                    passwordAlert.classList.remove("alert-warning");
+                    passwordAlert.classList.add("alert-success");
+                } else {
+                    password.classList.remove("is-valid");
+                    password.classList.add("is-invalid");
+
+                    passwordAlert.classList.add("alert-warning");
+                    passwordAlert.classList.remove("alert-success");
+
+                    if (lengBoolean == false) {
+                        leng.classList.add("wrong");
+                        leng.classList.remove("good");
+                    } else {
+                        leng.classList.add("good");
+                        leng.classList.remove("wrong");
+                    }
+
+                    if (bigLetterBoolean == false) {
+                        bigLetter.classList.add("wrong");
+                        bigLetter.classList.remove("good");
+                    } else {
+                        bigLetter.classList.add("good");
+                        bigLetter.classList.remove("wrong");
+                    }
+
+                    if (numBoolean == false) {
+                        num.classList.add("wrong");
+                        num.classList.remove("good");
+                    } else {
+                        num.classList.add("good");
+                        num.classList.remove("wrong");
+                    }
+
+                    if (specialCharBoolean == false) {
+                        specialChar.classList.add("wrong");
+                        specialChar.classList.remove("good");
+                    } else {
+                        specialChar.classList.add("good");
+                        specialChar.classList.remove("wrong");
+                    }
+                }
+            });
+
+            password.addEventListener("blur", () => {
+                passwordAlert.classList.add("d-none");
+            });
+        });
 
 
-        })();
 
-        //mettre à jour le drapeau du pays de nationalité, la nationalité et le code pays
-        function updateFlag(){
-            let country = document.getElementById('pays').value;
-           
-            fetch(`https://restcountries.com/v3.1/name/${country}?fullText=true`).then(response =>response.json()).then(data => {
-                let state = data[0];
-                let code = state.cca2;
-                let flag = state.flags.png;
-                let nationality = state.demonyms.fra.f;
-                document.getElementById('country-flag').src = flag;
-                console.log(flag);
-                
-                document.getElementById('country-code').innerHTML = code;
-                document.getElementById('nationalite').value = nationality;
-            })
-            .catch(error => {
-        document.getElementById('country-flag').src = "";
-      });
-        }
+    })();
+   
+    //mettre à jour la nationalité et le code pays
+    function updateNationalite() {
+        let nationality = pays.options[pays.selectedIndex].getAttribute("data-nationalite");
+        console.log(nationality);
+        document.getElementById('nationalite').value = nationality;
+
+    }
     </script>
 @endsection
