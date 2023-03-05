@@ -18,21 +18,23 @@ Accueil || {{env('APP_NAME')}}
 			<div class="middle-section grid-column text-center">
 				<div class="three-grids-columns">
 					<span class="fa fa-laptop"></span>
-					<h4>Learn Courses Online</h4>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam reprehenderit et rem, odit repellat perspiciatis aliquid! Laborum, blanditiis laboriosam voluptates eius incidunt, voluptatibus corporis maiores enim excepturi sapiente debitis consectetur.</p>
+					<h4>Apprenez Avec Nos Cours En Ligne</h4>
+					<p>Notre plateforme de formation en ligne est facile à utiliser et accessible depuis n’importe où dans le monde. Vous pouvez accéder à vos cours en ligne à tout moment, n’importe où, sur votre ordinateur de bureau, votre tablette ou votre téléphone portable.
+
+                        Inscrivez-vous dès aujourd’hui et commencez votre voyage d’apprentissage en ligne avec nous !</p>
 					<a href="#" class="btn btn-secondary btn-theme3 mt-4">Inscription </a>
 				</div>
 				<div class="three-grids-columns">
 					<span class="fa fa-users"></span>
-					<h4>Highly Qualified Teachers</h4>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam reprehenderit et rem, odit repellat perspiciatis aliquid! Laborum, blanditiis laboriosam voluptates eius incidunt, voluptatibus corporis maiores enim excepturi sapiente debitis consectetur.</p>
-					<a href="#" class="btn btn-secondary btn-theme3 mt-4">Read More </a>
+					<h4>Corps Professoral Hautement Qualifié</h4>
+					<p>Nous avons une équipe d’enseignants professionnels, tous hautement qualifiés dans leur domaine. Ils sont passionnés par l’enseignement et sont déterminés à aider les élèves à réussir.</p>
+					<a href="#" class="btn btn-secondary btn-theme3 mt-4">Voir Plus </a>
 				</div>
 				<div class="three-grids-columns">
 					<span class="fa fa-book"></span>
-					<h4>Book Library & Stores</h4>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam reprehenderit et rem, odit repellat perspiciatis aliquid! Laborum, blanditiis laboriosam voluptates eius incidunt, voluptatibus corporis maiores enim excepturi sapiente debitis consectetur.</p>
-					<a href="#" class="btn btn-secondary btn-theme3 mt-4">Read More </a>
+					<h4>Bibliothèque Numérique</h4>
+					<p> Notre bibliothèque numérique propose une vaste collection de livres éducatifs pour tous les niveaux. De plus, notre magasin en ligne propose une sélection de matériel pédagogique, y compris des fournitures de bureau et des accessoires pour la maison, pour compléter votre expérience d’apprentissage.</p>
+					<a href="#" class="btn btn-secondary btn-theme3 mt-4">Voir Plus </a>
 				</div>
 			</div>
 		</div>
@@ -45,14 +47,10 @@ Accueil || {{env('APP_NAME')}}
 		
 			<div class="calltoaction-20-content row">
 				<div class="column center-align-self col-lg-6 pr-lg-5">
-					<h5 class="editContent">Welcome To Our Campus</h5>
-					<p class="more-gap editContent">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-						architecto, ex veritatis tempora aliquid labore natus autem iusto magni dicta incidunt nostrum
-						odit veniam voluptas provident minus saepe reiciendis nulla dolore delectus molestias</p>
-						<p class="more-gap editContent">Numquam
-							architecto, ex veritatis tempora aliquid labore natus autem iusto magni dicta incidunt nostrum
-							odit veniam voluptas provident </p>
-							<a class="btn btn-secondary btn-theme2 mt-3" href="#"> Read More</a>
+					<h5 class="editContent">Bienvenue Dans Notre Campus</h5>
+					<p class="more-gap editContent"> Bienvenue sur notre application éducative en ligne, qui offre une expérience d’apprentissage unique pour tous. Avec des cours en ligne de qualité supérieure, des outils de collaboration en temps réel, et un accès facile à une bibliothèque numérique riche en contenu, nous sommes fiers d’offrir une éducation de qualité supérieure à tous nos utilisateurs.</p>
+						<p class="more-gap editContent">Nous sommes ravis de vous accueillir sur notre application éducative en ligne, et nous sommes impatients de travailler avec vous pour offrir une expérience d’apprentissage exceptionnelle. </p>
+							<a class="btn btn-secondary btn-theme2 mt-3" href="#"> Voir Plus</a>
 				</div>
 				<div class="column ccont-left col-lg-6">
 					<img src="{{ asset("frontpage/assets/images/g1.jpg") }}" class="img-responsive" alt="">
@@ -69,15 +67,13 @@ Accueil || {{env('APP_NAME')}}
 				
 				<div class="column1">
 					<div class="heading">
-						<h3 class="head text-white">Apply for Scholarship</h3>
-						<h4>Fall 2019 applications are now open</h4>
-						<p class="my-3 text-white"> Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-						  Nulla mollis dapibus nunc, ut rhoncus
-						  turpis sodales quis. Integer sit amet mattis quam.</p>
+						<h3 class="head text-white">Postulez Dès Maintenant Pour Des Bourses d'Etudes</h3>
+						<h4>Candidature Pour La Rentrée d'automne 2023! </h4>
+						<p class="my-3 text-white">Nous sommes ravis d’annoncer que les candidatures pour la rentrée universitaire de l’automne 2019 sont maintenant ouvertes. Si vous êtes un étudiant à la recherche d’une éducation de qualité, notre application est là pour vous aider. Avec une large gamme de cours en ligne et des bourses d’études disponibles, nous offrons une éducation de qualité supérieure à des prix abordables. N’attendez plus pour postuler, notre processus de candidature est simple et facile. Rejoignez notre communauté d’étudiants passionnés et atteignez vos objectifs éducatifs avec notre application</p>
 					  </div>
 					</div>
 					<div class="column2">
-						<a class="btn btn-secondary btn-theme2 mt-3" href="#"> Apply Here</a>
+						<a class="btn btn-secondary btn-theme2 mt-3" href="#"> Postulez Ici</a>
 					</div>
 			</div>
 		</div>
@@ -214,13 +210,9 @@ Accueil || {{env('APP_NAME')}}
      <div class="section-title align-center row">
       <div class="item-top col-md-6 pr-md-5">
         <div class="heading">
-          <h3 class="head text-white">Hear what our students have to say</h3>
-          <p class="my-3 head text-white">Magna aliqua. Ut enim ad minim veniam, quis nostrud.Lorem ipsum dolor sit amet, consectetur adipisicingelit, Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-            Nulla mollis dapibus nunc, ut rhoncus
-            turpis sodales quis. Integer sit amet mattis quam.</p>
-            <p class="my-3 head text-white"> Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-              Nulla mollis dapibus nunc, ut rhoncus
-              turpis sodales quis. Integer sit amet mattis quam.</p>
+          <h3 class="head text-white">Avis de nos étudiants </h3>
+          <p class="my-3 head text-white">Nous croyons que l’éducation est la clé du succès et nous sommes fiers de contribuer à améliorer l’expérience éducative de chaque centre d’éducation. Essayez notre application dès maintenant et découvrez comment elle peut simplifier la gestion de votre système éducatif !</p>
+            <p class="my-3 head text-white"> N’attendez plus pour vous inscrire et découvrir tous les avantages que notre application peut vous offrir. Inscrivez-vous dès maintenant et rejoignez notre communauté en pleine croissance !</p>
           </div>
      </div>
           <div class="item-top col-md-6 mt-md-0 mt-4">
@@ -229,8 +221,10 @@ Accueil || {{env('APP_NAME')}}
                <img src="{{ asset("frontpage/assets/images/c3.jpg") }}" class="img-responsive" alt="" />
               </div>
               <h6 class="mt-3">Jessey Rosey</h6>
-              <p class="">Student</p>
-              <p> Magna aliqua. Ut enim ad minim veniam, quis nostrud.Lorem ipsum dolor sit amet, consectetur adipisicingelit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+              <p class="">Etudiante</p>
+              <p>J’utilise l’application de gestion scolaire depuis quelques mois maintenant et je suis impressionné par la facilité d’utilisation et la clarté de l’interface. Je peux facilement suivre mes notes, mes absences et mes devoirs en un seul endroit, ce qui me permet de mieux gérer mon temps
+                Je recommande fortement cette application à tous les étudiants qui cherchent à améliorer leur expérience d'apprentissage 
+              </p>
               
           </div>
          </div>
@@ -254,9 +248,9 @@ Accueil || {{env('APP_NAME')}}
                                 <div class="column1">
                                    
                                     <div class="job-info">
-                                        <h6 class="pricehead"><a href="#">Summer Course Starts </a></h6>
+                                        <h6 class="pricehead"><a href="#">Début des cours de Vacances </a></h6>
                                         <h5>April 25, 2020</h5>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit architecto..</p>
+                                        <p>Deux mois. Trois (3) à quatre (4) cours disponibles</p>
                                     </div>
                                 </div>
                                
@@ -270,9 +264,9 @@ Accueil || {{env('APP_NAME')}}
                                 <div class="column1">
                                    <div class="job-info">
                                         <h6 class="pricehead"><a href="#">	
-                                            About Artificial Intelligence</a></h6>
+                                            A propos de l'Intelligence Artificielle</a></h6>
                                        <h5>March 25, 2020</h5>
-                                       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit architecto..</p>
+                                       <p>Conférence sur l'intelligence artificielle aujourd'hui ! Soyez nombreux !</p>
                                     </div>
                                 </div>
                             </div>
@@ -286,9 +280,9 @@ Accueil || {{env('APP_NAME')}}
                                   
                                     <div class="job-info">
                                         <h6 class="pricehead"><a href="#">	
-                                            New Exam Schedules </a></h6>
+                                            Nouveau calendrier des examens </a></h6>
                                         <h5>February 25, 2020</h5>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit architecto..</p>
+                                        <p>Calendrier des examens disponibles pour faciliter la gestion du temps de révision</p>
                                     </div>
                                 </div>
                                 
@@ -297,11 +291,11 @@ Accueil || {{env('APP_NAME')}}
                         </div>
                     </div>
                     <div class="text-right mt-4">
-                        <a class="btn btn-secondary btn-theme2" href="#"> View All</a>
+                        <a class="btn btn-secondary btn-theme2" href="#">Voir Plus</a>
                       </div>
                     </div>
                     <div class="w3l-faq-page col-lg-6 pl-3 pl-lg-5 mt-lg-0 mt-5">
-                        <h3 class="">Upcoming Events</h3>
+                        <h3 class="">Evènements à venir</h3>
                         <div class="events-top mt-md-5 mt-4">
                             <div class="events-top-left">
                                     <div class="icon-top">
@@ -312,7 +306,7 @@ Accueil || {{env('APP_NAME')}}
                             </div>
                             <div class="events-top-right">
                                 <h6 class="pricehead"><a href="#">	
-                                    Luctus et ultrices posuere</a></h6>
+                                    Annonce des résultats de fin d'année</a></h6>
                                     <p class="mb-2 mt-3">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla mollis dapibus nunc, ut rhoncus turpis sodales quis. Integer sit amet mattis quam.</p>
                                     <li>07:00 - 10:00 </li>
                                     <li class="melb">Melbourne, Australia</li>
@@ -328,14 +322,14 @@ Accueil || {{env('APP_NAME')}}
                             </div>
                             <div class="events-top-right">
                                 <h6 class="pricehead"><a href="#">	
-                                    Nulla mollis dapibus nunc, ut </a></h6>
+                                   Sortie Interne : Direction le Ghana ! </a></h6>
                                     <p class="mb-2 mt-3">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla mollis dapibus nunc, ut rhoncus turpis sodales quis. Integer sit amet mattis quam.</p>
                                     <li>07:00 - 10:00 </li>
                                     <li class="melb">Melbourne, Australia</li>
                             </div>
                         </div>
                         <div class="text-right mt-4">
-                          <a class="btn btn-secondary btn-theme2" href="#"> View All</a>
+                          <a class="btn btn-secondary btn-theme2" href="#"> Voir Plus</a>
                         </div>
                       </div>
             </div>
