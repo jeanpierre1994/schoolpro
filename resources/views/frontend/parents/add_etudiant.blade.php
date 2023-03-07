@@ -163,6 +163,15 @@
                                         </div>
                                 </div>
                                 <div class="form-row">
+                                    <div class="col-md-6 mb-2">
+                                        <select class="browser-default custom-select js-example-basic-single" name="pays_id" id="pays_id"
+                                            required>
+                                            <option value="" selected>Choisissez votre pays</option>
+                                            @foreach ($pays as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nom_pays }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     
                                     <div class="col-md-6 mb-2">
                                         <div class="input-group form-outline">
@@ -341,10 +350,9 @@
     </section>
 @endsection
 
-@section('js-script')
-    <script>
+@section('js-script') 
+    <script> 
         $(document).ready(function() {
-
             // remove menu active 
             $("div a").removeClass('active');
             // active menu   
@@ -514,5 +522,7 @@
         document.getElementById('country-flag').src = "";
       });
         }
+
+     
     </script>
 @endsection

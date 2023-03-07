@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('frontpage/assets/css/style-starter.css') }}">
     <!-- bmad -->
       <!-- Font Awesome -->
+
+
      <link
      rel="stylesheet"
      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -26,6 +28,7 @@
    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
  <!-- end datatable files --> 
+
 </head>
 
 <style>
