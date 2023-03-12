@@ -1,17 +1,23 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\CyclesController;
 use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\ExamensController;
+use App\Http\Controllers\ExamentypesController;
 use App\Http\Controllers\FilieresController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GenresController;
+use App\Http\Controllers\GroupepedagogiquesController;
+use App\Http\Controllers\MatieresController;
 use App\Http\Controllers\NiveauxController;
 use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\PolesController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\StatutsController;
@@ -101,6 +107,12 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('poles', PolesController::class); 
     Route::resource('cycles', CyclesController::class); 
     Route::resource('typesponsors', TypesponsorsController::class); 
+    Route::resource('categories', CategoriesController::class); 
+    Route::resource('sections', SectionsController::class); 
+    Route::resource('groupepedagogiques', GroupepedagogiquesController::class); 
+    Route::resource('matieres', MatieresController::class); 
+    Route::resource('examentypes', ExamentypesController::class); 
+    Route::resource('examens', ExamensController::class);
     // ajax requête
  });
 
