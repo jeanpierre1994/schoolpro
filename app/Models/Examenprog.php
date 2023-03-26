@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Examens extends Model
+class Examenprog extends Model
 {
     use HasFactory;
-    protected $table = 'examens';
+    protected $table = 'examenprogs';
     protected $primaryKey = 'id';
     public $incrementing = true;
 
@@ -17,36 +17,26 @@ class Examens extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'libelle',
-        'annee_academique',
+    protected $fillable = [ 
         'date_debut',
-        'date_fin',
-        'note_max', 
-        'min_moyenne',// FK
-        'max_moyenne',
-        'commentaire',
-        'groupepedagogique_id', 
-        'examentype_id',
-        'statut_id',
+        'date_fin', 
+        'commentaire', 
+        'matiere_id', 
+        'examen_id', 
         'created_by', // FK
         'updated_by', // FK
         'created_at',
         'updated_at', 
     ]; 
     
-    public function getGP()
+    public function getMatiere()
     {
-        return $this->belongsTo(Groupepedagogiques::class, 'groupepedagogique_id');
+        return $this->belongsTo(Matieres::class, 'matiere_id');
     } 
     
-    public function getExamentype()
+    public function getExamen()
     {
-        return $this->belongsTo(Examentypes::class, 'examentype_id');
-    } 
-    public function getStatut()
-    {
-        return $this->belongsTo(Statuts::class, 'statut_id');
+        return $this->belongsTo(Examens::class, 'examen_id');
     }  
 
     public function getUserCreated()

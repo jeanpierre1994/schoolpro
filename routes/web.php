@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\CyclesController;
 use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\ExamenprogController;
 use App\Http\Controllers\ExamensController;
 use App\Http\Controllers\ExamentypesController;
 use App\Http\Controllers\FilieresController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\StatutsController;
 use App\Http\Controllers\TypesponsorsController;
 use App\Models\Etablissements;
+use App\Models\Examenprog;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -113,6 +115,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('matieres', MatieresController::class); 
     Route::resource('examentypes', ExamentypesController::class); 
     Route::resource('examens', ExamensController::class);
+    Route::resource('examenprog', ExamenprogController::class);
     // ajax requête
  });
 

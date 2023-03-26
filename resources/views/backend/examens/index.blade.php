@@ -24,8 +24,8 @@
     <div class="card-body">
       <h5 class="card-title">Liste des examens <a href="{{route('examens.create')}}" title="Ajouter"><button style="font-size: 5px;" type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle" aria-hidden="true" style="font-size: 10px;"></i></button></a></h5>
       <!-- Bordered Table -->
-      <div class="table-responsive">
-      <table class="table table-striped table-hover table-bordered data-tables">
+      <div class="table-responsive" style="overflow: hidden;" >
+      <table style="overflow-x:auto;" class="table table-striped table-hover table-bordered data-tables">
         <thead>
           <tr>
             <th scope="col">#</th> 
@@ -34,8 +34,8 @@
             <th scope="col">Libellé</th>
             <th scope="col">Date début</th> 
             <th scope="col">Date fin</th> 
-            <th scope="col">Année académique</th> 
-            <th scope="col">Pondération</th>
+            <th scope="col">Année</th> 
+            <th scope="col">Pondér.</th>
             <th scope="col">Note max</th>
             <th scope="col">Moyen. min</th>
             <th scope="col">Moyen. max</th>
@@ -61,8 +61,8 @@
               <td>{{$item->max_moyenne}}</td>
               <td class="text-center">
                 <a href="{{ route('examens.edit',$item->id) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
-                <a href="#" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i>Matières</button></a>
-            </td>
+                <a href="{{ route('examens.show',$item->id) }}" title="Matière"><button type="button" class="btn btn-sm btn-primary"><i class="bi bi-list" style="color: white" aria-hidden="true"></i></button></a>
+              </td>
           </tr>
           @endforeach
 

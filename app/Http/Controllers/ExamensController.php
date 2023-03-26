@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Examenprog;
 use App\Models\Examens;
 use App\Models\Examentypes;
 use App\Models\Groupepedagogiques;
+use App\Models\Matieres;
 use Illuminate\Http\Request;
 
 class ExamensController extends Controller
@@ -148,12 +150,14 @@ class ExamensController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Examens  $examens
+     * @param  \App\Models\Examens  $examen
      * @return \Illuminate\Http\Response
      */
-    public function show(Examens $examens)
+    public function show(Examens $examen)
     {
-        //
+        $matieres = Matieres::where("groupepedagogique_id",$examen->groupepedagogique_id)->where("statut_id",1)->get();
+        $examenprog = Examenprog::where("examen_id",$examen->id)->get();
+        return view("backend.examenprog.index", compact("examenprog", "examen","matieres"));
     }
 
     /**
