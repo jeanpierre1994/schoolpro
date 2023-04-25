@@ -41,24 +41,29 @@
                                     <tbody class="">
                                         @php
                                             $i = 1
-                                        @endphp 
+                                        @endphp
+                                        @foreach ( $dossiers as $item )
                                         <tr>
                                             <td class="scol text-center">
-                                                 <b></b>
+                                                 <b>{{$item->code}}</b>
                                             </td>
                                             <td>
-                                                
                                             </td>
                                             <td>
-                                                <p class="fw-normal mb-1"><!-- identité --></p>
-                                                <p class="text-muted mb-0"><!-- matricule --></p>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                                {{$item->annee}} 
+                                            </td> 
+                                            <td>{{$item->getFiliere->libelle}}</td>
+                                            <td>{{$item->getGp->libelle_classe}}</td>
                                             <td></td> 
-                                        </tr>  
+                                            <td>
+                                                @if ($item->getStatuttraitement->libelle == "EN ATTENTE")
+                                                <span class="badge badge-warning rounded-pill d-inline">{{$item->getStatuttraitement->libelle}}</span>
+                                                @else
+                                                <span class="badge badge-success rounded-pill d-inline">{{$item->getStatuttraitement->libelle}}</span>
+                                                @endif 
+                                            </td> 
+                                        </tr> 
+                                        @endforeach 
                                     </tbody>
                                 </table>
                             </div> 

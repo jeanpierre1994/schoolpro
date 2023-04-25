@@ -26,17 +26,17 @@
   </a>
   <ul id="dossiers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     <li>
-      <a href="#" id="dossier-attente" style="text-decoration: none;">
+      <a href="{{route('dossiers.en_attente')}}" id="dossier-attente" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>En attente</span>
       </a>
     </li> 
     <li>
-      <a href="#" id="dossier-valide" style="text-decoration: none;">
+      <a href="{{route('dossiers.valide')}}" id="dossier-valide" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Validés</span>
       </a>
     </li> 
     <li>
-      <a href="#" id="dossier-rejete" style="text-decoration: none;">
+      <a href="{{route('dossiers.rejete')}}" id="dossier-rejete" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Rejetés</span>
       </a>
     </li> 

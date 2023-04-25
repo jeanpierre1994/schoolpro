@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('groupepedagogique_id');   
             $table->unsignedBigInteger('section_id')->nullable();  
             $table->unsignedBigInteger('categorie_id')->nullable();  
-            $table->string('sigle',100); 
+            $table->string('sigle',100);  
             $table->string('libelle',100); 
             $table->integer('note_max')->default(0); 
             $table->integer('moyenne')->default(0); 
@@ -26,9 +26,9 @@ return new class extends Migration
             $table->unsignedBigInteger('statut_id');   
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable(); 
-            $table->foreign('groupepedagogique_id')->references('id')->on('statuts'); 
-            $table->foreign('section_id')->references('id')->on('statuts'); 
-            $table->foreign('categorie_id')->references('id')->on('statuts'); 
+            $table->foreign('groupepedagogique_id')->references('id')->on('groupepedagogiques'); 
+            $table->foreign('section_id')->references('id')->on('sections'); 
+            $table->foreign('categorie_id')->references('id')->on('categories'); 
             $table->foreign('statut_id')->references('id')->on('statuts'); 
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');

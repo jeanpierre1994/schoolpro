@@ -393,6 +393,73 @@
 
         <!-- end  -->
 
+
+        <!-- professeurs -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('professeurs.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Professeurs <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_professeur}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+         <!-- professeurs -->
+
+         <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('professeurs.matieres')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Professeurs Matières<span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>- - -</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+         <!-- professeurs -->
+
+         <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('admin.sessioncorrections')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Sessions corrections <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>- - -</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
         </div>
     </section>
 @endsection

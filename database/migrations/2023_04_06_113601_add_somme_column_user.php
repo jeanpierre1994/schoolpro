@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('statutvalidations', function (Blueprint $table) {
-            $table->unsignedBigInteger("id")->autoIncrement();
-            $table->string('libelle',20)->unique();
-            $table->string('description')->nullable();  
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {  
+            $table->string('nom',100)->nullable()->after("name");  
+            $table->string('prenoms',100)->nullable()->after("nom");  
+            $table->string('adresse',100)->nullable()->after("prenoms"); 
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statutvalidations');
+        //
     }
 };

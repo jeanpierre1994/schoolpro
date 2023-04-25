@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('dossiers', function (Blueprint $table) {  
+            $table->boolean('dossier_manuel')->default(true)->after("filiere_id"); 
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes');
+        //
     }
 };

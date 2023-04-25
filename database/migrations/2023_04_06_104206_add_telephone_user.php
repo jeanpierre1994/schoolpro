@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('statutvalidations', function (Blueprint $table) {
-            $table->unsignedBigInteger("id")->autoIncrement();
-            $table->string('libelle',20)->unique();
-            $table->string('description')->nullable();  
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {  
+            $table->string('telephone',20)->nullable()->after("profil_id");  
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statutvalidations');
+        //
     }
 };

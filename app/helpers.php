@@ -2,6 +2,7 @@
 
 use App\Models\Etablissements;
 use App\Models\Examenprog;
+use App\Models\Matiereprofesseurs;
 use App\Models\Personnes;
 
 if (!function_exists('getPersonne')) {
@@ -35,4 +36,16 @@ if (!function_exists('checkMatiere')) {
         } 
          
     }
+
+}
+ 
+if (!function_exists('getMatiereProf')) {
+    # code...
+    function getMatiereProf($professeur_id){ 
+        return $data = Matiereprofesseurs::join('matieres', 'matieres.id', '=', 'matiereprofesseurs.matiere_id')
+        ->join('groupepedagogiques', 'groupepedagogiques.id', '=', 'matieres.groupepedagogique_id')
+        ->where("matiereprofesseurs.professeur_id",$professeur_id)
+        ->get(["groupepedagogiques.libelle_classe","matieres.libelle"]);
+    }
+
 }
