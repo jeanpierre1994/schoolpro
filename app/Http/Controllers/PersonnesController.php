@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DossierImport;
+use App\Imports\PersonnesImport;
 use App\Models\Personnes;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PersonnesController extends Controller
 {
@@ -81,5 +84,19 @@ class PersonnesController extends Controller
     public function destroy(Personnes $personnes)
     {
         //
+    }
+
+    public function importPersonnes()
+    {
+        return view('backend.personnes.import');
+    }
+
+    public function uploadPersonnes(Request $request)
+    {
+       Excel::import(new PersonnesImport, $request->file);
+       Excel::import(new DossierImport, $request->file);
+
+       return back()->with('success', 'Importation effectuée avec succès');
+       
     }
 }

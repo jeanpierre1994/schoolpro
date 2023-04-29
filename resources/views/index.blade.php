@@ -53,7 +53,7 @@ Accueil || {{env('APP_NAME')}}
 							<a class="btn btn-secondary btn-theme2 mt-3" href="#"> Voir Plus</a>
 				</div>
 				<div class="column ccont-left col-lg-6">
-					<img src="{{ asset("frontpage/assets/images/g1.jpg") }}" class="img-responsive" alt="">
+					<img src="{{ asset("frontpage/assets/images/OIP9.jpg") }}" class="img-responsive" alt="">
 				</div>
 			</div>
 		</div>
@@ -243,7 +243,7 @@ Accueil || {{env('APP_NAME')}}
                         <div class="price-box btn-layout bt6">
                             <div class="grid grid-column-2">
                                     <div class="column-6">
-                                            <img src="{{ asset("frontpage/assets/images/g9.jpg") }}" alt="" class="img-fluid">
+                                            <img src="{{ asset("frontpage/assets/images/g1.jpg") }}" alt="" class="img-fluid">
                                         </div>
                                 <div class="column1">
                                    

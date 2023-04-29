@@ -10,6 +10,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GenresController;
 use App\Http\Controllers\NiveauxController;
 use App\Http\Controllers\ParentsController;
+use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\PolesController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SitesController;
@@ -58,7 +59,11 @@ Route::get('/activation/compte/user/{code_activation}', [CustomAuthController::c
 
 // route activation & desactivation
 Route::get('/admin/update/{id}/{table}/{statut}', [AdminController::class, 'newUpdate'])->name('admin.update-parametre')->middleware('auth');
- 
+
+//import excel
+
+Route::get('import-personnes', [PersonnesController::class,'importPersonnes'])->name('import-personnes');
+Route::post('uploadPersonnes', [PersonnesController::class,'uploadPersonnes'])->name('upload-personnes');
 
 // Lien symbolique vers dossier de stockage
 Route::get('/ActiveStorage', function () {

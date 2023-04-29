@@ -50,6 +50,20 @@
     <span>Paramètres</span>
   </a>
 </li><!-- End paramètre Nav -->
+<!-- Imports -->
+<li class="nav-item">
+  <a class="nav-link collapsed" data-bs-target="#imports-nav" data-bs-toggle="collapse" href="#">
+    <i class="ri-newspaper-fill"></i><span>Imports</span><i class="bi bi-chevron-down ms-auto"></i>
+  </a>
+  <ul id="imports-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+    <li>
+      <a href="{{route('import-personnes')}}" id="import-personnes" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Personnes</span>
+      </a>
+    </li> 
+  </ul>
+</li>
+<!-- EndImports -->
   
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#optimisation-nav" data-bs-toggle="collapse" href="#" style="text-decoration: none;">

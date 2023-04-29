@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date('ddn')->nullable(); 
             $table->string('lieunais')->nullable(); 
             $table->string('nationalite')->nullable(); 
-            $table->string('tel',20);  
+            $table->string('tel',20)->nullable();  
             $table->string('linkedin',100)->nullable(); 
             $table->string('email',100); 
             $table->string('adresse',100)->nullable(); 
