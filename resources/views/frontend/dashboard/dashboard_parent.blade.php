@@ -37,7 +37,7 @@
               <p class="text-muted mb-1">{{auth()->user()->getProfil->libelle}}</p>
               <!--<p class="text-muted mb-4">Bay Area, San Francisco, CA</p>-->
               <div class="d-flex justify-content-center mb-2">
-                <button type="button" class="btn btn-primary">Identité</button>
+                <a href="{{route('parent.identite')}}"><button type="button" class="btn btn-primary">Identité</button></a> 
               </div>
             </div>
           </div> 

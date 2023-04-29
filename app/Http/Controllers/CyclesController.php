@@ -125,7 +125,7 @@ class CyclesController extends Controller
             $cycle->delete();
             // get current user id
             $user = auth()->user(); 
-            return redirect()->route('cycles.index')->with('success', 'Opération bien effectuéé');
+            return redirect()->route('cycles.index')->with('success', 'Opération effectuée avec succès.');
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with("error", "Vous ne pouvez pas supprimer cet élément à cause du contrôle d'intégrité.");

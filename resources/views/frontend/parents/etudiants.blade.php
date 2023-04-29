@@ -1,7 +1,7 @@
 @extends('frontend.inc.user_layout')
 
 @section('title')
-    Liste Etudiant || {{ env('APP_NAME') }}
+    Famille || {{ env('APP_NAME') }}
 @endsection
 
 @section('contenu')
@@ -21,8 +21,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mb-4">
-                        <h5 class="card-header">LISTE DES ETUDIANTS
-                        <a href="{{route('parent.add-etudiant')}}" data-mdb-toggle="tooltip" data-mdb-placement="right" title="Nouveau dossier" class="btn btn-primary btn-floating btn-sm">
+                        <h5 class="card-header">FAMILLE
+                        <a href="{{route('parent.add-etudiant')}}" data-mdb-toggle="tooltip" data-mdb-placement="right" title="Ajouter un membre" class="btn btn-primary btn-floating btn-sm">
                             <i class="fas fa-plus"></i>
                         </a>
                         </h5>

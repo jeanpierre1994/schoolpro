@@ -111,7 +111,7 @@
                         <a class="dropdown-item" href="#">Edition Profil</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Se déconnecter</a>
+                        <a class="dropdown-item" href="{{route('signout')}}">Se déconnecter</a>
                     </li>
                 </ul>
             </li>

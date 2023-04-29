@@ -38,7 +38,7 @@
                 <i class="fas fa-user fa-fw me-3"></i><span>Identité</span>
             </a>
             <a href="{{route('parent.etudiants')}}" id="etudiants" title="Liste des étudiants" class="list-group-item list-group-item-action py-2 ripple"><i
-                    class="fas fa-folder fa-fw me-3"></i><span>Etudiants</span>
+                    class="fas fa-folder fa-fw me-3"></i><span>Familles</span>
             </a>
             <a href="{{route('parent.dossiers')}}" id="dossiers" title="Dossier" class="list-group-item list-group-item-action py-2 ripple"><i
                     class="fas fa-folder fa-fw me-3"></i><span>Dossiers</span>

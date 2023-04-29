@@ -1,23 +1,34 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\CyclesController;
+use App\Http\Controllers\DossiersController;
 use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\ExamenprogController;
+use App\Http\Controllers\ExamensController;
+use App\Http\Controllers\ExamentypesController;
 use App\Http\Controllers\FilieresController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GenresController;
+use App\Http\Controllers\GroupepedagogiquesController;
+use App\Http\Controllers\MatieresController;
 use App\Http\Controllers\NiveauxController;
 use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\PolesController;
+use App\Http\Controllers\ProfesseursController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SectionsController;
+use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\StatutsController;
 use App\Http\Controllers\TypesponsorsController;
 use App\Models\Etablissements;
+use App\Models\Examenprog;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -106,6 +117,13 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('poles', PolesController::class); 
     Route::resource('cycles', CyclesController::class); 
     Route::resource('typesponsors', TypesponsorsController::class); 
+    Route::resource('categories', CategoriesController::class); 
+    Route::resource('sections', SectionsController::class); 
+    Route::resource('groupepedagogiques', GroupepedagogiquesController::class); 
+    Route::resource('matieres', MatieresController::class); 
+    Route::resource('examentypes', ExamentypesController::class); 
+    Route::resource('examens', ExamensController::class);
+    Route::resource('examenprog', ExamenprogController::class);
     // ajax requête
  });
 
@@ -167,8 +185,34 @@ Route::post('admin/etudiant/store/dossiers', [EtudiantController::class, 'saveDo
 // dossier valide : inscription
 Route::get('admin/etudiant/inscriptions', [EtudiantController::class, 'dossierValide'])->name('etudiant.dossiers-valide')->middleware("auth");
 
-//...
- 
+//********** gestion des professeurs */ 
+Route::get('admin/professeurs/liste', [ProfesseursController::class, 'index'])->name('professeurs.index')->middleware("auth");
+// professeurs.edit
+Route::get('admin/professeurs/create', [ProfesseursController::class, 'create'])->name('professeurs.create')->middleware("auth");
+Route::post('admin/professeurs/store', [ProfesseursController::class, 'store'])->name('professeurs.store')->middleware("auth");
+Route::get('admin/professeurs/{id}/edite', [ProfesseursController::class, 'edit'])->name('professeurs.edit')->middleware("auth");
+Route::put('admin/professeurs/{id}/update', [ProfesseursController::class, 'update'])->name('professeurs.update')->middleware("auth");
+// professeurs.store-matiere
+Route::get('admin/professeurs/matiere', [ProfesseursController::class, 'matieres'])->name('professeurs.matieres')->middleware("auth");
+Route::post('admin/professeurs/store/matiere', [ProfesseursController::class, 'matiereStore'])->name('professeurs.store-matiere')->middleware("auth");
+
+// gestion des sessions de correction
+Route::get('admin/sessions/corrections', [SessioncorrectionController::class, 'index'])->name('admin.sessioncorrections')->middleware("auth");
+
+// traitement des dossiers 
+// dossiers en attente
+Route::get('admin/dossiers/en_attente', [DossiersController::class, 'enAttente'])->name('dossiers.en_attente')->middleware("auth");
+// dossiers.traitement
+Route::get('admin/traitement/dossiers/{id}/en_attente', [DossiersController::class, 'traitement'])->name('dossiers.traitement')->middleware("auth");
+// dossiers.store_traitement
+Route::post('admin/traitement/dossiers/store', [DossiersController::class, 'storeTraitement'])->name('dossiers.store_traitement')->middleware("auth");
+
+// dossiers valides
+Route::get('admin/dossiers/valide', [DossiersController::class, 'valide'])->name('dossiers.valide')->middleware("auth");
+
+// dossiers rejetes
+Route::get('admin/dossiers/rejete', [DossiersController::class, 'rejete'])->name('dossiers.rejete')->middleware("auth");
+
  // Lien symbolique vers dossier de stockage
  Route::get('/ActiveStorage', function () {
     Artisan::call('storage:link');

@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
 use App\Models\Cycles;
 use App\Models\Etablissements;
+use App\Models\Examens;
+use App\Models\Examentypes;
 use App\Models\Filieres;
 use App\Models\Genres;
+use App\Models\Groupepedagogiques;
+use App\Models\Matiereprofesseurs;
+use App\Models\Matieres;
 use App\Models\Niveaux;
 use App\Models\Poles;
 use App\Models\Profil;
+use App\Models\Sections;
 use App\Models\Sites;
 use App\Models\Statutjuridiques;
 use App\Models\Statuts;
 use App\Models\Typesponsors;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -105,7 +113,23 @@ class AdminController extends Controller
         $nbre_pole = Poles::all()->count();
         $nbre_genre = Genres::all()->count();
         $nbre_typesponsor = Typesponsors::all()->count();
-        return view("backend.parametres",compact("nbre_niveau","nbre_typesponsor", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","nbre_profil","nbre_site","nbre_etablissement"));
+        $nbre_gp = Groupepedagogiques::all()->count();
+        $nbre_categorie = Categories::all()->count();
+        $nbre_section = Sections::all()->count();
+        $nbre_matiere = Matieres::all()->count();
+        $nbre_examentype = Examentypes::all()->count();
+        $nbre_examen = Examens::all()->count();
+
+        $profil_professeur = Profil::where("libelle","PROFESSEUR")->first();
+        if ($profil_professeur) {
+            # code...
+            $nbre_professeur = User::where("profil_id",$profil_professeur->id)->count();
+        } else {
+            # code...
+            $nbre_professeur = 0;
+        } 
+        
+        return view("backend.parametres",compact("nbre_categorie","nbre_gp","nbre_section","nbre_niveau","nbre_typesponsor","nbre_matiere", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","nbre_profil","nbre_site","nbre_etablissement","nbre_examentype","nbre_examen","nbre_professeur"));
          
      }
 
@@ -116,6 +140,14 @@ class AdminController extends Controller
      */
     public function ajaxRequete(Request $request)
     {
+        // get_matiere
+        if (isset($_POST['get_matiere'])) { 
+            $gp_id = $_POST['gp_id'];
+            $matiere_professeur = Matiereprofesseurs::where("professeur_id",$request->professeur_id)->get(["id"]);
+            $matieres = Matieres::whereNotIn('id', $matiere_professeur)->where('groupepedagogique_id', $gp_id)->where("statut_id",1)->get(["id","libelle"]);
+            return json_encode($matieres,true);          
+        }
+
          // récupérer la liste des communes par département
          if (isset($_POST['etablissement_id'])) { 
             $etablissement_id = $_POST['etablissement_id'];

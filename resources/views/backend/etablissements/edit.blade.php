@@ -35,7 +35,7 @@
               </ul>
           </div>
           @endif
-          <form action="{{ route('etablissements.update') }}" method="post">
+          <form action="{{ route('etablissements.update',$etablissement->id) }}" method="post">
             @csrf
             @method("put")
             <div class="row mb-3">
@@ -73,7 +73,7 @@
                 <div> 
                   <select class="form-select" name="statutjuridique_id" id="statutjuridique_id" required> 
                     <optgroup label="Valeur par défaut">
-                      <option value="{{ $etablissement->statutjuridique_id ? $user->getStatutjuridique->id : ''}}">{{ $user->statutjuridique_id ? $user->getStatutjuridique->libelle : ''}}</option> 
+                      <option value="{{ $etablissement->statutjuridique_id ? $etablissement->getStatutjuridique->id : ''}}">{{ $etablissement->statutjuridique_id ? $etablissement->getStatutjuridique->libelle : ''}}</option> 
                     </optgroup>
                     <optgroup label="Liste disponible">
                       @foreach ($statutjuridiques as $item)
@@ -89,7 +89,7 @@
                   <input type="text" class="form-control" value="{{$etablissement->dirigeant}}" required name="dirigeant" id="dirigeant" minlength="1" maxlength="150" >
                 </div>
               </div> 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="inputText" class=" col-form-label">Adresse <i class="text-danger">*</i></label>
                 <div>
                   <input type="text" class="form-control" value="{{$etablissement->adresse}}" required name="adresse" id="adresse" minlength="2" maxlength="150" >

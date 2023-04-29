@@ -23,7 +23,7 @@ class FrontendController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request )
-    {
+    {  
         return view("index");
     }
 
@@ -47,7 +47,7 @@ class FrontendController extends Controller
         // redirection sur le formulaire d'inscription
         //return view("frontend.inscriptions.choix_categorie");
             $genres = Genres::where("statut_id",1)->get();
-            $profils = Profil::where("statut_id",1)->where("id","!=",1)->get(); 
+            $profils = Profil::where("statut_id","!=",1)->orWhere("id","!=",4)->get(); 
         return view("frontend.inscriptions.form", compact("genres","profils"));
     }
 

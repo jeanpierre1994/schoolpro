@@ -36,7 +36,13 @@ class Dossiers extends Model
         'updated_by', // FK
         'created_at',
         'updated_at', 
+        'groupepedagogique_id'
     ]; 
+    
+    public function getGp()
+    {
+        return $this->belongsTo(Groupepedagogiques::class, 'groupepedagogique_id');
+    }
     
     public function getSite()
     {

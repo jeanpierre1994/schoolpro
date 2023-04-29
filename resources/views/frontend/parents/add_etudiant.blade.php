@@ -338,8 +338,8 @@
     </section>
 @endsection
 
-@section('js-script')
-    <script>
+@section('js-script') 
+    <script> 
         $(document).ready(function() {
             $('#pays').select2();
             // remove menu active 

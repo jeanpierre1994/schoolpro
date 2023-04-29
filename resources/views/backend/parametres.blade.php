@@ -100,7 +100,7 @@
 
         <div class="col-xxl-4 col-md-4">
             <div class="card info-card sales-card">
-                <a href="#" style="text-decoration: none;">
+                <a href="{{route('groupepedagogiques.index')}}" style="text-decoration: none;">
                     <div class="card-body">
                         <h5 class="card-title">Groupe pédagogique<span></span></h5>
                         <div class="d-flex align-items-center">
@@ -108,7 +108,7 @@
                                 <i class="bi bi-grip-horizontal"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>0</h6>
+                                <h6>{{$nbre_gp}}</h6>
                             </div>
                         </div>
                     </div>
@@ -278,6 +278,188 @@
         </div> 
 
         <!-- end  -->
+
+
+        <!-- categories -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('categories.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Catégories <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_categorie}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+        <!--  -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('sections.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Sections <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_section}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+ 
+
+        <!--  -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('matieres.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Matières <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_matiere}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+ 
+
+        <!--  -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('examentypes.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Examen type <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_examentype}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+
+        <!--  -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('examens.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Examens <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_examen}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+
+        <!-- professeurs -->
+
+        <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('professeurs.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Professeurs <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{$nbre_professeur}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+         <!-- professeurs -->
+
+         <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('professeurs.matieres')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Professeurs Matières<span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>- - -</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
+         <!-- professeurs -->
+
+         <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('admin.sessioncorrections')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Sessions corrections <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>- - -</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
+
         </div>
     </section>
 @endsection

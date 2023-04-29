@@ -185,8 +185,7 @@ class EtudiantController extends Controller
 
         $user = Auth()->user();
         $statut_traitement = Statuttraitements::where("libelle","EN ATTENTE")->first();
-       
- 
+        
         //##################### générer le code  ###########################
         // procédure d'incrémentation du code
         $annee_actuelle = date('y');
@@ -198,7 +197,7 @@ class EtudiantController extends Controller
         if ($last_numero == NULL) {
             $last_id = "";
         } else {
-            $last_id = $last_numero->code_user;
+            $last_id = $last_numero->code;
         }
 
         if (!empty($last_id)) {

@@ -140,7 +140,7 @@ class ParentsController extends Controller
      */
     public function addEtudiant()
     { 
-        $pays = Pays::all();
+        $pays = Pays::orderBy("nom_pays","asc")->get();
         $paysNationalites = $pays->pluck('nationalite', 'nom_pays', 'code_iso');
         $genres = Genres::where("statut_id",1)->get(); 
         return view("frontend.parents.add_etudiant", compact("genres", 'paysNationalites', 'pays'));

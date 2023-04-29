@@ -23,7 +23,6 @@ return new class extends Migration
             $table->text('coordonnee_maps')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
-
         });
     }
 

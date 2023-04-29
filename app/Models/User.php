@@ -25,7 +25,10 @@ class User extends Authenticatable
         'profil_id', 
         'first_connexion',
         'last_connexion',
-        'login_count'
+        'login_count',
+        'nom',
+        'prenoms',
+        'adresse'
     ];
 
     /**

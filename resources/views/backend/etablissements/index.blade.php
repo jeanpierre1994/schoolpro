@@ -58,7 +58,7 @@
               <td>{{$item->updated_at->format("d-m-Y à H:i:s")}}</td>
               <td>{{$item->getUserUpdated->name}}</td>
               <td class="text-center">
-                <a href="{{ route('etablissements.edit',$item->id    ) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
+                <a href="{{ route('etablissements.edit',$item->id) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
                 {{--<a href="{{ route('etablissements.show',$item->id) }}" title="Voir les détails du statut"><button type="button" class="btn btn-sm btn-secondary"><i class="bi bi-eye" style="color: white" aria-hidden="true"></i></button></a>--}}
                 <a href="#" class="page-constructionv" data-bs-toggle="modal" data-bs-target="#myModal_{{ $item->id }}">
                   <button type="button" title="Supprimer" class="btn btn-sm btn-danger"><i class="bi bi-trash" style="color: white" aria-hidden="true"></i></button>

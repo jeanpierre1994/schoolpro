@@ -11,7 +11,7 @@
 		<div class="social-top col-md-3 col-6">
       @if (!empty(auth()->user()->id)) 
       <a href="{{route('check_dashboard')}}" class="btn btn-success btn-theme4">Mon compte</a>
-      <a href="{{route('logout')}}" class="btn btn-secondary btn-theme4">Se déconnecter</a>
+      <a href="{{route('signout')}}" class="btn btn-secondary btn-theme4">Se déconnecter</a>
       @else 
       <a href="{{route('authentification')}}" class="btn btn-secondary btn-theme4">Se connecter</a>
       @endif
