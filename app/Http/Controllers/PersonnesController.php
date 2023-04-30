@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Imports\DossierImport;
+use App\Imports\EtudiantsImport;
+use App\Imports\ParentsImport;
 use App\Imports\PersonnesImport;
 use App\Models\Personnes;
 use Illuminate\Http\Request;
@@ -93,9 +95,9 @@ class PersonnesController extends Controller
 
     public function uploadPersonnes(Request $request)
     {
-       Excel::import(new PersonnesImport, $request->file);
+        Excel::import(new PersonnesImport, $request->file);
        Excel::import(new DossierImport, $request->file);
-
+       // Excel::import(new EtudiantsImport, $request->file);
        return back()->with('success', 'Importation effectuée avec succès');
        
     }

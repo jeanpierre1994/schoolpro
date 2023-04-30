@@ -17,8 +17,8 @@ class ParentsImport implements ToModel
         return new Parents([
             //
             
-            'nom' => $row['last_name'] ,
-            'prenoms' => str_split($row['first_name'],5),
+            'nom' => $row[1] ,
+            'prenoms' => str_split($row[2], 4) .''. $row[1],
             'genre' => ($row['gender']=='male') ? 1 : 2,
             'tel' => 00000000,
             'email' => 'email@email.com',
