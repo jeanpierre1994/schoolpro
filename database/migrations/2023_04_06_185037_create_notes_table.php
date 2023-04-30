@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('professeur_id');  
             $table->string('note_examen')->nullable();       
             $table->string('note')->nullable();     
-            $table->string('commentaitaire')->nullable(); 
+            $table->string('commentaire')->nullable(); 
             $table->unsignedBigInteger('statutvalidation_id')->nullable();   
             $table->unsignedBigInteger('created_by');     
             $table->foreign('sessioncorrection_id')->references('id')->on('sessioncorrections');

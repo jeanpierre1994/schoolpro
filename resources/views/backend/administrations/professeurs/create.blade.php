@@ -66,7 +66,18 @@
               </div>   
             </div>  
             
-            <div class="row mb-3">  
+            <div class="row mb-3"> 
+              <div class="col-md-6">
+                <label for="inputText" class=" col-form-label">Genre <i class="text-danger">*</i></label>
+                <div> 
+                    <select class="form-select" name="genre_id" id="genre_id" required>
+                      <option selected value="">Sélectionnez une option</option>
+                      @foreach ($genres as $item)
+                      <option value="{{$item->id}}">{{$item->libelle}}</option> 
+                      @endforeach
+                    </select> 
+                </div>
+              </div> 
               <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Mot de passe <i class="text-danger">*</i></label>
                 <div>
@@ -79,13 +90,7 @@
                      <li>Minimum 8 caractères</li>
                  </div>
                 </div> 
-              </div>   
-              <div class="col-md-6">
-                <label for="inputText" class=" col-form-label">Date enregistrement <i class="text-danger">*</i></label>
-                <div>
-                  <input type="date" class="form-control" required name="date_enregistrment" id="date_enregistrment" value="{{date("Y-m-d")}}" >
-                </div>
-              </div> 
+              </div>    
             </div>  
             <div class="row mb-3">  
                 <div class="col-md-6">

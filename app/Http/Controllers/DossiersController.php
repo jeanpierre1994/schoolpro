@@ -82,7 +82,7 @@ class DossiersController extends Controller
         if ($request->statuttraitement_id == 2) {
             # code...
             $dossier->setAttribute("statuttraitement_id",$request->statuttraitement_id);
-            $dossier->setAttribute("statuttraitement_id",$request->statuttraitement_id);
+            $dossier->setAttribute("groupepedagogique_id",$request->groupepedagogique_id);
             $dossier->setAttribute("commentaire",$request->commentaire);
             $dossier->setAttribute("date_traitement",date("d-m-Y"));
             $dossier->setAttribute("validateur_id",$user->id);
@@ -144,6 +144,7 @@ class DossiersController extends Controller
             // créer le compte étudiant
             $inscription = new Etudiants();
             $inscription->setAttribute("matricule",$matricule);
+            $inscription->setAttribute('groupepedagogique_id',$request->groupepedagogique_id);
             $inscription->setAttribute("dossier_id",$request->id);
             $inscription->setAttribute("validateur_id",$user->id);
             $inscription->setAttribute("commentaitaire",$request->id);
@@ -154,7 +155,7 @@ class DossiersController extends Controller
             # code...
 
             $dossier->setAttribute("statuttraitement_id",$request->statuttraitement_id);
-            $dossier->setAttribute("statuttraitement_id",$request->statuttraitement_id);
+            $dossier->setAttribute("groupepedagogique_id",$request->groupepedagogique_id);
             $dossier->setAttribute("commentaire",$request->commentaire);
             $dossier->setAttribute("date_traitement",date("d-m-Y"));
             $dossier->setAttribute("validateur_id",$user->id);
