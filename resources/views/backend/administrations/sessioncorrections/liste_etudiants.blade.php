@@ -1,7 +1,7 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Session correction || {{ env('APP_NAME') }}
+Liste des notes || {{ env('APP_NAME') }}
 @endsection
 
 @section('fil-arial')
@@ -9,10 +9,9 @@
         <h1>Paramètres</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
-                        style="text-decoration: none;">Paramètres</a></li>
-                <li class="breadcrumb-item active">Session correction</li>
+                <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li> 
+                <li class="breadcrumb-item"><a href="{{ url()->previous() }}" style="text-decoration: none;">Retour</a></li>
+                <li class="breadcrumb-item active">Liste des notes</li>
             </ol>
         </nav>
     </div>
@@ -33,40 +32,40 @@
                         </ul>
                     </div>
                 @endif
-                    <div class="card-body">
-                        <h5 class="card-title">Liste de mes sessions de correction</h5>
+                    <div class="card-body"> 
+                        <h5 class="card-title">Session de correction d'examen N° <b>{{$session->getExamenprog->getExamen->code_examen}} || {{$session->getExamenprog->getExamen->libelle}}</b>
+                        <br>Epreuve de : <b>{{$session->getExamenprog->getMatiere->libelle}}</b> 
+                        <br> <code>Liste des notes</code>
+                    </h5>  
                         <!-- Bordered Table -->
+                        <form action="{{route("sessionscorrections.store")}}" method="POST">
+                            @csrf
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr class="text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Code examen</th>
-                                        <th scope="col">Libellé examen</th>
-                                        <th scope="col">Groupe pédagogique</th>
-                                        <th scope="col">Matières</th>  
-                                        <th scope="col">Action</th>
-                                    </tr>
+                                        <th scope="col">Matricule</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Prénoms</th> 
+                                        <th scope="col">Note</th>    
+                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($examenprog as $item)
-                                        <tr>
-                                            <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td class="text-center">{{ $item->code_examen}}</td>
-                                            <td>{{ $item->libelle }}</td>
-                                            <td>{{ $item->libelle_classe }}</td>
-                                            <td>{{ $item->matiere }}</td> 
-                                            <td class="text-center">
-                                                <a href="{{ route('sessionscorrections.create', $item->id ) }}" title="Ouvrir une session de correction." class="btn btn-sm btn-primary"><i class="bi bi-eye" style="color: white" aria-hidden="true"></i></a>
-                                            </td>  
+                                    @foreach ($notes as $data)
+                                        <tr> 
+                                            <td class="text-center">{{ $data->etudiant_id ?  $data->getEtudiant->matricule : ''}}</td>
+                                            <td class="text-center">{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
+                                            <td class="text-center">{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
+                                            <td class="text-center">{{$data->note}}</td>  
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                    </form>
                         <!-- End Bordered Table --> 
                     </div>
                 </div>

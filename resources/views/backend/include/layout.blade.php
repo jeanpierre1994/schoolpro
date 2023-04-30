@@ -88,7 +88,11 @@
  
              },
              dom: '<"float-left"l><"float-right"f>Brti<"float-right"p>',
-          //   stateSave : true,
+             lengthMenu: [
+              [10, 50, 100, 250, 300, -1],
+              ['10', '50', '100', '250', '300', 'Tout afficher'],
+            ],
+             stateSave : true, 
              order : [[ 0, "asc" ]], 
                 processing: true,
                 serverSide: false

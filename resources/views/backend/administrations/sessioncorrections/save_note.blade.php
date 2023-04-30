@@ -1,7 +1,7 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Session correction || {{ env('APP_NAME') }}
+Ouverture Session de correction || {{ env('APP_NAME') }}
 @endsection
 
 @section('fil-arial')
@@ -10,9 +10,9 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
-                        style="text-decoration: none;">Paramètres</a></li>
-                <li class="breadcrumb-item active">Session correction</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}" style="text-decoration: none;">Paramètres</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.sessioncorrections') }}" style="text-decoration: none;">Session de correction</a></li>
+                <li class="breadcrumb-item active">Ouverture session de correction</li>
             </ol>
         </nav>
     </div>
@@ -34,39 +34,57 @@
                     </div>
                 @endif
                     <div class="card-body">
-                        <h5 class="card-title">Liste de mes sessions de correction</h5>
+                        <div class="card-body row mb-2" style="border-bottom: 2px #e0adad solid;">
+                            <div class="col-md-12 mb-2">Session de correction d'examen N° <b>{{$session->getExamenprog->getExamen->code_examen}} || {{$session->getExamenprog->getExamen->libelle}}</b> </div>
+                            <div class="col-md-12 mb-2">Epreuve de : <b>{{$session->getExamenprog->getMatiere->libelle}}</b> </div>
+                            <div class="col-md-12 mb-2">Nbre d'étudiants notés : <b>{{$notes_etudiants_valide}}</b> 
+                                @if ($notes_etudiants_valide > 0)
+                                <a href="{{route("sessionscorrections.liste",$session->id)}}"><span class="badge bg-primary p-1">consulter la liste</span></a>
+                                @endif
+                            </div>
+                            <div class="col-md-12">Statut de la session : 
+                                @if ($session->statutvalidation_id == 1)
+                                <span class="badge bg-warning">{{$session->getStatut->libelle}}</span>
+                                @else
+                                    <span class="badge bg-success">{{$session->getStatut->libelle}}</span>
+                                @endif 
+                            </div>
+                        </div>
+                        <h5 class="card-title">Interface d'édition des notes</h5>
                         <!-- Bordered Table -->
+                        <form action="{{route("sessionscorrections.store")}}" method="POST">
+                            @csrf
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr class="text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Code examen</th>
-                                        <th scope="col">Libellé examen</th>
-                                        <th scope="col">Groupe pédagogique</th>
-                                        <th scope="col">Matières</th>  
-                                        <th scope="col">Action</th>
-                                    </tr>
+                                        <th scope="col">Matricule</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Prénoms</th> 
+                                        <th scope="col">Commentaire</th> 
+                                        <th scope="col"><button type="submit" class="btn btn-primary btn-sm" title="Validation en max"><i class="bi bi-check text-white"></i> Validation Note</button></th>  
+                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($examenprog as $item)
-                                        <tr>
-                                            <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td class="text-center">{{ $item->code_examen}}</td>
-                                            <td>{{ $item->libelle }}</td>
-                                            <td>{{ $item->libelle_classe }}</td>
-                                            <td>{{ $item->matiere }}</td> 
-                                            <td class="text-center">
-                                                <a href="{{ route('sessionscorrections.create', $item->id ) }}" title="Ouvrir une session de correction." class="btn btn-sm btn-primary"><i class="bi bi-eye" style="color: white" aria-hidden="true"></i></a>
-                                            </td>  
+                                    @foreach ($notes_etudiants_encours as $data)
+                                        <tr> 
+                                            <td>{{ $data->etudiant_id ?  $data->getEtudiant->matricule : ''}}</td>
+                                            <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
+                                            <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
+                                            <td><input type="text" name="commentaire[]" class="form-control"></td> 
+                                            <td>
+                                                <input type="number" name="note[]" value="" class="form-control">
+                                                <input type="hidden" name="note_id[]" value="{{$data->id}}">
+                                            </td>   
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                    </form>
                         <!-- End Bordered Table --> 
                     </div>
                 </div>

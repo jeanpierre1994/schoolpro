@@ -64,7 +64,8 @@ class CustomAuthController extends BaseController
 
       
 
-    public function customLogin(Request $request)
+    
+     public function customLogin(Request $request)
     {
 
         $request->validate([
@@ -148,7 +149,26 @@ class CustomAuthController extends BaseController
                 }
 
                 return redirect()->route('dashboard'); 
-            } else{
+            }elseif ($user->profil_id == 4) { // professeur
+                # code...
+                $update_user = User::find($user->id);
+                if (!empty($user->first_connexion)) {
+                    # code... 
+                    $update_user->setAttribute("last_connexion",date("Y-m-d H:i:s"));
+                    $update_user->setAttribute("login_count",1);
+                    $update_user->update();
+                } else {
+                    # code...
+                    $update_user->setAttribute("first_connexion",date("Y-m-d H:i:s"));
+                    $update_user->setAttribute("last_connexion",date("Y-m-d H:i:s"));
+                    $update_user->setAttribute("login_count",$user->login_count+1);
+                    $update_user->update();
+                }
+
+                return redirect()->route('dashboard'); 
+            }
+            
+            else{
                 # code...
                 Alert::toast("Nom d'utilisateur ou mot de passe invalide.",'error');
 

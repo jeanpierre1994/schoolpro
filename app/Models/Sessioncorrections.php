@@ -35,7 +35,7 @@ class Sessioncorrections extends Model
         return $this->belongsTo(User::class, 'professeur_id');
     }
     
-    public function getStatutvalidation()
+    public function getStatut()
     {
         return $this->belongsTo(Statutvalidations::class, 'statutvalidation_id');
     }

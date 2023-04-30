@@ -35,7 +35,7 @@
               </ul>
           </div>
           @endif
-          <form action="{{ route('professeurs.update',Crypt::encrypt($professeur->id)) }}" method="post">
+          <form action="{{ route('professeurs.update',Crypt::encrypt($professeur->compte_id)) }}" method="post">
             @csrf
             @method("put")
 
@@ -57,7 +57,7 @@
               <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Téléphone <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" value="{{$professeur->telephone}}" class="form-control" required name="telephone" id="telephone" maxlength="20" >
+                  <input type="number" value="{{$professeur->tel}}" class="form-control" required name="telephone" id="telephone" maxlength="20" >
                 </div>
               </div> 
               <div class="col-md-6">
@@ -66,6 +66,21 @@
                   <input type="text" value="{{$professeur->email}}" class="form-control" required name="email" id="email" minlength="1" maxlength="100" >
                 </div>
               </div> 
+              <div class="col-md-6">
+                <label for="inputText" class=" col-form-label">Etablissement<i class="text-danger">*</i></label>
+                <div> 
+                    <select class="form-select" name="genre_id" id="genre_id" required>
+                      <optgroup label="Valeur par défaut">
+                        <option value="{{ $professeur->genre ? $professeur->getGenre->id : ''}}">{{ $professeur->genre ? $professeur->getGenre->libelle : ''}}</option> 
+                      </optgroup>
+                      <optgroup label="Liste disponible">
+                        @foreach ($etablissements as $item)
+                        <option value="{{$item->id}}">{{$item->sigle}}</option> 
+                        @endforeach
+                      </optgroup>
+                    </select> 
+                </div>
+              </div>
               <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Mot de passe <i class="text-danger"></i></label>
                 <div>

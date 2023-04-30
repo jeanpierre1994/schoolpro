@@ -20,10 +20,19 @@ class Etudiants extends Model
     protected $fillable = [
         'dossier_id',
         'matricule', 
+        'groupepedagogique_id', 
+        'validateur_id', 
+        'commentaitaire', 
+        'statutvalidation_id'
     ];
     
     public function getDossier()
     {
         return $this->belongsTo(Dossiers::class, 'dossier_id');
+    } 
+
+    public function getGp()
+    {
+        return $this->belongsTo(Groupepedagogiques::class, 'groupepedagogique_id');
     } 
 }

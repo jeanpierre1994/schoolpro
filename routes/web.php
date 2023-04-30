@@ -193,6 +193,12 @@ Route::post('admin/professeurs/store/matiere', [ProfesseursController::class, 'm
 
 // gestion des sessions de correction
 Route::get('admin/sessions/corrections', [SessioncorrectionController::class, 'index'])->name('admin.sessioncorrections')->middleware("auth");
+// 
+Route::get('admin/sessions/corrections/{id}/create', [SessioncorrectionController::class, 'create'])->name('sessionscorrections.create')->middleware("auth");
+// 
+Route::post('admin/sessions/corrections/store', [SessioncorrectionController::class, 'store'])->name('sessionscorrections.store')->middleware("auth");
+// sessionscorrections.liste
+Route::get('admin/sessions/corrections/{id}/liste', [SessioncorrectionController::class, 'listeEtudiant'])->name('sessionscorrections.liste')->middleware("auth");
 
 // traitement des dossiers 
 // dossiers en attente
