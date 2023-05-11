@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::table('personnes', function (Blueprint $table) {  
             $table->string('matricule',20)->nullable()->change(); 
             $table->unsignedBigInteger('compte_id')->nullable()->after("id"); 
-            $table->foreign('compte_id')->references('id')->on('users');
+            $table->foreign('compte_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

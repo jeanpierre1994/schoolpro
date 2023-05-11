@@ -32,7 +32,7 @@ return new class extends Migration
             $table->unsignedBigInteger('validateur_id')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable(); 
-            $table->foreign('personne_id')->references('id')->on('personnes'); 
+            $table->foreign('personne_id')->references('id')->on('personnes')->onDelete('cascade'); 
             $table->foreign('site_id')->references('id')->on('sites'); 
             $table->foreign('pole_id')->references('id')->on('poles'); 
             $table->foreign('filiere_id')->references('id')->on('filieres'); 
