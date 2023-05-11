@@ -4,6 +4,7 @@ use App\Models\Etablissements;
 use App\Models\Examenprog;
 use App\Models\Matiereprofesseurs;
 use App\Models\Personnes;
+use App\Models\Sessioncorrections;
 
 if (!function_exists('getPersonne')) {
     # code...
@@ -48,4 +49,13 @@ if (!function_exists('getMatiereProf')) {
         ->get(["groupepedagogiques.libelle_classe","matieres.libelle"]);
     }
 
+}
+
+// 
+
+if (!function_exists('checkSession')) {
+    # code...
+    function checkSession($examenprog_id){ 
+        return  Sessioncorrections::where("examen_prog_id", $examenprog_id)->exists();
+    } 
 }

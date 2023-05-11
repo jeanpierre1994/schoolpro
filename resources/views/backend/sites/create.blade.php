@@ -106,6 +106,8 @@
       $("ul li a").removeClass('active');
       // active menu 
       $("#parametres").removeClass('collapsed');
+
+      
     } );
 </script> 
 @endsection
