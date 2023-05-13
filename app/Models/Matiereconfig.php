@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Poles extends Model
+class Matiereconfig extends Model
 {
     use HasFactory;
-    protected $table = 'poles';
+    protected $table = 'matiereconfigs';
     protected $primaryKey = 'id';
     public $incrementing = true;
 

@@ -19,6 +19,7 @@ class Filieres extends Model
      */
     protected $fillable = [
         'libelle',
+        'libelle_secondaire',
         'pole_id',
         'description',
         'statut_id',

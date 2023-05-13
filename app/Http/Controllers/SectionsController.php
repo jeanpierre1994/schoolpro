@@ -37,7 +37,8 @@ class SectionsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'libelle' => 'required|unique:sections,libelle'
+            'libelle' => 'required|unique:sections,libelle',
+            'libelle_secondaire'  => 'required'
         ]);
 
         $user = auth()->user();
@@ -45,6 +46,7 @@ class SectionsController extends Controller
 
         $section = new Sections();
         $section->setAttribute('libelle', $request->libelle);
+        $section->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $section->setAttribute('description', $request->description);
         $section->setAttribute('created_by', $user_id);
         $section->setAttribute('created_at', new \DateTime());
@@ -91,7 +93,8 @@ class SectionsController extends Controller
     {
         //update requete
         $this->validate($request, [
-            'libelle'  => 'required'
+            'libelle'  => 'required',
+            'libelle_secondaire'  => 'required'
         ]);
 
         // vérifier si la section existe déjà
@@ -102,6 +105,7 @@ class SectionsController extends Controller
         // get current user id
         $user = auth()->user(); 
         $section->setAttribute('libelle', $request->libelle);
+        $section->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $section->setAttribute('description', $request->description);
         $section->setAttribute('updated_at', new \DateTime());
         $section->setAttribute('updated_by', $user->id);

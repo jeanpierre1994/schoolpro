@@ -1,7 +1,7 @@
 
 @extends('backend/include/layout')
 <!-- title -->
-@section('title') Enregistrement Cycle|| {{env('APP_NAME')}} @endsection
+@section('title') Enregistrement Matière|| {{env('APP_NAME')}} @endsection
 
 @section('fil-arial') 
 <div class="pagetitle">
@@ -10,7 +10,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
         <li class="breadcrumb-item"><a href="{{route('admin.parametres')}}" style="text-decoration: none;">Paramètres</a></li>
-        <li class="breadcrumb-item"><a href="{{route('cycles.index')}}" style="text-decoration: none;">Cycles</a> </li>
+        <li class="breadcrumb-item"><a href="{{route('matiereconfigs.index')}}" style="text-decoration: none;">Matière</a> </li>
         <li class="breadcrumb-item active">Enregistrement </li>
       </ol>
     </nav>
@@ -35,7 +35,7 @@
               </ul>
           </div>
           @endif
-          <form action="{{ route('cycles.store') }}" method="post">
+          <form action="{{ route('matiereconfigs.store') }}" method="post">
             @csrf
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Libellé <i class="text-danger">*</i></label>

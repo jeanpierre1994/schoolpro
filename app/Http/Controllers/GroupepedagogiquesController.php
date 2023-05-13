@@ -52,10 +52,11 @@ class GroupepedagogiquesController extends Controller
             'cycle_id'=> 'required',  
             'niveau_id'=> 'required',   
             'libelle_classe'=> 'required', 
+            'libelle_secondaire'=> 'required', 
         ]);
 
         // vérifier si le données existe déjà
-        $check_data = Groupepedagogiques::where("libelle_classe",$request->libelle_classe)->where("site_id",$request->site_id)->where("pole_id",$request->pole_id)->where("filiere_id",$request->filiere_id)
+        $check_data = Groupepedagogiques::where("libelle_classe",$request->libelle_classe)->where("libelle_secondaire",$request->libelle_secondaire)->where("site_id",$request->site_id)->where("pole_id",$request->pole_id)->where("filiere_id",$request->filiere_id)
         ->where("cycle_id",$request->cycle_id)->where("niveau_id",$request->niveau_id)
         ->where("pole_id",$request->pole_id)
         ->exists();
@@ -70,6 +71,7 @@ class GroupepedagogiquesController extends Controller
          
         $gp = new Groupepedagogiques();    
         $gp->setAttribute('libelle_classe', trim($request->libelle_classe));
+        $gp->setAttribute('libelle_secondaire', trim($request->libelle_secondaire));
         $gp->setAttribute('description_classe', trim($request->description_classe));
         $gp->setAttribute('site_id', trim($request->site_id));
         $gp->setAttribute('pole_id', $request->pole_id); 

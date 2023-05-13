@@ -14,6 +14,7 @@ use App\Http\Controllers\FilieresController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GenresController;
 use App\Http\Controllers\GroupepedagogiquesController;
+use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\MatieresController;
 use App\Http\Controllers\NiveauxController;
 use App\Http\Controllers\ParentsController;
@@ -124,6 +125,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('examentypes', ExamentypesController::class); 
     Route::resource('examens', ExamensController::class);
     Route::resource('examenprog', ExamenprogController::class);
+    Route::resource('matiereconfigs', MatiereconfigController::class);
     // ajax requête
  });
 

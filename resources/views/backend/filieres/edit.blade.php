@@ -56,9 +56,15 @@
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Libellé <i class="text-danger">*</i></label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" value="{{$filiere->libelle}}" required name="libelle" id="libelle" minlength="2" maxlength="50">
+                <input type="text" class="form-control" value="{{$filiere->libelle}}" required name="libelle" id="libelle" minlength="1" maxlength="100">
               </div>
             </div>  
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Libellé secondaire <i class="text-danger">*</i></label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" value="{{$filiere->libelle_secondaire}}" required name="libelle_secondaire" id="libelle_secondaire" minlength="1" maxlength="100">
+              </div>
+            </div> 
             <div class="row mb-3">
               <label for="description" class="col-sm-2 col-form-label">Description</label>
               <div class="col-sm-10">

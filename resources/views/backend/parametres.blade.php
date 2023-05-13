@@ -323,6 +323,30 @@
         </div> 
 
         <!-- end  -->
+
+
+
+         <!-- professeurs -->
+
+         <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+                <a href="{{route('matiereconfigs.index')}}" style="text-decoration: none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Matières <span></span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-heptagon"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>- - -</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div> 
+
+        <!-- end  -->
  
 
         <!--  -->
@@ -331,7 +355,7 @@
             <div class="card info-card sales-card">
                 <a href="{{route('matieres.index')}}" style="text-decoration: none;">
                     <div class="card-body">
-                        <h5 class="card-title">Matières <span></span></h5>
+                        <h5 class="card-title">Matières GP<span></span></h5>
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-heptagon"></i>

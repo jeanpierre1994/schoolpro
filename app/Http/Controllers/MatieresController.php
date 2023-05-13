@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use App\Models\Groupepedagogiques;
+use App\Models\Matiereconfig;
 use App\Models\Matieres;
 use App\Models\Sections;
 use Illuminate\Http\Request;
@@ -31,8 +32,9 @@ class MatieresController extends Controller
         $categories = Categories::where("statut_id", 1)->get();
         $gp = Groupepedagogiques::orderBy("libelle_classe", "ASC")->get();
         $sections = Sections::where("statut_id", 1)->get();  
+        $matiereconfigs = Matiereconfig::where("statut_id", 1)->get();  
  
-        return view("backend.matieres.create", compact("categories","gp","sections"));
+        return view("backend.matieres.create", compact("categories","gp","sections","matiereconfigs"));
     }
 
     /**
@@ -47,7 +49,7 @@ class MatieresController extends Controller
             'gp_id' => 'required',
             'section_id' => 'required',
             'categorie_id' => 'required', 
-            'libelle' => 'required',  
+            'matiereconfig_id' => 'required',  
             'sigle'=> 'required',  
             'note_max'=> 'required',   
             'moyenne'=> 'required', 
@@ -55,7 +57,7 @@ class MatieresController extends Controller
         ]);
 
         // vérifier si le données existe déjà
-        $check_data = Matieres::where("libelle",$request->libelle)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)->where("categorie_id",$request->categorie_id)
+        $check_data = Matieres::where("matiereconfig_id",$request->matiereconfig_id)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)->where("categorie_id",$request->categorie_id)
         ->where("sigle",$request->sigle)->where("note_max",$request->note_max)
         ->where("moyenne",$request->moyenne)->where("coef",$request->coef)
         ->exists();
@@ -65,11 +67,11 @@ class MatieresController extends Controller
             return redirect()->back()->with('error', "Cette matière existe déjà.");
         } 
 
-        $user = Auth()->user(); 
- 
-         
+        $user = Auth()->user();  
+        $matiereconfig = Matiereconfig::find($request->matiereconfig_id);
         $matiere = new Matieres();    
-        $matiere->setAttribute('libelle', trim($request->libelle));
+        $matiere->setAttribute('matiereconfig_id', $request->matiereconfig_id);
+        $matiere->setAttribute('libelle', $matiereconfig->libelle);
         $matiere->setAttribute('sigle', trim($request->sigle));
         $matiere->setAttribute('section_id', trim($request->section_id));
         $matiere->setAttribute('categorie_id', $request->categorie_id); 
@@ -107,8 +109,9 @@ class MatieresController extends Controller
         $categories = Categories::where("statut_id", 1)->get();
         $gp = Groupepedagogiques::orderBy("libelle_classe", "ASC")->get();
         $sections = Sections::where("statut_id", 1)->get();  
+        $matiereconfigs = Matiereconfig::where("statut_id", 1)->get();  
  
-        return view("backend.matieres.edit", compact("categories","gp","sections","matiere"));
+        return view("backend.matieres.edit", compact("categories","gp","sections","matiere","matiereconfigs"));
     }
 
     /**
@@ -124,7 +127,7 @@ class MatieresController extends Controller
             'gp_id' => 'required',
             'section_id' => 'required',
             'categorie_id' => 'required', 
-            'libelle' => 'required',  
+            'matiereconfig_id' => 'required',  
             'sigle'=> 'required',  
             'note_max'=> 'required',   
             'moyenne'=> 'required', 
@@ -132,7 +135,7 @@ class MatieresController extends Controller
         ]);
 
         // vérifier si le données existe déjà
-        $check_data = Matieres::where("libelle",$request->libelle)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)->where("categorie_id",$request->categorie_id)
+        $check_data = Matieres::where("matiereconfig_id",$request->matiereconfig_id)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)->where("categorie_id",$request->categorie_id)
         ->where("sigle",$request->sigle)->where("note_max",$request->note_max)
         ->where("moyenne",$request->moyenne)->where("coef",$request->coef)->where("id","!=",$matiere->id)
         ->exists();
@@ -143,8 +146,9 @@ class MatieresController extends Controller
         } 
 
         $user = Auth()->user(); 
-      
-        $matiere->setAttribute('libelle', trim($request->libelle));
+        $matiereconfig = Matiereconfig::find($request->matiereconfig_id);
+        $matiere->setAttribute('matiereconfig_id', $request->matiereconfig_id);
+        $matiere->setAttribute('libelle', $matiereconfig->libelle);
         $matiere->setAttribute('sigle', trim($request->sigle));
         $matiere->setAttribute('section_id', trim($request->section_id));
         $matiere->setAttribute('categorie_id', $request->categorie_id); 

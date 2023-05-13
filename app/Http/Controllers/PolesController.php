@@ -37,7 +37,8 @@ class PolesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'libelle' => 'required|unique:poles,libelle'
+            'libelle' => 'required|unique:poles,libelle',
+            'libelle_secondaire'  => 'required'
         ]);
 
         $user = auth()->user();
@@ -45,6 +46,7 @@ class PolesController extends Controller
 
         $pole = new Poles();
         $pole->setAttribute('libelle', $request->libelle);
+        $pole->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $pole->setAttribute('description', $request->description);
         $pole->setAttribute('created_by', $user_id);
         $pole->setAttribute('created_at', new \DateTime());
@@ -91,7 +93,8 @@ class PolesController extends Controller
     {
         //update requete
         $this->validate($request, [
-            'libelle'  => 'required'
+            'libelle'  => 'required',
+            'libelle_secondaire'  => 'required'
         ]);
 
         // vérifier si le pole existe déjà
@@ -102,6 +105,7 @@ class PolesController extends Controller
         // get current user id
         $user = auth()->user(); 
         $pole->setAttribute('libelle', $request->libelle);
+        $pole->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $pole->setAttribute('description', $request->description);
         $pole->setAttribute('updated_at', new \DateTime());
         $pole->setAttribute('updated_by', $user->id);

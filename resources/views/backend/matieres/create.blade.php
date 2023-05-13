@@ -1,7 +1,7 @@
 
 @extends('backend/include/layout')
 <!-- title -->
-@section('title') Enregistrement Matière|| {{env('APP_NAME')}} @endsection
+@section('title') Enregistrement Matière Groupe Pédagogique|| {{env('APP_NAME')}} @endsection
 
 @section('fil-arial') 
 <div class="pagetitle">
@@ -10,7 +10,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
         <li class="breadcrumb-item"><a href="{{route('admin.parametres')}}" style="text-decoration: none;">Paramètres</a></li>
-        <li class="breadcrumb-item"><a href="{{route('matieres.index')}}" style="text-decoration: none;">Matière</a> </li>
+        <li class="breadcrumb-item"><a href="{{route('matieres.index')}}" style="text-decoration: none;">Matière Groupe Pédagogique</a> </li>
         <li class="breadcrumb-item active">Enregistrement </li>
       </ol>
     </nav>
@@ -82,7 +82,12 @@
               <div class="col-md-4">
                 <label for="inputText" class=" col-form-label">Libellé <i class="text-danger">*</i></label>
                 <div>
-                  <input type="text" class="form-control" required name="libelle" id="libelle" minlength="3" maxlength="100" >
+                  <select class="form-select" name="matiereconfig_id" id="matiereconfig_id" required>
+                    <option selected value="">Sélectionnez une option</option>
+                    @foreach ($matiereconfigs as $item)
+                    <option value="{{$item->id}}">{{$item->libelle}}</option> 
+                    @endforeach
+                  </select> 
                 </div>
               </div>
               <div class="col-md-4">

@@ -1,7 +1,7 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Liste Niveau || {{ env('APP_NAME') }}
+    Liste Matières || {{ env('APP_NAME') }}
 @endsection
 
 @section('fil-arial')
@@ -12,7 +12,7 @@
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
                         style="text-decoration: none;">Paramètres</a></li>
-                <li class="breadcrumb-item active">Niveaux </li>
+                <li class="breadcrumb-item active">Matières </li>
             </ol>
         </nav>
     </div>
@@ -24,7 +24,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des niveaux <a href="{{ route('niveaux.create') }}"
+                        <h5 class="card-title">Liste des Matières <a href="{{ route('matiereconfigs.create') }}"
                                 title="Ajouter"><button style="font-size: 5px;" type="button"
                                     class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle" aria-hidden="true"
                                         style="font-size: 10px;"></i></button></a></h5>
@@ -34,10 +34,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Filière</th>
-                                        <th scope="col">Cycle</th>
                                         <th scope="col">Libellé</th>
-                                        <th scope="col">Libellé secon.</th>
+                                        <th scope="col">Libellé secondaire</th>
                                         <th scope="col">Descripion</th>
                                         <th scope="col">Statut</th>
                                         <th scope="col">Date modification</th>
@@ -49,11 +47,9 @@
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($niveaux as $item)
+                                    @foreach ($matiereconfigs as $item)
                                         <tr>
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td>{{ $item->filiere_id ? $item->getFiliere->libelle : "" }}</td>
-                                            <td>{{ $item->cycle_id ? $item->getCycle->libelle : "" }}</td>
                                             <td>{{ $item->libelle }}</td>
                                             <td>{{ $item->libelle_secondaire }}</td>
                                             <td>{{ $item->description }}</td>
@@ -71,17 +67,17 @@
                                             <td class="text-center">
                                               <div class="d-flex justify-content-evenly">
                                                 @if ($item->getStatut->libelle == 'ACTIF')
-                                                    <a href="{{ route('admin.update-parametre', [$item->id, 'niveaux', 'desactivation']) }}"
+                                                    <a href="{{ route('admin.update-parametre', [$item->id, 'matiereconfigs', 'desactivation']) }}"
                                                         class="confirmation-desactivation" title="désactivation"><button
                                                             type="button" class="btn btn-sm btn-dark"><i
                                                                 class="bi bi-eye-slash" aria-hidden="true"></i></button></a>
                                                 @else
-                                                    <a href="{{ route('admin.update-parametre', [$item->id, 'niveaux', 'activation']) }}"
+                                                    <a href="{{ route('admin.update-parametre', [$item->id, 'matiereconfigs', 'activation']) }}"
                                                         class="confirmation-activation" title="activation"><button
                                                             type="button" class="btn btn-sm btn-success"><i
                                                                 class="bi bi-eye" aria-hidden="true"></i></button></a>
                                                 @endif
-                                                <a href="{{ route('niveaux.edit', $item->id) }}" title="Modifier"><button
+                                                <a href="{{ route('matiereconfigs.edit', $item->id) }}" title="Modifier"><button
                                                         type="button" class="btn btn-sm btn-warning"><i
                                                             class="bi bi-pencil-square" style="color: white"
                                                             aria-hidden="true"></i></button></a>
@@ -119,7 +115,7 @@
                                                             <!-- Modal footer -->
                                                             <div class="modal-footer">
 
-                                                                <form action="{{ route('niveaux.destroy', $item->id) }}"
+                                                                <form action="{{ route('matiereconfigs.destroy', $item->id) }}"
                                                                     method="post">
                                                                     @method('DELETE')
                                                                     @csrf
@@ -143,8 +139,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- End Bordered Table -->
-
+                        <!-- End Bordered Table --> 
 
                     </div>
                 </div>

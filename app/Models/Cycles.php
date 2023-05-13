@@ -19,6 +19,7 @@ class Cycles extends Model
      */
     protected $fillable = [
         'libelle',
+        'libelle_secondaire',
         'description',
         'statut_id',
         'created_by',

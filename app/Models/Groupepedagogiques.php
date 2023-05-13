@@ -19,6 +19,7 @@ class Groupepedagogiques extends Model
      */
     protected $fillable = [
         'libelle_classe',
+        'libelle_secondaire',
         'description_classe', 
         'pole_id',// FK
         'filiere_id',

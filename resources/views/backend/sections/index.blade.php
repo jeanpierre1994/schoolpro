@@ -35,6 +35,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Libellé</th>
+                                        <th scope="col">Libellé secondaire</th>
                                         <th scope="col">Descripion</th>
                                         <th scope="col">Statut</th>
                                         <th scope="col">Date modification</th>
@@ -50,6 +51,7 @@
                                         <tr>
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
                                             <td>{{ $item->libelle }}</td>
+                                            <td>{{ $item->libelle_secondaire }}</td>
                                             <td>{{ $item->description }}</td>
                                             <td class="text-center">
                                                 @if ($item->getStatut->libelle == 'ACTIF')

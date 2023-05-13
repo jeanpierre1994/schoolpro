@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cycles;
 use App\Models\Filieres;
 use App\Models\Niveaux;
+use App\Models\Poles;
 use Illuminate\Http\Request;
 
 class NiveauxController extends Controller
@@ -29,7 +30,8 @@ class NiveauxController extends Controller
     {
         $filieres = Filieres::where("statut_id",1)->get();
         $cycles = Cycles::where("statut_id",1)->get();
-        return view("backend.niveaux.create", compact("cycles","filieres"));
+        $poles = Poles::where("statut_id",1)->get();
+        return view("backend.niveaux.create", compact("cycles","filieres","poles"));
     }
 
     /**
@@ -44,6 +46,7 @@ class NiveauxController extends Controller
             'filiere_id' => 'required',
             'cycle_id' => 'required',
             'libelle' => 'required', 
+            'libelle_secondaire'  => 'required'
         ]);
 
         $user = auth()->user();
@@ -63,6 +66,7 @@ class NiveauxController extends Controller
         $niveau->setAttribute('filiere_id', $request->filiere_id); 
         $niveau->setAttribute('cycle_id', $request->cycle_id); 
         $niveau->setAttribute('libelle', $request->libelle);  
+        $niveau->setAttribute('libelle_secondaire', $request->libelle_secondaire);  
         $niveau->setAttribute('description', $request->description); 
         $niveau->setAttribute('created_by', $user_id);
         $niveau->setAttribute('created_at', new \DateTime());
@@ -95,8 +99,9 @@ class NiveauxController extends Controller
     {
         $filieres = Filieres::where("statut_id",1)->get();
         $cycles = Cycles::where("statut_id",1)->get();
+        $poles = Poles::where("statut_id",1)->get();
         $niveau = Niveaux::find($id);
-        return view("backend.niveaux.edit",compact("filieres","cycles","niveau"));
+        return view("backend.niveaux.edit",compact("filieres","cycles","niveau","poles"));
     }
 
     /**
@@ -112,6 +117,7 @@ class NiveauxController extends Controller
             'filiere_id' => 'required', 
             'cycle_id' => 'required', 
             'libelle' => 'required',  
+            'libelle_secondaire'  => 'required'
         ]);
 
         $user = auth()->user();
@@ -130,6 +136,7 @@ class NiveauxController extends Controller
         $niveau->setAttribute('filiere_id', $request->filiere_id); 
         $niveau->setAttribute('cycle_id', $request->cycle_id); 
         $niveau->setAttribute('libelle', $request->libelle); 
+        $niveau->setAttribute('libelle_secondaire', $request->libelle_secondaire);  
         $niveau->setAttribute('updated_at', new \DateTime());
         $niveau->setAttribute('updated_by', $user_id);
         $niveau->update();

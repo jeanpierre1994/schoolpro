@@ -19,6 +19,7 @@ class Niveaux extends Model
      */
     protected $fillable = [
         'libelle',
+        'libelle_secondaire',
         'filiere_id',
         'cycle_id',
         'description',

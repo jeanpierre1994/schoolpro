@@ -41,6 +41,7 @@ class FilieresController extends Controller
         $this->validate($request, [
             'pole_id' => 'required',
             'libelle' => 'required', 
+            'libelle_secondaire'  => 'required'
         ]);
 
         $user = auth()->user();
@@ -59,6 +60,7 @@ class FilieresController extends Controller
         $filiere = new Filieres();
         $filiere->setAttribute('pole_id', $request->pole_id); 
         $filiere->setAttribute('libelle', $request->libelle);  
+        $filiere->setAttribute('libelle_secondaire', $request->libelle_secondaire);  
         $filiere->setAttribute('description', $request->description); 
         $filiere->setAttribute('created_by', $user_id);
         $filiere->setAttribute('created_at', new \DateTime());
@@ -106,6 +108,7 @@ class FilieresController extends Controller
         $this->validate($request, [
             'pole_id' => 'required', 
             'libelle' => 'required',  
+            'libelle_secondaire'  => 'required'
         ]);
 
         $user = auth()->user();
@@ -124,6 +127,7 @@ class FilieresController extends Controller
  
         $filiere->setAttribute('pole_id', $request->pole_id); 
         $filiere->setAttribute('libelle', $request->libelle); 
+        $filiere->setAttribute('libelle_secondaire', $request->libelle_secondaire);  
         $filiere->setAttribute('updated_at', new \DateTime());
         $filiere->setAttribute('updated_by', $user_id);
         $filiere->update();

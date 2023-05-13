@@ -35,19 +35,25 @@
               </ul>
           </div>
           @endif
-          <form action="{{ route('sections.update',$genre->id) }}" method="post">
+          <form action="{{ route('sections.update',$section->id) }}" method="post">
             @csrf
             @method("put")
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Libellé <i class="text-danger">*</i></label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" value="{{$genre->libelle}}" required name="libelle" id="libelle" minlength="3" maxlength="50">
+                <input type="text" class="form-control" value="{{$section->libelle}}" required name="libelle" id="libelle" minlength="3" maxlength="50">
               </div>
             </div>  
             <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Libellé secondaire <i class="text-danger">*</i></label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" value="{{$section->libelle_secondaire}}" required name="libelle_secondaire" id="libelle_secondaire" minlength="3" maxlength="100">
+              </div>
+            </div> 
+            <div class="row mb-3">
               <label for="description" class="col-sm-2 col-form-label">Description</label>
               <div class="col-sm-10">
-                <textarea class="form-control" style="height: 100px" name="description" id="description" >{{$genre->description}}</textarea>
+                <textarea class="form-control" style="height: 100px" name="description" id="description" >{{$section->description}}</textarea>
               </div>
             </div>  
             <div class="row mb-3">

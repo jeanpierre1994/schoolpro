@@ -37,7 +37,8 @@ class CyclesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'libelle' => 'required|unique:cycles,libelle'
+            'libelle' => 'required|unique:cycles,libelle',
+            'libelle_secondaire' => 'required'
         ]);
 
         $user = auth()->user();
@@ -45,6 +46,7 @@ class CyclesController extends Controller
 
         $cycle = new Cycles();
         $cycle->setAttribute('libelle', $request->libelle);
+        $cycle->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $cycle->setAttribute('description', $request->description);
         $cycle->setAttribute('created_by', $user_id);
         $cycle->setAttribute('created_at', new \DateTime());
@@ -91,7 +93,8 @@ class CyclesController extends Controller
     {
         //update requete
         $this->validate($request, [
-            'libelle'  => 'required'
+            'libelle'  => 'required',
+            'libelle_secondaire'  => 'required'
         ]);
 
         // vérifier si le cycle existe déjà
@@ -102,6 +105,7 @@ class CyclesController extends Controller
         // get current user id
         $user = auth()->user(); 
         $cycle->setAttribute('libelle', $request->libelle);
+        $cycle->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $cycle->setAttribute('description', $request->description);
         $cycle->setAttribute('updated_at', new \DateTime());
         $cycle->setAttribute('updated_by', $user->id);
