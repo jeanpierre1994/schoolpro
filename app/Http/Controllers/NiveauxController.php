@@ -136,6 +136,7 @@ class NiveauxController extends Controller
         $niveau->setAttribute('filiere_id', $request->filiere_id); 
         $niveau->setAttribute('cycle_id', $request->cycle_id); 
         $niveau->setAttribute('libelle', $request->libelle); 
+        $niveau->setAttribute('description', $request->description); 
         $niveau->setAttribute('libelle_secondaire', $request->libelle_secondaire);  
         $niveau->setAttribute('updated_at', new \DateTime());
         $niveau->setAttribute('updated_by', $user_id);
@@ -160,7 +161,7 @@ class NiveauxController extends Controller
             $niveau->delete();
             // get current user id
             $user = auth()->user(); 
-            return redirect()->route('niveaus.index')->with('success', 'Opération bien effectuée');
+            return redirect()->route('niveaux.index')->with('success', 'Opération bien effectuée');
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with("error", "Vous ne pouvez pas supprimer cet élément à cause du contrôle d'intégrité.");

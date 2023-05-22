@@ -127,6 +127,7 @@ class FilieresController extends Controller
  
         $filiere->setAttribute('pole_id', $request->pole_id); 
         $filiere->setAttribute('libelle', $request->libelle); 
+        $filiere->setAttribute('description', $request->description);
         $filiere->setAttribute('libelle_secondaire', $request->libelle_secondaire);  
         $filiere->setAttribute('updated_at', new \DateTime());
         $filiere->setAttribute('updated_by', $user_id);

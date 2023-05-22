@@ -34,10 +34,11 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Pôle</th>
                                         <th scope="col">Filière</th>
                                         <th scope="col">Cycle</th>
+                                        <th scope="col">Niveau</th>
                                         <th scope="col">Libellé</th>
-                                        <th scope="col">Libellé secon.</th>
                                         <th scope="col">Descripion</th>
                                         <th scope="col">Statut</th>
                                         <th scope="col">Date modification</th>
@@ -52,9 +53,10 @@
                                     @foreach ($niveaux as $item)
                                         <tr>
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
+                                            <td>{{ $item->filiere_id ? $item->getFiliere->getPole->libelle : "" }}</td>
                                             <td>{{ $item->filiere_id ? $item->getFiliere->libelle : "" }}</td>
                                             <td>{{ $item->cycle_id ? $item->getCycle->libelle : "" }}</td>
-                                            <td>{{ $item->libelle }}</td>
+                                            <td class="text-center">{{ $item->libelle }}</td>
                                             <td>{{ $item->libelle_secondaire }}</td>
                                             <td>{{ $item->description }}</td>
                                             <td class="text-center">

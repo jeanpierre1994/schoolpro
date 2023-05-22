@@ -382,6 +382,7 @@ class ParentsController extends Controller
         $user = Auth()->user();
         $etudiant = Personnes::where("compte_id", $user->id)->first();
         $dossiers = Dossiers::where("created_by", $user->id)->where("statuttraitement_id", 2)->get();
+        
         return view("frontend.parents.inscriptions", compact("etudiant","dossiers"));
     }
 

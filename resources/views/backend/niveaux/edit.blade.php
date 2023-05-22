@@ -79,13 +79,13 @@
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Libellé <i class="text-danger">*</i></label>
+              <label for="inputText" class="col-sm-2 col-form-label">Niveau <i class="text-danger">*</i></label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" value="{{$niveau->libelle}}" required name="libelle" id="libelle" minlength="2" maxlength="100">
+                <input type="number" class="form-control" value="{{$niveau->libelle}}" required name="libelle" id="libelle" min="1" max="100">
               </div>
             </div>  
             <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Libellé secondaire <i class="text-danger">*</i></label>
+              <label for="inputText" class="col-sm-2 col-form-label">Libellé <i class="text-danger">*</i></label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" value="{{$niveau->libelle_secondaire}}" required name="libelle_secondaire" id="libelle_secondaire" minlength="3" maxlength="100">
               </div>

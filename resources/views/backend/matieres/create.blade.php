@@ -44,7 +44,7 @@
                     <select class="form-select" name="gp_id" id="gp_id" required>
                       <option selected value="">Sélectionnez une option</option>
                       @foreach ($gp as $item)
-                      <option value="{{$item->id}}">{{$item->libelle_classe}}</option> 
+                      <option value="{{$item->id}}">{{$item->getFiliere->libelle}} {{$item->libelle_classe}} {{ $item->libelle_secondaire }}</option> 
                       @endforeach
                     </select> 
                 </div>
@@ -80,7 +80,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <label for="inputText" class=" col-form-label">Libellé <i class="text-danger">*</i></label>
+                <label for="inputText" class=" col-form-label">Matière <i class="text-danger">*</i></label>
                 <div>
                   <select class="form-select" name="matiereconfig_id" id="matiereconfig_id" required>
                     <option selected value="">Sélectionnez une option</option>
