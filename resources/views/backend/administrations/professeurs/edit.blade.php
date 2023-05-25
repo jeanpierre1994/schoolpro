@@ -35,7 +35,7 @@
               </ul>
           </div>
           @endif
-          <form action="{{ route('professeurs.update',Crypt::encrypt($professeur->compte_id)) }}" method="post">
+          <form action="{{ route('professeurs.update',Crypt::encrypt($professeur->id)) }}" method="post">
             @csrf
             @method("put")
 
@@ -67,15 +67,15 @@
                 </div>
               </div> 
               <div class="col-md-6">
-                <label for="inputText" class=" col-form-label">Etablissement<i class="text-danger">*</i></label>
+                <label for="inputText" class=" col-form-label">Genre<i class="text-danger">*</i></label>
                 <div> 
                     <select class="form-select" name="genre_id" id="genre_id" required>
                       <optgroup label="Valeur par défaut">
-                        <option value="{{ $professeur->genre ? $professeur->getGenre->id : ''}}">{{ $professeur->genre ? $professeur->getGenre->libelle : ''}}</option> 
+                        <option value="{{ $professeur->id_genre ? $professeur->id_genre : ''}}">{{ $professeur->id_genre ? $professeur->libelle_genre : ''}}</option> 
                       </optgroup>
                       <optgroup label="Liste disponible">
-                        @foreach ($etablissements as $item)
-                        <option value="{{$item->id}}">{{$item->sigle}}</option> 
+                        @foreach ($genres as $item)
+                        <option value="{{$item->id}}">{{$item->libelle}}</option> 
                         @endforeach
                       </optgroup>
                     </select> 

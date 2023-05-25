@@ -31,6 +31,7 @@
             <th scope="col">#</th>
             <th scope="col">Nom</th>
             <th scope="col">Prénoms</th>
+            <th scope="col">Genre</th>
             <th scope="col">Téléphone</th>
             <th scope="col">E-mail</th> 
             <th scope="col">Date modification</th> 
@@ -46,7 +47,8 @@
               <td class="text-center"><b>{{$i++}}</b></td>
               <td>{{$item->nom}}</td>
               <td>{{$item->prenoms}}</td>
-              <td>{{$item->telephone}}</td>
+              <td>{{$item->libelle_genre}}</td>
+              <td>{{$item->tel}}</td>
               <td>{{$item->email}}</td>  
               <td>{{$item->updated_at->format("d-m-Y à H:i:s")}}</td> 
               <td class="text-center">
