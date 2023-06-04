@@ -37,15 +37,22 @@ class MatiereconfigController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'libelle' => 'required|unique:poles,libelle',
-            'libelle_secondaire'  => 'required'
+            'libelle' => 'required',
+            'libelle_secondaire'  => 'required',
+            'sigle'  => 'required'
         ]);
 
+        $check_matiere = Matiereconfig::where("libelle",$request->libelle)->where("libelle_secondaire",$request->libelle_secondaire)->where("sigle",$request->sigle)->exists();
+        if ($check_matiere) {
+            # code...
+            return redirect()->back()->with("error","La matière existe déjà.");
+        }
         $user = auth()->user();
         $user_id = $user->id;
 
         $matiereconfig = new Matiereconfig();
         $matiereconfig->setAttribute('libelle', $request->libelle);
+        $matiereconfig->setAttribute('sigle', $request->sigle);
         $matiereconfig->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $matiereconfig->setAttribute('description', $request->description);
         $matiereconfig->setAttribute('created_by', $user_id);
@@ -94,17 +101,20 @@ class MatiereconfigController extends Controller
         //update requete
         $this->validate($request, [
             'libelle'  => 'required',
-            'libelle_secondaire'  => 'required'
+            'libelle_secondaire'  => 'required',
+            'sigle' => 'required'
         ]);
 
-        // vérifier si le matiereconfig existe déjà
-        $check_matiereconfig = Matiereconfig::where("libelle",$request->libelle)->where("id","!=",$matiereconfig->id)->exists();
-        if($check_matiereconfig){
-            redirect()->back()->with("error","La données existe déjà.");
-        }
+        // vérifier si le matiereconfig existe déjà 
+        $check_matiere = Matiereconfig::where("libelle",$request->libelle)->where("libelle_secondaire",$request->libelle_secondaire)->where("sigle",$request->sigle)->where("id","!=",$matiereconfig->id)->exists();
+        if ($check_matiere) {
+            # code...
+            return redirect()->back()->with("error","La matière existe déjà.");
+        } 
         // get current user id
         $user = auth()->user(); 
         $matiereconfig->setAttribute('libelle', $request->libelle);
+        $matiereconfig->setAttribute('sigle', $request->sigle);
         $matiereconfig->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $matiereconfig->setAttribute('description', $request->description);
         $matiereconfig->setAttribute('updated_at', new \DateTime());

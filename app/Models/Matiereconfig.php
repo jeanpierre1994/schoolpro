@@ -20,6 +20,7 @@ class Matiereconfig extends Model
     protected $fillable = [
         'libelle',
         'libelle_secondaire',
+        'sigle',
         'description',
         'statut_id',
         'created_by',

@@ -59,7 +59,7 @@
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
                                             <td>{{ $item->nom }}</td>
                                             <td>{{ $item->prenoms }}</td>
-                                            <td>{{ $item->telephone }}</td>
+                                            <td>{{ $item->tel }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>
                                                 @foreach (getMatiereProf($item->id) as $data)
@@ -117,8 +117,7 @@
                                                     <select class="form-select" name="gp_id" id="gp_id" required>
                                                         <option selected value="">Sélectionnez une option</option>
                                                         @foreach ($groupepedagogiques as $item)
-                                                            <option value="{{ $item->id }}">
-                                                                {{ $item->libelle_classe }}</option>
+                                                            <option value="{{ $item->id }}">{{$item->getFiliere->libelle}} {{$item->libelle_classe}} {{ $item->libelle_secondaire }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

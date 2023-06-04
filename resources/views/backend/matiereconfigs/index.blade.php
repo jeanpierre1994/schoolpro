@@ -34,11 +34,11 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Sigle</th>
                                         <th scope="col">Libellé</th>
                                         <th scope="col">Libellé secondaire</th>
                                         <th scope="col">Descripion</th>
-                                        <th scope="col">Statut</th>
-                                        <th scope="col">Date modification</th>
+                                        <th scope="col">Statut</th> 
                                         <th scope="col">Modifié par</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -50,6 +50,7 @@
                                     @foreach ($matiereconfigs as $item)
                                         <tr>
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
+                                            <td>{{ $item->sigle }}</td>
                                             <td>{{ $item->libelle }}</td>
                                             <td>{{ $item->libelle_secondaire }}</td>
                                             <td>{{ $item->description }}</td>
@@ -61,8 +62,7 @@
                                                     <span class="badge badge-danger"
                                                         style="background-color: rgb(233, 29, 29)">{{ $item->getStatut->libelle }}</span>
                                                 @endif
-                                            </td>
-                                            <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
+                                            </td> 
                                             <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>
                                             <td class="text-center">
                                               <div class="d-flex justify-content-evenly">

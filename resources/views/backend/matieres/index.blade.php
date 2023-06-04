@@ -33,7 +33,7 @@
             <th scope="col">Section</th>
             <th scope="col">Groupe Péda.</th>
             <th scope="col">Sigle</th>
-            <th scope="col">Libellé</th>
+            <th scope="col">Matière</th>
             <th scope="col">Note max</th> 
             <th scope="col">Moyenne</th> 
             <th scope="col">Coef</th> 

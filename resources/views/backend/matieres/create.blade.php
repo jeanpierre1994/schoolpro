@@ -55,7 +55,7 @@
                     <select class="form-select" name="categorie_id" id="categorie_id" required>
                       <option selected value="">Sélectionnez une option</option>
                       @foreach ($categories as $item)
-                      <option value="{{$item->id}}">{{$item->libelle}}</option> 
+                      <option selected value="{{$item->id}}">{{$item->libelle}}</option> 
                       @endforeach
                     </select> 
                 </div>
@@ -93,19 +93,19 @@
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Note max <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="note_max" id="note_max" min="0" max="100" >
+                  <input type="number" value="20" class="form-control" required name="note_max" id="note_max" min="0" max="100" >
                 </div>  
               </div> 
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Moyenne <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="moyenne" id="moyenne" min="0" max="100" >
+                  <input type="number" value="10" class="form-control" required name="moyenne" id="moyenne" min="0" max="100" >
                 </div>  
               </div> 
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Coef <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="coef" id="coef" min="0" max="100" >
+                  <input type="number" value="1" class="form-control" required name="coef" id="coef" min="0" max="100" >
                 </div>  
               </div> 
             </div>   

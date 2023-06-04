@@ -50,6 +50,12 @@
               </div>
             </div>  
             <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Sigle <i class="text-danger">*</i></label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" required name="sigle" id="sigle" minlength="2" maxlength="100">
+              </div>
+            </div>  
+            <div class="row mb-3">
               <label for="description" class="col-sm-2 col-form-label">Description</label>
               <div class="col-sm-10">
                 <textarea class="form-control" style="height: 100px" name="description" id="description" ></textarea>

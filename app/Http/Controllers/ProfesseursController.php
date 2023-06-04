@@ -145,8 +145,10 @@ class ProfesseursController extends Controller
     public function matieres(Request $request)
     {
         $profil_professeur = Profil::where("libelle", "PROFESSEUR")->first();
-        $professeurs = User::where("profil_id", $profil_professeur->id)->get();
-        $groupepedagogiques = Groupepedagogiques::orderBy("libelle_classe")->get(["id", "libelle_classe"]);
+        $professeurs = User::where("profil_id", $profil_professeur->id)
+        ->leftJoin('personnes', 'personnes.compte_id', '=', 'users.id')
+        ->get(["personnes.nom","personnes.prenoms","personnes.tel","personnes.email","users.id","users.updated_at"]);
+        $groupepedagogiques = Groupepedagogiques::orderBy("libelle_classe")->get();
         return view("backend.administrations.professeurs.matieres", compact("professeurs", "groupepedagogiques"));
     }
 
