@@ -30,7 +30,7 @@
                                         style="font-size: 10px;"></i></button></a></h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered data-tables">
+                            <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -47,6 +47,22 @@
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Site</th>
+                                        <th scope="col">Cycle</th>
+                                        <th scope="col">Niveau</th>
+                                        <th scope="col">Pôle</th>
+                                        <th scope="col">Filière</th>
+                                        <th scope="col">Libelle</th>
+                                        <th scope="col">Libelle 2</th>
+                                        <th scope="col">Descripion</th> 
+                                        <th scope="col">Date modification</th>
+                                        <th scope="col">Modifié par</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </tfoot>
                                 <tbody>
                                     @php
                                         $i = 1;
@@ -146,8 +162,32 @@
 <!-- jsScript -->
 @section('script-js')
     <script>
+        
         $(document).ready(function() {
+ // Setup - add a text input to each footer cell
+ $('#tableHead thead th').each(function () {
+        var title = $(this).text();
+        if (title == "Site") {
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
 
+        if (title == "Cycle") {
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
+
+        if (title == "Pôle") {
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
+
+        if (title == "Filière") {
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
+
+        if (title == "Libelle") {
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
+        
+    });
             // remove menu active
             $("ul").removeClass('show');
             $("ul li a").removeClass('active');

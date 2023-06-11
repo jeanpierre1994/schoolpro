@@ -55,11 +55,23 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
      
 <script>
-    $(document).ready(function() { 
-     
+    $(document).ready(function() {  
   
     $('.data-tables').DataTable({ 
-       
+        initComplete: function () {
+            // Apply the search
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+ 
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
         "ordering": true,
              "language": {
                  "sProcessing": "Traitement en cours ...",

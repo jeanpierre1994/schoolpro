@@ -102,9 +102,13 @@ class GroupepedagogiquesController extends Controller
      * @param  \App\Models\Groupepedagogiques  $groupepedagogiques
      * @return \Illuminate\Http\Response
      */
-    public function edit(Groupepedagogiques $groupepedagogiques)
+    public function edit(Groupepedagogiques $groupepedagogique)
     {
-        //
+        $gp = $groupepedagogique;
+        $etablissements = Etablissements::where("statut_id", 1)->get();
+        $poles = Poles::where("statut_id", 1)->get();
+        $cycles = Cycles::where("statut_id", 1)->get(); 
+        return view("backend.groupepedagogiques.edit", compact("poles","cycles","etablissements","gp"));
     }
 
     /**
@@ -114,9 +118,47 @@ class GroupepedagogiquesController extends Controller
      * @param  \App\Models\Groupepedagogiques  $groupepedagogiques
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Groupepedagogiques $groupepedagogiques)
+    public function update(Request $request, Groupepedagogiques $groupepedagogique)
     {
-        //
+        $this->validate($request, [ 
+            'etablissement_id' => 'required',
+            'site_id' => 'required',
+            'pole_id' => 'required', 
+            'filiere_id' => 'required',  
+            'cycle_id'=> 'required',  
+            'niveau_id'=> 'required',   
+            'libelle_classe'=> 'required', 
+            'libelle_secondaire'=> 'required', 
+        ]);
+
+        // vérifier si le données existe déjà
+        $check_data = Groupepedagogiques::where("libelle_classe",$request->libelle_classe)->where("libelle_secondaire",$request->libelle_secondaire)->where("site_id",$request->site_id)->where("pole_id",$request->pole_id)->where("filiere_id",$request->filiere_id)
+        ->where("cycle_id",$request->cycle_id)->where("niveau_id",$request->niveau_id)
+        ->where("pole_id",$request->pole_id)
+        ->where("id","!=",$groupepedagogique->id)
+        ->exists();
+
+        if($check_data){
+           // if categorie exist redirect to form with error message
+            return redirect()->back()->with('error', "Ce groupe pédagogique existe déjà.");
+        } 
+
+        $user = Auth()->user(); 
+ 
+           
+        $groupepedagogique->setAttribute('libelle_classe', trim($request->libelle_classe));
+        $groupepedagogique->setAttribute('libelle_secondaire', trim($request->libelle_secondaire));
+        $groupepedagogique->setAttribute('description_classe', trim($request->description_classe));
+        $groupepedagogique->setAttribute('site_id', trim($request->site_id));
+        $groupepedagogique->setAttribute('pole_id', $request->pole_id); 
+        $groupepedagogique->setAttribute('filiere_id', trim($request->filiere_id)); 
+        $groupepedagogique->setAttribute('cycle_id', trim($request->cycle_id));
+        $groupepedagogique->setAttribute('niveau_id', trim($request->niveau_id));   
+        $groupepedagogique->setAttribute('updated_by', $user->id); 
+        $groupepedagogique->update();
+
+        return redirect()->route("groupepedagogiques.index") ->with('success', 'Modification effectuée avec succès');
+
     }
 
     /**

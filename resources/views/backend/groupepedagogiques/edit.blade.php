@@ -36,12 +36,13 @@
           @endif
       <form action="{{route('groupepedagogiques.update', $gp->id)}}" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data"> 
         @csrf 
+        @method("put")
           <div class="form-row"> 
             <div class="col-md-6 mb-1">
                 <label for="nom" class="form-label float-left"><b>Etablissement <i class="text-danger">*</i></b></label> 
                 <select class="browser-default custom-select" name="etablissement_id" id="etablissement_id" required>
                   <optgroup label="Valeur par défaut">
-                    <option value="{{$gp->getEtalissement->id}}" selected>{{$gp->getEtalissement->sigle}}</option>
+                    <option value="{{$gp->getSite->getEtablissement->id}}" selected>{{$gp->getSite->getEtablissement->sigle}}</option>
                   </optgroup> 
                   <optgroup label="Option disponible">
                     @foreach ($etablissements as $item)
@@ -120,6 +121,29 @@
                     </div>
                 </div>
             </div>  
+
+
+          <div class="form-row" style="text-align: left;">
+            <div class="col-md-4 mb-1">
+              <label for="nom" class="form-label"><b>Libellé FR <i class="text-danger">*</i></b></label>
+              <input type="text" class="form-control" id="libelle_classe" value="{{$gp->libelle_classe}}" aria-describedby="inputGroupPrepend"
+              name="libelle_classe" minlength="2" maxlength="150" required/>
+            </div>
+            <div class="col-md-4 mb-1">
+              <label for="nom" class="form-label"><b>Libellé EN <i class="text-danger">*</i></b></label>
+              <input type="text" class="form-control" id="libelle_secondaire" value="{{$gp->libelle_secondaire}}" required aria-describedby="inputGroupPrepend"
+              name="libelle_secondaire" minlength="2" maxlength="150"/>
+            </div>
+            <div class="col-md-4 mb-1">
+              <label for="prenoms" class="form-label"><b>Description <i class="text-danger"></i></b></label>
+              <input type="text" class="form-control" id="description_classe" required aria-describedby="inputGroupPrepend"
+              name="description_classe" minlength="2" maxlength="150" value="{{$gp->description_classe}}"/>
+            </div>
+        </div>  
+        <div class="row mt-3">  
+          <button class="btn btn-primary" type="submit">Valider</button>
+       
+        </div>
       </form> 
             </div>
           </div> 

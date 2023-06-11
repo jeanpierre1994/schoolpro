@@ -30,7 +30,7 @@
                                         style="font-size: 10px;"></i></button></a></h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered data-tables">
+                            <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -152,6 +152,25 @@
 @section('script-js')
     <script>
         $(document).ready(function() {
+
+
+
+            // Setup - add a text input to each footer cell
+            $('#tableHead thead th').each(function() {
+                var title = $(this).text();
+                if (title == "Sigle") {
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                }
+
+                if (title == "Libellé") {
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                }
+
+                if (title == "Libellé secondaire") {
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                } 
+
+            });
 
             // remove menu active
             $("ul").removeClass('show');
