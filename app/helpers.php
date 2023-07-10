@@ -3,6 +3,7 @@
 use App\Models\Etablissements;
 use App\Models\Examenprog;
 use App\Models\Matiereprofesseurs;
+use App\Models\Matieres;
 use App\Models\Personnes;
 use App\Models\Sessioncorrections;
 
@@ -46,7 +47,7 @@ if (!function_exists('getMatiereProf')) {
         return $data = Matiereprofesseurs::join('matieres', 'matieres.id', '=', 'matiereprofesseurs.matiere_id')
         ->join('groupepedagogiques', 'groupepedagogiques.id', '=', 'matieres.groupepedagogique_id')
         ->where("matiereprofesseurs.professeur_id",$professeur_id)
-        ->get(["groupepedagogiques.libelle_classe","matieres.libelle"]);
+        ->get(["groupepedagogiques.libelle_classe","matieres.libelle","matiereprofesseurs.id"]);
     }
 
 }
@@ -59,3 +60,41 @@ if (!function_exists('checkSession')) {
         return  Sessioncorrections::where("examen_prog_id", $examenprog_id)->exists();
     } 
 }
+
+if (!function_exists('getProfesseurMatiere')) {
+    # code...
+    function getProfesseurMatiere($matiere_id){ 
+        return  Matiereprofesseurs::where("matiere_id", $matiere_id)->get();
+    } 
+}
+
+
+if (!function_exists('getDataProfesseur')) {
+    # code...
+    function getDataProfesseur($id){ 
+        return Personnes::where("compte_id",$id)->first();
+    } 
+}
+
+
+if (!function_exists('checkGpMatiere')) {
+    # code...
+    function checkGpMatiere($id,$matiereconfig_id){ 
+
+       return $check_data = Matieres::where("matiereconfig_id",$matiereconfig_id)->where("groupepedagogique_id",$id)->exists();
+ 
+         
+    }
+
+}
+
+
+if (!function_exists('getClasse')) {
+    # code...
+    function getClasse($matiereconfig_id){ 
+       return $matiere_gp = Matieres::where("matiereconfig_id",$matiereconfig_id)->get();         
+    }
+
+}
+
+

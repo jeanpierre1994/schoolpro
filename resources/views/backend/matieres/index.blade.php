@@ -33,11 +33,9 @@
                             <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Catégorie</th>
+                                        <th scope="col">#</th> 
                                         <th scope="col">Section</th>
-                                        <th scope="col">Groupe Péda.</th>
-                                        <th scope="col">Sigle</th>
+                                        <th scope="col">Groupe Péda.</th> 
                                         <th scope="col">Matière</th>
                                         <th scope="col">Note max</th>
                                         <th scope="col">Moyenne</th>
@@ -53,12 +51,10 @@
                                     @endphp
                                     @foreach ($matieres as $item)
                                         <tr>
-                                            <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td>{{ $item->categorie_id ? $item->getCategorie->libelle : '' }}</td>
+                                            <td class="text-center"><b>{{ $i++ }}</b></td> 
                                             <td>{{ $item->section_id ? $item->getSection->libelle : '' }}</td>
-                                            <td>{{ $item->groupepedagogique_id ? $item->getGP->libelle_classe : '' }}</td>
-                                            <td>{{ $item->sigle }}</td>
-                                            <td>{{ $item->libelle }}</td>
+                                            <td>{{ $item->groupepedagogique_id ? $item->getGP->libelle_classe : '' }}</td> 
+                                            <td>{{ $item->getMatiereconfig->libelle }}</td>
                                             <td>{{ $item->note_max }}</td>
                                             <td>{{ $item->moyenne }}</td>
                                             <td>{{ $item->coef }}</td>

@@ -37,7 +37,8 @@
                                         <th scope="col">Sigle</th>
                                         <th scope="col">Libellé</th>
                                         <th scope="col">Libellé secondaire</th>
-                                        <th scope="col">Descripion</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Classe</th>
                                         <th scope="col">Statut</th> 
                                         <th scope="col">Modifié par</th>
                                         <th scope="col">Action</th>
@@ -54,6 +55,17 @@
                                             <td>{{ $item->libelle }}</td>
                                             <td>{{ $item->libelle_secondaire }}</td>
                                             <td>{{ $item->description }}</td>
+                                            <td>
+                                                @foreach (getClasse($item->id) as $data)
+                                       
+                                                <span class="badge bg-warning">{{$data->getGp->getFiliere->libelle}} {{$data->getGp->libelle_classe}} {{ $data->getGp->libelle_secondaire }}</span>
+                                            
+                                                @foreach (getProfesseurMatiere($data->id) as $prof)
+                                                <span class="badge bg-primary">{{getDataProfesseur($prof->professeur_id)->nom}} {{getDataProfesseur($prof->professeur_id)->prenoms}}</span>
+                                                @endforeach
+                                             
+                                    @endforeach
+                                            </td>
                                             <td class="text-center">
                                                 @if ($item->getStatut->libelle == 'ACTIF')
                                                     <span class="badge badge-danger"
@@ -66,6 +78,10 @@
                                             <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>
                                             <td class="text-center">
                                               <div class="d-flex justify-content-evenly">
+                                                <a href="{{ route('matiereconfigs.show', $item->id) }}" title="Modifier"><button
+                                                        type="button" class="btn btn-sm btn-primary"><i
+                                                            class="bi bi-list" style="color: white"
+                                                            aria-hidden="true"></i></button></a>
                                                 @if ($item->getStatut->libelle == 'ACTIF')
                                                     <a href="{{ route('admin.update-parametre', [$item->id, 'matiereconfigs', 'desactivation']) }}"
                                                         class="confirmation-desactivation" title="désactivation"><button
@@ -156,7 +172,7 @@
 
 
             // Setup - add a text input to each footer cell
-            $('#tableHead thead th').each(function() {
+            /*$('#tableHead thead th').each(function() {
                 var title = $(this).text();
                 if (title == "Sigle") {
                     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
@@ -170,7 +186,7 @@
                     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
                 } 
 
-            });
+            });*/
 
             // remove menu active
             $("ul").removeClass('show');

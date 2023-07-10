@@ -48,17 +48,16 @@ class MatieresController extends Controller
         $this->validate($request, [ 
             'gp_id' => 'required',
             'section_id' => 'required',
-            'categorie_id' => 'required', 
-            'matiereconfig_id' => 'required',  
-            'sigle'=> 'required',  
+            //'categorie_id' => 'required', 
+            'matiereconfig_id' => 'required',   
             'note_max'=> 'required',   
             'moyenne'=> 'required', 
             'coef' => 'required'
         ]);
 
         // vérifier si le données existe déjà
-        $check_data = Matieres::where("matiereconfig_id",$request->matiereconfig_id)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)->where("categorie_id",$request->categorie_id)
-        ->where("sigle",$request->sigle)->where("note_max",$request->note_max)
+        $check_data = Matieres::where("matiereconfig_id",$request->matiereconfig_id)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)
+        ->where("note_max",$request->note_max)
         ->where("moyenne",$request->moyenne)->where("coef",$request->coef)
         ->exists();
 
@@ -72,9 +71,9 @@ class MatieresController extends Controller
         $matiere = new Matieres();    
         $matiere->setAttribute('matiereconfig_id', $request->matiereconfig_id);
         $matiere->setAttribute('libelle', $matiereconfig->libelle);
-        $matiere->setAttribute('sigle', trim($request->sigle));
+        $matiere->setAttribute('sigle', "N/A");
         $matiere->setAttribute('section_id', trim($request->section_id));
-        $matiere->setAttribute('categorie_id', $request->categorie_id); 
+        //$matiere->setAttribute('categorie_id', $request->categorie_id); 
         $matiere->setAttribute('groupepedagogique_id', trim($request->gp_id)); 
         $matiere->setAttribute('note_max', trim($request->note_max));
         $matiere->setAttribute('moyenne', trim($request->moyenne));  
@@ -94,8 +93,9 @@ class MatieresController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Matieres $matieres)
-    {
+    { 
         //
+        
     }
 
     /**
@@ -126,9 +126,9 @@ class MatieresController extends Controller
         $this->validate($request, [ 
             'gp_id' => 'required',
             'section_id' => 'required',
-            'categorie_id' => 'required', 
+            //'categorie_id' => 'required', 
             'matiereconfig_id' => 'required',  
-            'sigle'=> 'required',  
+            //'sigle'=> 'required',  
             'note_max'=> 'required',   
             'moyenne'=> 'required', 
             'coef' => 'required'

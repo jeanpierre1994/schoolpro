@@ -25,12 +25,18 @@ class Matieres extends Model
         'section_id',
         'note_max', 
         'moyenne', 
+        'matiereconfig_id',
         'statut_id', 
         'created_by', // FK
         'updated_by', // FK
         'created_at',
         'updated_at', 
     ]; 
+    
+    public function getMatiereconfig()
+    {
+        return $this->belongsTo(Matiereconfig::class, 'matiereconfig_id');
+    } 
     
     public function getStatut()
     {

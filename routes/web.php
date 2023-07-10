@@ -197,6 +197,7 @@ Route::put('admin/professeurs/{id}/update', [ProfesseursController::class, 'upda
 // professeurs.store-matiere
 Route::get('admin/professeurs/matiere', [ProfesseursController::class, 'matieres'])->name('professeurs.matieres')->middleware("auth");
 Route::post('admin/professeurs/store/matiere', [ProfesseursController::class, 'matiereStore'])->name('professeurs.store-matiere')->middleware("auth");
+Route::post('admin/professeurs/delete/matiere', [ProfesseursController::class, 'matiereDelete'])->name('professeurs.delete-matiere')->middleware("auth");
 
 // gestion des sessions de correction
 Route::get('admin/sessions/corrections', [SessioncorrectionController::class, 'index'])->name('admin.sessioncorrections')->middleware("auth");
@@ -220,6 +221,11 @@ Route::get('admin/dossiers/valide', [DossiersController::class, 'valide'])->name
 
 // dossiers rejetes
 Route::get('admin/dossiers/rejete', [DossiersController::class, 'rejete'])->name('dossiers.rejete')->middleware("auth");
+
+
+// add gp
+Route::post('matieres/add/gp', [MatiereconfigController::class, 'addGP'])->name('matiereconfigs.store-gp')->middleware("auth");
+
 
  // Lien symbolique vers dossier de stockage
  Route::get('/ActiveStorage', function () {

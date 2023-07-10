@@ -48,21 +48,8 @@
                       @endforeach
                     </select> 
                 </div>
-              </div>  
+              </div>    
               <div class="col-md-6">
-                <label for="inputText" class=" col-form-label">Catégorie<i class="text-danger">*</i></label>
-                <div> 
-                    <select class="form-select" name="categorie_id" id="categorie_id" required>
-                      <option selected value="">Sélectionnez une option</option>
-                      @foreach ($categories as $item)
-                      <option selected value="{{$item->id}}">{{$item->libelle}}</option> 
-                      @endforeach
-                    </select> 
-                </div>
-              </div>   
-            </div>
-            <div class="row mb-3">  
-              <div class="col-md-4">
                 <label for="inputText" class=" col-form-label">Section <i class="text-danger">*</i></label>
                 <div> 
                     <select class="form-select" name="section_id" id="section_id" required>
@@ -72,14 +59,10 @@
                       @endforeach
                     </select> 
                 </div>
-              </div>
-              <div class="col-md-4">
-                <label for="inputText" class=" col-form-label">Sigle <i class="text-danger">*</i></label>
-                <div>
-                  <input type="text" class="form-control" required name="sigle" id="sigle" minlength="1" maxlength="100" >
-                </div>
-              </div>
-              <div class="col-md-4">
+              </div> 
+            </div>
+            <div class="row mb-3">   
+              <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Matière <i class="text-danger">*</i></label>
                 <div>
                   <select class="form-select" name="matiereconfig_id" id="matiereconfig_id" required>
@@ -90,19 +73,19 @@
                   </select> 
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
               <label for="inputText" class=" col-form-label">Note max <i class="text-danger">*</i></label>
                 <div>
                   <input type="number" value="20" class="form-control" required name="note_max" id="note_max" min="0" max="100" >
                 </div>  
               </div> 
-              <div class="col-md-4">
+              <div class="col-md-6">
               <label for="inputText" class=" col-form-label">Moyenne <i class="text-danger">*</i></label>
                 <div>
                   <input type="number" value="10" class="form-control" required name="moyenne" id="moyenne" min="0" max="100" >
                 </div>  
               </div> 
-              <div class="col-md-4">
+              <div class="col-md-6">
               <label for="inputText" class=" col-form-label">Coef <i class="text-danger">*</i></label>
                 <div>
                   <input type="number" value="1" class="form-control" required name="coef" id="coef" min="0" max="100" >

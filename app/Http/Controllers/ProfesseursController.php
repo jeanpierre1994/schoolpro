@@ -179,4 +179,20 @@ class ProfesseursController extends Controller
         $save_data->save();
         return redirect()->route("professeurs.matieres")->with("success", "Enregistrement effectué avec succès.");
     }
+
+    public function matiereDelete(Request $request)
+    {
+
+        $request->validate([
+            'matiere' => 'required', 
+        ]);
+
+        
+        foreach ($request->matiere as $value) {
+            # code...
+            $mp = Matiereprofesseurs::find($value);
+            $mp->delete();
+        }
+        return redirect()->route("professeurs.matieres")->with("success", "Suppression effectuée avec succès.");
+    }
 }

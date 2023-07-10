@@ -39,6 +39,12 @@
             @csrf
             @method("put")
             <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Sigle <i class="text-danger">*</i></label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control"  value="{{$matiereconfig->sigle}}" required name="sigle" id="sigle" minlength="2" maxlength="100">
+              </div>
+            </div> 
+            <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Libellé <i class="text-danger">*</i></label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" value="{{$matiereconfig->libelle}}" required name="libelle" id="libelle" minlength="3" maxlength="50">
@@ -48,12 +54,6 @@
               <label for="inputText" class="col-sm-2 col-form-label">Libellé secondaire <i class="text-danger">*</i></label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" value="{{$matiereconfig->libelle_secondaire}}" required name="libelle_secondaire" id="libelle_secondaire" minlength="3" maxlength="100">
-              </div>
-            </div> 
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Sigle <i class="text-danger">*</i></label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control"  value="{{$matiereconfig->sigle}}" required name="sigle" id="sigle" minlength="2" maxlength="100">
               </div>
             </div> 
             <div class="row mb-3">

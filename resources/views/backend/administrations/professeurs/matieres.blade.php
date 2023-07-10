@@ -24,15 +24,15 @@
             <div class="col-lg-12">
                 <div class="card">
                     @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <strong>Error!</strong>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-body">
                         <h5 class="card-title">Liste des matières par professeur</h5>
                         <!-- Bordered Table -->
@@ -63,13 +63,15 @@
                                             <td>{{ $item->email }}</td>
                                             <td>
                                                 @foreach (getMatiereProf($item->id) as $data)
-                                                @if ($loop->last)
-                                                    <span class="badge bg-primary">{{$data->libelle_classe}} : {{$data->libelle}}</span>
-                                                @else
-                                                    <span class="badge bg-primary">{{$data->libelle_classe}} : {{$data->libelle}}</span> &nbsp;
-                                                @endif
+                                                    @if ($loop->last)
+                                                        <span class="badge bg-primary">{{ $data->libelle_classe }} :
+                                                            {{ $data->libelle }}</span>
+                                                    @else
+                                                        <span class="badge bg-primary">{{ $data->libelle_classe }} :
+                                                            {{ $data->libelle }}</span> &nbsp;
+                                                    @endif
                                                 @endforeach
-                                                
+
                                             </td>
                                             <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
                                             <td class="text-center">
@@ -77,8 +79,58 @@
                                                     title="Ajouter matière"><button style="font-size: 5px;" type="button"
                                                         class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle"
                                                             aria-hidden="true" style="font-size: 10px;"></i></button></a>
+
+                                                <a href="#" class="show-modal" data-toggle="modal" data-target="#modalDeleteMatiere_{{$item->id}}" 
+                                                    title="Retirer matière"><button style="font-size: 5px;" type="button"
+                                                        class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"
+                                                            aria-hidden="true" style="font-size: 10px;"></i></button></a>
                                             </td>
                                         </tr>
+ 
+
+                                        <!-- delete matiere -->
+                                        <div class="modal fade" id="modalDeleteMatiere_{{ $item->id }}"
+                                            data-bs-backdrop="static" data-keyboard="false" tabindex="-1"
+                                            aria-labelledby="modaledeletematiere" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-primary w-100 text-center text-white">
+                                                        <h5 class="modal-title text-white" id="modalDelete">Ajouter matière
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form id="form" action="{{ route('professeurs.delete-matiere') }}"
+                                                        method="post">
+                                                        @csrf
+
+                                                        <div class="modal-body">
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-2 text-center"><label for="label">cocher</label></div>
+                                                                <div class="col-md-5"><label for="label">Groupe Péda.</label></div>
+                                                                <div class="col-md-5"><label for="label">Matière</label></div>
+                                                            </div> 
+                                                                        @foreach (getMatiereProf($item->id) as $data)
+                                                                        <div class="row mb-2">
+                                                                        <div class="col-md-2 text-center"><input type="checkbox" class="" name="matiere[]" value="{{$data->id}}"></div>
+                                                                        <div class="col-md-5"><input type="text" readonly value="{{ $data->libelle_classe }}"></div>
+                                                                        <div class="col-md-5"><input type="text" readonly value="{{ $data->libelle }}"></div>
+                                                                    </div>
+                                                                        @endforeach 
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Fermer</button>
+                                                            <button type="submit" id="valider-delete"
+                                                                class="btn btn-primary">Valider</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end delete -->
+
                                     @endforeach
 
                                 </tbody>
@@ -113,27 +165,34 @@
                                                         class="form-control" required>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label for="label">Groupe Péda. <i class="text-danger">*</i></label>
+                                                    <label for="label">Groupe Péda. <i
+                                                            class="text-danger">*</i></label>
                                                     <select class="form-select" name="gp_id" id="gp_id" required>
                                                         <option selected value="">Sélectionnez une option</option>
                                                         @foreach ($groupepedagogiques as $item)
-                                                            <option value="{{ $item->id }}">{{$item->getFiliere->libelle}} {{$item->libelle_classe}} {{ $item->libelle_secondaire }}</option>
+                                                            <option value="{{ $item->id }}">
+                                                                {{ $item->getFiliere->libelle }}
+                                                                {{ $item->libelle_classe }}
+                                                                {{ $item->libelle_secondaire }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-12 ">
                                                     <label for="label">Matière <i class="text-danger">*</i></label>
-                                                    <select class="form-select" name="matiere_id" id="matiere_id" required>
+                                                    <select class="form-select" name="matiere_id" id="matiere_id"
+                                                        required>
                                                         <option selected value=""></option>
                                                     </select>
                                                 </div>
-                                                <input type="hidden" name="professeur_id" id="professeur_id" value="" required>
+                                                <input type="hidden" name="professeur_id" id="professeur_id"
+                                                    value="" required>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Fermer</button>
-                                            <button type="submit" id="valider" class="btn btn-primary">Valider</button>
+                                            <button type="submit" id="valider"
+                                                class="btn btn-primary">Valider</button>
                                         </div>
                                     </form>
                                 </div>
@@ -213,49 +272,51 @@
                 $("#professeur_id").val("")
                 $("#nom").val("")
                 $("#prenoms").val("")
-                $("#gp_id").val("") 
-              // set data 
-                    $("#professeur_id").val(data.id) 
-                    $("#nom").val(data.nom)
-                    $("#prenoms").val(data.prenoms)                 
-                    $('#modalMatiere').modal('show')
+                $("#gp_id").val("")
+                // set data 
+                $("#professeur_id").val(data.id)
+                $("#nom").val(data.nom)
+                $("#prenoms").val(data.prenoms)
+                $('#modalMatiere').modal('show')
             });
 
-        // gestion de la sélection des matières
+            // gestion de la sélection des matières
 
-// si changement de filière, il faut charger la liste des niveau associées si cycle existe
-$('#gp_id').on('change', function() { 
-var gp_id = parseInt($('#gp_id').val());  
-var professeur_id = parseInt($('#professeur_id').val());  
-if ( gp_id != "" && professeur_id != "") { 
-    $('#matiere_id').empty();
-    $('#matiere_id').append('<option value="" selected="selected">Choisissez la matière</option>');
-    $.ajax({
-        url: "{{ route('ajax_requete') }}",
-        data: {
-          get_matiere: "ok", 
-          professeur_id: professeur_id, 
-          gp_id: gp_id,
-            _token: '{{csrf_token()}}'
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function(data, status) { 
-            console.log(data)
-            jQuery.each(data, function(key, value) {
-                $('#matiere_id').append('<option value="' + value.id + '">' + value.libelle + '</option>');
+            // si changement de filière, il faut charger la liste des niveau associées si cycle existe
+            $('#gp_id').on('change', function() {
+                var gp_id = parseInt($('#gp_id').val());
+                var professeur_id = parseInt($('#professeur_id').val());
+                if (gp_id != "" && professeur_id != "") {
+                    $('#matiere_id').empty();
+                    $('#matiere_id').append(
+                        '<option value="" selected="selected">Choisissez la matière</option>');
+                    $.ajax({
+                        url: "{{ route('ajax_requete') }}",
+                        data: {
+                            get_matiere: "ok",
+                            professeur_id: professeur_id,
+                            gp_id: gp_id,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(data, status) {
+                            console.log(data)
+                            jQuery.each(data, function(key, value) {
+                                $('#matiere_id').append('<option value="' + value.id +
+                                    '">' + value.libelle + '</option>');
+                            });
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            //  alert('Veuillez renseigner tous les champs'); 
+                            console.log(xhr);
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+
             });
-        },
-        error: function(xhr, textStatus, errorThrown) {
-            //  alert('Veuillez renseigner tous les champs'); 
-            console.log(xhr); 
-            console.log(textStatus);
-            console.log(errorThrown);
-        }
-    });
-}
-
-});
 
 
         });
