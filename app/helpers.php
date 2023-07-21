@@ -52,6 +52,20 @@ if (!function_exists('getMatiereProf')) {
 
 }
 
+if (!function_exists('getProfByMatiere')) {
+    # code...
+    function getProfByMatiere($matiere_id,$gp_id){ 
+        return $data = Matiereprofesseurs::join('matieres', 'matieres.id', '=', 'matiereprofesseurs.matiere_id')
+        ->join('groupepedagogiques', 'groupepedagogiques.id', '=', 'matieres.groupepedagogique_id')
+        ->leftJoin('users', 'users.id', '=', 'matiereprofesseurs.professeur_id')
+        ->leftJoin('personnes', 'personnes.compte_id', '=', 'users.id')
+        ->where("groupepedagogiques.id",$gp_id)
+        ->where("matieres.id",$matiere_id)
+        ->get(["groupepedagogiques.libelle_classe","matieres.libelle","matiereprofesseurs.id","personnes.nom","personnes.prenoms","personnes.tel","personnes.email","users.id as user_id"]);
+    }
+
+}
+
 // 
 
 if (!function_exists('checkSession')) {

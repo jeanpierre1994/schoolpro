@@ -90,12 +90,12 @@
 
                                         <!-- delete matiere -->
                                         <div class="modal fade" id="modalDeleteMatiere_{{ $item->id }}"
-                                            data-bs-backdrop="static" data-keyboard="false" tabindex="-1"
-                                            aria-labelledby="modaledeletematiere" aria-hidden="true">
+                                            data-bs-backdrop="static" data-bs-keyboard="false"
+                                            tabindex="-1" aria-labelledby="modalematiere_{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-primary w-100 text-center text-white">
-                                                        <h5 class="modal-title text-white" id="modalDelete">Ajouter matière
+                                                        <h5 class="modal-title text-white" id="modalDelete_{{ $item->id }}">Retirer une matière
                                                         </h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -121,8 +121,8 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Fermer</button>
-                                                            <button type="submit" id="valider-delete"
+                                                                data-bs-dismiss="modal">Fermer</button>
+                                                            <button type="submit" id="valider-delete_{{ $item->id }}"
                                                                 class="btn btn-primary">Valider</button>
                                                         </div>
                                                     </form>

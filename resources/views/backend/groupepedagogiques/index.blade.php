@@ -87,6 +87,10 @@
                                             <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>
                                             <td class="text-center">
                                               <div class="d-flex justify-content-evenly"> 
+                                                <a href="{{ route('groupepedagogiques.association', $item->id) }}" title="Association"><button
+                                                    type="button" class="btn btn-sm btn-primary"><i
+                                                        class="bi bi-list" style="color: white"
+                                                        aria-hidden="true"></i></button></a> &nbsp;
                                                 <a href="{{ route('groupepedagogiques.edit', $item->id) }}" title="Modifier"><button
                                                         type="button" class="btn btn-sm btn-warning"><i
                                                             class="bi bi-pencil-square" style="color: white"

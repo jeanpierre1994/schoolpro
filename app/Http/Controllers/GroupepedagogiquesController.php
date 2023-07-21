@@ -5,7 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cycles;
 use App\Models\Etablissements;
 use App\Models\Groupepedagogiques;
+use App\Models\Matiereconfig;
+use App\Models\Matiereprofesseurs;
+use App\Models\Matieres;
+use App\Models\Personnes;
 use App\Models\Poles;
+use App\Models\Profil;
+use App\Models\Sections;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 
@@ -160,6 +166,167 @@ class GroupepedagogiquesController extends Controller
         return redirect()->route("groupepedagogiques.index") ->with('success', 'Modification effectuée avec succès');
 
     }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function association(Request $request)
+    {
+        $gp = Groupepedagogiques::find($request->id);
+        $matieres = Matieres::where("groupepedagogique_id",$gp->id)->get();
+        $listeMatieres = Matiereconfig::orderBy("libelle","asc")->get();  
+        $sections = Sections::where("statut_id", 1)->get();  
+        $profil_professeur = Profil::where("libelle", "PROFESSEUR")->first();
+        if ($profil_professeur) {
+            # code...
+            $professeurs = Personnes::join("users", "users.id", "=", "personnes.compte_id")
+                ->join("genres", "genres.id", "=", "personnes.genre")
+                ->where("users.profil_id", 4)
+                ->select(["personnes.nom", "personnes.prenoms", "personnes.tel", "personnes.email", "personnes.updated_at", "genres.id as id_genre", "genres.libelle as libelle_genre", "personnes.id","personnes.compte_id"])
+                ->get();
+            //User::where("profil_id",$profil_professeur->id)->orderBy("id","desc")->get();
+        } else {
+            # code...
+            $professeurs = null;
+        }
+        return view("backend.groupepedagogiques.association", compact("gp","matieres","listeMatieres","professeurs","sections"));
+    }
+
+    /**
+     * Display the specified resource.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function associationStore(Request $request)
+    {
+        $this->validate($request, [
+            'matiere_id'  => 'required',
+            'section_id' => 'required',   
+            'note_max'=> 'required',   
+            'moyenne'=> 'required', 
+            'coef' => 'required',
+            'gp_id' => 'required'
+        ]);
+
+        $check_data = Matieres::where("matiereconfig_id",$request->matiere_id)->where("groupepedagogique_id",$request->gp_id)->where("section_id",$request->section_id)
+        ->where("sigle",$request->sigle)->where("note_max",$request->note_max)
+        ->where("moyenne",$request->moyenne)->where("coef",$request->coef)
+        ->exists();
+
+        if($check_data){
+           // if categorie exist redirect to form with error message
+            return redirect()->back()->with('error', "Cette matière existe déjà.");
+        } 
+
+        $user = Auth()->user();  
+        $matiereconfig = Matiereconfig::find($request->matiere_id);
+        $matiere = new Matieres();    
+        $matiere->setAttribute('matiereconfig_id', $request->matiere_id);
+        $matiere->setAttribute('libelle', $matiereconfig->libelle); 
+        $matiere->setAttribute('section_id', trim($request->section_id));
+        $matiere->setAttribute('sigle', "N/A");
+        //$matiere->setAttribute('categorie_id', $request->categorie_id); 
+        $matiere->setAttribute('groupepedagogique_id', trim($request->gp_id)); 
+        $matiere->setAttribute('note_max', trim($request->note_max));
+        $matiere->setAttribute('moyenne', trim($request->moyenne));  
+        $matiere->setAttribute('coef', trim($request->coef));    
+        $matiere->setAttribute('statut_id', 1); 
+        $matiere->setAttribute('created_by', $user->id); 
+        $matiere->setAttribute('updated_by', $user->id); 
+        $matiere->save();
+
+        // enregistrement des professeurs
+        if(!empty($request->professeur_id)){
+            $check_matiere = Matiereprofesseurs::where("matiere_id", $matiere->id)->where("professeur_id", $request->professeur_id)->exists();
+
+            if ($check_matiere) {
+                # code... 
+            }else{
+                $save_data = new Matiereprofesseurs();
+                $save_data->setAttribute('matiere_id', $matiere->id);
+                $save_data->setAttribute('professeur_id', $request->professeur_id);
+                $save_data->setAttribute('statut_id', 1);
+                $save_data->setAttribute('created_by', auth()->user()->id);
+                $save_data->setAttribute('updated_by', auth()->user()->id);
+                $save_data->save();
+            } 
+
+        }
+        return redirect()->back()->with("success", "enregistrement effectué avec succès.");
+    }
+
+    // groupepedagogiques.delete-data
+
+
+
+    /**
+     * Display the specified resource.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteMatiereProf(Request $request)
+    {
+        $this->validate($request, [
+            'matiere_delete_id'  => 'required',
+            'delete_data' => 'required',    
+            'gp_id' => 'required', 
+        ]); 
+        
+        switch ($request->delete_data) {
+
+            case 1:
+                # code... delete only matiere
+                $check_matiere = Matieres::find($request->matiere_delete_id);
+                if ($check_matiere) {
+                    # code...
+                    $check_matiere->delete();
+                } else {
+                    # code...
+                    return redirect()->back()->with("error", "Echec de la suppression, la matière n'existe pas.");
+                }
+                return redirect()->back()->with("success", "Opération effectuée avec succès.");
+                break; 
+            case 2:
+                # code... delete only professeur 
+                $check_matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->exists();
+                if ($check_matiere_prof) {
+                    # code...
+                    $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
+                    $matiere_prof->delete();
+                } else {
+                    # code...
+                    return redirect()->back()->with("error", "Echec de la suppression, l'identifiant du professeur n'existe pas.");
+                }                
+                return redirect()->back()->with("success", "Opération effectuée avec succès.");
+                break; 
+            case 3:
+                # code... delete only matiere and professeur 
+                $config = Matieres::find($request->matiere_delete_id);
+                $check_matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->exists();
+                if ($check_matiere_prof) {
+                    # code...
+                    $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
+                    $matiere_prof->delete();
+                } 
+
+                $check_matiere = Matieres::find($request->matiere_delete_id);
+                if ($check_matiere) {
+                    # code...
+                    $check_matiere->delete();
+                } 
+                return redirect()->back()->with("success", "Opération effectuée avec succès.");
+                break;
+            
+            default:
+                # code...
+                return redirect()->back()->with("error", "Echec de la suppression, vous devez choisir une option.");
+                break;
+        }
+ 
+    }
+
 
     /**
      * Remove the specified resource from storage.

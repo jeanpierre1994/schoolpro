@@ -1,4 +1,4 @@
-@extends('frontend.inc.user_layout')
+@extends('backend/include/layout')
 
 @section('title')
     Modification Groupe Pédagogique || {{ env('APP_NAME') }}
