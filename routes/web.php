@@ -229,6 +229,7 @@ Route::post('matieres/add/gp', [MatiereconfigController::class, 'addGP'])->name(
 Route::get('admin/association/{id}/gp', [GroupepedagogiquesController::class, 'association'])->name('groupepedagogiques.association')->middleware("auth");
 Route::post('admin/association/store/gp', [GroupepedagogiquesController::class, 'associationStore'])->name('groupepedagogiques.association-store')->middleware("auth");
 Route::post('admin/association/delete/data', [GroupepedagogiquesController::class, 'deleteMatiereProf'])->name('groupepedagogiques.delete-data')->middleware("auth");
+Route::post('admin/association/delete/data-GpProf', [GroupepedagogiquesController::class, 'deleteGpProf'])->name('groupepedagogiques.delete-data-GpProf')->middleware("auth");
 
 
  // Lien symbolique vers dossier de stockage

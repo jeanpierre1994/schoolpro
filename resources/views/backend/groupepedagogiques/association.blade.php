@@ -144,7 +144,7 @@
                                                                         style="color: white"
                                                                         aria-hidden="true"></i></button></a>
                                                         </div>
-                                                    </td>
+                                                    </td> 
                                                 </tr>
                                             @endforeach
 

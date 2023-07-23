@@ -328,6 +328,67 @@ class GroupepedagogiquesController extends Controller
     }
 
 
+    public function deleteGpProf(Request $request)
+    {
+        $this->validate($request, [
+            'matiere_delete_id'  => 'required',
+            'delete_data' => 'required',    
+            'gp_id' => 'required', 
+        ]); 
+        
+        switch ($request->delete_data) {
+
+            case 1:
+                # code... delete only matiere
+                $check_matiere = Matieres::where('groupepedagogique_id',$request->gp_id)->get()->first();
+                if ($check_matiere) {
+                    # code...
+                    $check_matiere->delete();
+                } else {
+                    # code...
+                    return redirect()->back()->with("error", "Echec de la suppression, la matière n'existe pas.");
+                }
+                return redirect()->back()->with("success", "Opération effectuée avec succès.");
+                break; 
+            case 2:
+                # code... delete only professeur 
+                $check_matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->exists();
+                if ($check_matiere_prof) {
+                    # code...
+                    $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
+                    $matiere_prof->delete();
+                } else {
+                    # code...
+                    return redirect()->back()->with("error", "Echec de la suppression, l'identifiant du professeur n'existe pas.");
+                }                
+                return redirect()->back()->with("success", "Opération effectuée avec succès.");
+                break; 
+            case 3:
+                # code... delete only matiere and professeur 
+                $config = Matieres::find($request->matiere_delete_id);
+                $check_matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->exists();
+                if ($check_matiere_prof) {
+                    # code...
+                    $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
+                    $matiere_prof->delete();
+                } 
+
+                $check_matiere = Matieres::where('groupepedagogique_id',$request->gp_id)->get()->first();
+                if ($check_matiere) {
+                    # code...
+                    $check_matiere->delete();
+                } 
+                return redirect()->back()->with("success", "Opération effectuée avec succès.");
+                break;
+            
+            default:
+                # code...
+                return redirect()->back()->with("error", "Echec de la suppression, vous devez choisir une option.");
+                break;
+        }
+ 
+    }
+
     /**
      * Remove the specified resource from storage.
      *
