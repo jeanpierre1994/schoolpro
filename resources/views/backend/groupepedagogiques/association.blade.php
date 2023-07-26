@@ -108,6 +108,7 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Matière</th>
+                                                <th scope="col">Section</th>
                                                 <th scope="col">Professeur</th>
                                                 <th scope="col">Action</th>
                                             </tr>
@@ -120,6 +121,7 @@
                                                 <tr>
                                                     <td>{{ $i++ }}</td>
                                                     <td>{{ $item->libelle }}</td>
+                                                    <td>{{ $item->getSection->libelle }}</td>
                                                     <td>
                                                         @foreach (getProfByMatiere($item->id, $item->groupepedagogique_id) as $data)
                                                             @if ($loop->last)
