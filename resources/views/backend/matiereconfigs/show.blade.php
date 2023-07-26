@@ -58,6 +58,7 @@
                                 <tbody>
                                     @php
                                         $i = 1;
+                                        $gpId = 1;
                                     @endphp
                                     @foreach ($matiere_gp as $item)
                                         <tr>
