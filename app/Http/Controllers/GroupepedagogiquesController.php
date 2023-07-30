@@ -256,11 +256,34 @@ class GroupepedagogiquesController extends Controller
         }
         return redirect()->back()->with("success", "enregistrement effectué avec succès.");
     }
+/**
+     * Display the specified resource.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function updateMatiereProf(Request $request)
+    {
+        $this->validate($request, [
+            'prof_matiere_id'  => 'required',
+            'professeur_id' => 'required',     
+        ]); 
 
-    // groupepedagogiques.delete-data
-
-
-
+        $check_data = Matiereprofesseurs::where("matiere_id",$request->prof_matiere_id)->where("professeur_id",$request->professeur_id)->exists();
+        if ($check_data) {
+            # code...
+            return redirect()->back()->with("error", "Le professeur est déjà associé à cette matière.");
+        } else {
+            # code...
+            $save_data = new Matiereprofesseurs();
+                $save_data->setAttribute('matiere_id', $request->prof_matiere_id);
+                $save_data->setAttribute('professeur_id', $request->professeur_id);
+                $save_data->setAttribute('statut_id', 1);
+                $save_data->setAttribute('created_by', auth()->user()->id);
+                $save_data->setAttribute('updated_by', auth()->user()->id);
+                $save_data->save();
+            return redirect()->back()->with("success", "Opération effectuée avec succès.");
+        } 
+    }
     /**
      * Display the specified resource.
      * 
@@ -273,15 +296,22 @@ class GroupepedagogiquesController extends Controller
             'delete_data' => 'required',    
             'gp_id' => 'required', 
         ]); 
-        
+
         switch ($request->delete_data) {
 
             case 1:
                 # code... delete only matiere
                 $check_matiere = Matieres::find($request->matiere_delete_id);
                 if ($check_matiere) {
-                    # code...
-                    $check_matiere->delete();
+                    # code... 
+                    try {
+                        //code...
+                        $check_matiere->delete();
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                        return redirect()->back()->with("error", "Echec de la suppression, La matière est liée à un examen.");
+                    }
+                   
                 } else {
                     # code...
                     return redirect()->back()->with("error", "Echec de la suppression, la matière n'existe pas.");
@@ -294,7 +324,13 @@ class GroupepedagogiquesController extends Controller
                 if ($check_matiere_prof) {
                     # code...
                     $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
+                   try {
+                    //code...
                     $matiere_prof->delete();
+                   } catch (\Throwable $th) {
+                    //throw $th;
+                    return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table.");
+                   }
                 } else {
                     # code...
                     return redirect()->back()->with("error", "Echec de la suppression, l'identifiant du professeur n'existe pas.");
@@ -308,13 +344,26 @@ class GroupepedagogiquesController extends Controller
                 if ($check_matiere_prof) {
                     # code...
                     $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
+                   try {
+                    //code...
                     $matiere_prof->delete();
+                   } catch (\Throwable $th) {
+                    //throw $th;
+                    return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table.");
+                   }
                 } 
 
                 $check_matiere = Matieres::find($request->matiere_delete_id);
                 if ($check_matiere) {
                     # code...
-                    $check_matiere->delete();
+                    try {
+                        //code...
+                        $check_matiere->delete();
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                        return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table.");
+                    }
+                    
                 } 
                 return redirect()->back()->with("success", "Opération effectuée avec succès.");
                 break;

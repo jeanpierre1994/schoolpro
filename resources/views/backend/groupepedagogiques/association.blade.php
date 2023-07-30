@@ -116,6 +116,7 @@
                                         <tbody>
                                             @php
                                                 $i = 1;
+                                                $have_prof = false;
                                             @endphp
                                             @foreach ($matieres as $item)
                                                 <tr>
@@ -124,6 +125,9 @@
                                                     <td>{{ $item->getSection->libelle }}</td>
                                                     <td>
                                                         @foreach (getProfByMatiere($item->id, $item->groupepedagogique_id) as $data)
+                                                        @php
+                                                            $have_prof = true;
+                                                        @endphp
                                                             @if ($loop->last)
                                                                 <span class="badge bg-primary">{{ $data->nom }}
                                                                     {{ $data->prenoms }} {{ $data->email }}</span>
@@ -135,16 +139,13 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <div class="d-flex justify-content-evenly">
-                                                            <!--<a href="#" title="Modifier"><button type="button"
+                                                        <div class="d-flex justify-content-evenly"> 
+                                                            <a href="#" title="Ajouter professeur" data-matiere="{{$item->id}}" data-libelle-matiere="{{$item->libelle}}" data-gp="{{$gp->id}}" class="show-prof-modal">
+                                                                <button type="button"
                                                                     class="btn btn-sm btn-warning"><i
-                                                                        class="bi bi-pencil-square" style="color: white"
-                                                                        aria-hidden="true"></i></button></a>-->
-                                                            <a href="#" title="Supprimer"><button type="button"
-                                                                data-matiere="{{$item->id}}" data-libelle-matiere="{{$item->libelle}}" data-gp="{{$gp->id}}"
-                                                                    class="btn btn-sm btn-danger show-delete-modal"><i class="bi bi-trash"
-                                                                        style="color: white"
-                                                                        aria-hidden="true"></i></button></a>
+                                                                        class="bi bi-person" style="color: white"
+                                                                        aria-hidden="true"></i></button></a>           
+                                                            <a href="#" title="Supprimer"><button type="button" data-matiere="{{$item->id}}" data-libelle-matiere="{{$item->libelle}}" data-gp="{{$gp->id}}" class="btn btn-sm btn-danger show-delete-modal"><i class="bi bi-trash" style="color: white" aria-hidden="true"></i></button></a>
                                                         </div>
                                                     </td> 
                                                 </tr>
@@ -155,9 +156,6 @@
                                 </div>
 
                             </div>
-
-
-
 
                         </div>
                     </div>
@@ -291,6 +289,53 @@
             </div>
         </div>
     </div>
+
+    <!-- modal add prof data -->
+
+    <div class="modal fade" id="modalProf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modaleprof" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary w-100 text-center text-white">
+                <h5 class="modal-title text-white" id="modalDelete">Ajouter un professeur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form" action="{{route('groupepedagogiques.update-profmatiere')}}" method="post">
+                @csrf
+                <input type="hidden" value="" name="prof_gp_id" id="prof_gp_id"> 
+                <input type="hidden" value="" name="prof_matiere_id" id="prof_matiere_id"> 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                              <label for="" class="form-label">Matière</label>
+                              <input type="text"
+                                class="form-control" disabled name="" id="prof_libelle_matiere" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div> 
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                              <label for="" class="form-label">Professeur</label>
+                              <select class="form-select" name="professeur_id">
+                                <option selected value=""></option>
+                                @foreach ($professeurs as $data)
+                                    <option value="{{ $data->compte_id }}">{{ $data->nom }} {{ $data->prenoms }}
+                                    </option>
+                                @endforeach
+                            </select> 
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" id="valider-prof" class="btn btn-primary">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     <!-- end modal export -->
 @endsection
 
@@ -318,6 +363,13 @@
                 $("#matiere_delete_id").val($(this).attr("data-matiere"));
                 $("#prof_sup_id").val($("#prof_delete_id").val())
                 $('#modalDeleteMatiere').modal('show')
+            });
+            // show prof modal
+            $(".show-prof-modal").on("click", function() {  
+                $("#prof_libelle_matiere").val($(this).attr("data-libelle-matiere"));
+                $("#prof_gp_id").val($(this).attr("data-gp"));
+                $("#prof_matiere_id").val($(this).attr("data-matiere")); 
+                $('#modalProf').modal('show')
             });
         });
 

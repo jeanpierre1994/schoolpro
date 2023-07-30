@@ -25,8 +25,7 @@ class Examens extends Model
         'note_max', 
         'min_moyenne',// FK
         'max_moyenne',
-        'commentaire',
-        'groupepedagogique_id', 
+        'commentaire', 
         'examentype_id',
         'statut_id',
         'created_by', // FK

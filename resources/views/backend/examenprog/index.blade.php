@@ -23,8 +23,9 @@
       <div class="col-lg-12">
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Liste des matières de l'examen N° {{$examen->code_examen}} <a href="#" class="show-modal" title="Ajouter"><button style="font-size: 5px;" type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle" aria-hidden="true" style="font-size: 10px;"></i></button></a></h5>
-      <!-- Bordered Table -->
+      <h5><span class="card-title">Liste des matières de l'examen N°</span> {{$examen->code_examen}}</h5>
+      <h5 class="mb-2"><span class="card-title">Groupe pédagogique :</span> {{$gp->getFiliere->libelle}} {{$gp->libelle_classe}} {{ $gp->libelle_secondaire }}</h5>
+      <!-- Bordered Table --> <br>
       <div class="table-responsive">
       <table class="table table-striped table-hover table-bordered data-tables">
         <thead>
@@ -34,7 +35,8 @@
             <th scope="col">Date début</th> 
             <th scope="col">Date fin</th> 
             <th scope="col">Année académique</th> 
-            <th scope="col">Commentaire</th>  
+            <th scope="col">Commentaire</th> 
+            <th scope="col">Action</th>  
           </tr>
         </thead>
         <tbody>
@@ -43,16 +45,67 @@
           @endphp
           @foreach ($examenprog as $item )
           <tr>
-              <td class="text-center"><b>{{$i++}}</b></td> 
-              <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}}</td> 
+              <td class="text-center"><b>{{$i++}}</b></td>  
+              <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}} -- {{$item->matiere_id}}</td> 
               <td>{{$item->date_debut}}</td> 
               <td>{{$item->date_fin}}</td> 
               <td>{{$item->getExamen->annee_academique}}</td>  
               <td>{{$item->commentaire}}</td> 
-              {{--<td class="text-center">
-                <a href="{{ route('examens.edit',$item->id) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
-             </td>--}}
+              <td class="text-center">
+                <a href="{{ route('examenprog.edit',$item->id) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
+                &nbsp;
+                <a href="#" data-bs-toggle="modal"
+                data-bs-target="#myModal_{{ $item->id }}">
+                <button type="button" title="Supprimer"
+                    class="btn btn-sm btn-danger"><i class="bi bi-trash"
+                        style="color: white" aria-hidden="true"></i></button>
+            </a>
+             </td>
           </tr>
+
+           <!-- The Modal -->
+           <div class="modal text-center" id="myModal_{{ $item->id }}">
+            <div class="modal-dialog modal-md modal-dialog-centered">
+                <div class="modal-content text-center">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center"
+                            style="text-align: center;">Confirmer l'action <i
+                                class="bi bi-trash text-danger"></i></h4>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row mt-2 mb-2">
+                            <div
+                                class="col-md-12 text-center font-weight-bold font-height-10">
+                                Voulez-vous vraiment supprimer cet élément ?
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+
+                        <form action="{{ route('examenprog.destroy', $item->id) }}"
+                            method="post">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-md"
+                                id="" value="">OUI
+                            </button>
+                            <button type="button" class="btn btn-md btn-secondary"
+                                data-bs-dismiss="modal">NON</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End modal -->
           @endforeach 
       </tbody>
       </table>

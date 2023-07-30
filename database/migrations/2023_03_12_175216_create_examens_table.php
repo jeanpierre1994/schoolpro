@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('code_examen')->unique();    
             $table->date('date_debut');    
             $table->date('date_fin');        
-            $table->unsignedBigInteger('groupepedagogique_id');  
+            //$table->unsignedBigInteger('groupepedagogique_id');  
             $table->unsignedBigInteger('statut_id');  
             $table->unsignedBigInteger('examentype_id');  
             $table->string('libelle',150);  

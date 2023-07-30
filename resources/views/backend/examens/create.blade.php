@@ -38,7 +38,7 @@
           <form action="{{ route('examens.store') }}" method="post">
             @csrf
             <div class="row mb-3"> 
-              <div class="col-md-6">
+            {{--  <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Groupe pédagogique<i class="text-danger">*</i></label>
                 <div> 
                     <select class="form-select" name="gp_id" id="gp_id" required>
@@ -48,7 +48,7 @@
                       @endforeach
                     </select> 
                 </div>
-              </div>  
+              </div>  --}}
               <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Type examen<i class="text-danger">*</i></label>
                 <div> 
@@ -59,22 +59,23 @@
                       @endforeach
                     </select> 
                 </div>
-              </div>   
-            </div>
-            <div class="row mb-3">   
-              <div class="col-md-4">
+              </div> 
+              
+              <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Libellé <i class="text-danger">*</i></label>
                 <div>
                   <input type="text" class="form-control" required name="libelle" id="libelle" minlength="1" maxlength="100" >
                 </div>
-              </div>
-              <div class="col-md-4">
+              </div>  
+            </div>
+            <div class="row mb-3">   
+              <div class="col-md-6">
                 <label for="inputText" class=" col-form-label">Démarre le <i class="text-danger">*</i></label>
                 <div>
                   <input type="date" class="form-control" required name="date_debut" id="date_debut">
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
               <label for="inputText" class=" col-form-label">Finit le <i class="text-danger">*</i></label>
                 <div>
                   <input type="date" class="form-control" required name="date_fin" id="date_fin">

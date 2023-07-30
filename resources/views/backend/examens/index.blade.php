@@ -28,8 +28,7 @@
       <table style="overflow-x:auto;" class="table table-striped table-hover table-bordered data-tables">
         <thead>
           <tr>
-            <th scope="col">#</th> 
-            <th scope="col">Groupe Péda.</th>
+            <th scope="col">#</th>  
             <th scope="col">Type</th>
             <th scope="col">Libellé</th>
             <th scope="col">Date début</th> 
@@ -49,7 +48,7 @@
           @foreach ($examens as $item )
           <tr>
               <td class="text-center"><b>{{$item->code_examen}}</b></td> 
-              <td>{{$item->groupepedagogique_id ? $item->getGP->libelle_classe : ''}}</td>
+              {{--<td>{{$item->groupepedagogique_id ? $item->getGP->libelle_classe : ''}}</td>--}}
               <td>{{$item->examentype_id ? $item->getExamentype->libelle : ''}}</td>
               <td>{{$item->libelle}}</td>
               <td>{{$item->date_debut}}</td> 

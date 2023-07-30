@@ -8,6 +8,7 @@ use App\Models\Examentypes;
 use App\Models\Groupepedagogiques;
 use App\Models\Matieres;
 use Illuminate\Http\Request;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 class ExamensController extends Controller
 {
@@ -43,7 +44,7 @@ class ExamensController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [ 
-            'gp_id' => 'required',
+            //'gp_id' => 'required',
             'examentype_id' => 'required',
             'libelle' => 'required', 
             'note_max' => 'required',  
@@ -56,7 +57,7 @@ class ExamensController extends Controller
         ]);
 
         // vérifier si le données existe déjà
-        $check_data = Examens::where("libelle",$request->libelle)->where("groupepedagogique_id",$request->gp_id)->where("examentype_id",$request->examentype_id)->where("date_debut",$request->date_debut)
+        $check_data = Examens::where("libelle",$request->libelle)->where("examentype_id",$request->examentype_id)->where("date_debut",$request->date_debut)
         ->where("date_fin",$request->date_fin)->where("note_max",$request->note_max)
         ->where("ponderation",$request->ponderation)->where("min_moyenne",$request->min_moyenne)
         ->where("max_moyenne",$request->max_moyenne)->where("annee_academique",$request->annee_academique)
@@ -123,26 +124,42 @@ class ExamensController extends Controller
         $code_examen = $indicatif.$numero_user_formatted.$annee_actuelle;
        
         //################################### end générer le code  ###################
-
-
-
-         
+          
         $examen = new Examens();    
         $examen->setAttribute('code_examen', trim($code_examen));
         $examen->setAttribute('libelle', trim($request->libelle));
         $examen->setAttribute('date_debut', trim($request->date_debut));
         $examen->setAttribute('date_fin', trim($request->date_fin));
-        $examen->setAttribute('examentype_id', $request->examentype_id); 
-        $examen->setAttribute('groupepedagogique_id', trim($request->gp_id)); 
+        $examen->setAttribute('examentype_id', $request->examentype_id);  
         $examen->setAttribute('min_moyenne', trim($request->min_moyenne));
         $examen->setAttribute('max_moyenne', trim($request->max_moyenne)); 
         $examen->setAttribute('ponderation', trim($request->ponderation));  
         $examen->setAttribute('note_max', trim($request->note_max)); 
         $examen->setAttribute('commentaire', trim($request->commentaire)); 
+        $examen->setAttribute('annee_academique', trim($request->annee_academique)); 
         $examen->setAttribute('statut_id', 1); 
         $examen->setAttribute('created_by', $user->id); 
         $examen->setAttribute('updated_by', $user->id); 
         $examen->save();
+
+        // générer le calendrier scolaire par défaut
+        // get liste matiere
+        $liste_matieres = Matieres::all();
+         foreach ($liste_matieres as $matiere) {
+            # code...
+        $examenprog = new Examenprog();
+        $examenprog->setAttribute('examen_id', $examen->id);
+        $examenprog->setAttribute('matiere_id', $matiere->id);
+        $examenprog->setAttribute('date_debut', $examen->date_debut);
+        $examenprog->setAttribute('date_fin', $examen->date_fin);
+        //$examenprog->setAttribute('annee_academique', $request->annee_academique);
+        $examenprog->setAttribute('commentaire', "RAS");
+        $examenprog->setAttribute('created_by', $user->id);
+        $examenprog->setAttribute('created_at', new \DateTime());
+        $examenprog->setAttribute('updated_at', new \DateTime());
+        $examenprog->setAttribute('updated_by', $user->id); 
+        $examenprog->save(); 
+        }
  
         return redirect()->route("examens.index") ->with('success', 'Enregistrement effectué avec succès');
     }
@@ -155,9 +172,26 @@ class ExamensController extends Controller
      */
     public function show(Examens $examen)
     {
-        $matieres = Matieres::where("groupepedagogique_id",$examen->groupepedagogique_id)->where("statut_id",1)->get();
-        $examenprog = Examenprog::where("examen_id",$examen->id)->get();
-        return view("backend.examenprog.index", compact("examenprog", "examen","matieres"));
+        $listeGP = Groupepedagogiques::all(); 
+        return view("backend.examenprog.list-gp", compact("listeGP", "examen"));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Examens  $examen
+     * @return \Illuminate\Http\Response
+     */
+    public function showMatieres(Request $request)
+    { 
+        $examen = Examens::find($request->id); 
+        $matieres = Matieres::all(); // where("groupepedagogique_id",$request->gp_id)->where("statut_id",1)->get();
+        $gp = Groupepedagogiques::find($request->gp_id); 
+        $examenprog = Examenprog::join("matieres","matieres.id","=","examenprogs.matiere_id")
+        ->where("examenprogs.examen_id",$examen->id)
+        ->where("groupepedagogique_id",$request->gp_id)
+        ->get();
+        return view("backend.examenprog.index", compact("examenprog", "examen","matieres","gp"));
     }
 
     /**

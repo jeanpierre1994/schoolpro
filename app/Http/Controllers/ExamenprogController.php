@@ -70,7 +70,7 @@ class ExamenprogController extends Controller
      */
     public function show(Examenprog $examenprog)
     {
-        //
+        
     }
 
     /**
@@ -81,7 +81,7 @@ class ExamenprogController extends Controller
      */
     public function edit(Examenprog $examenprog)
     {
-        //
+        return view("backend.examenprog.edit", compact("examenprog"));
     }
 
     /**
@@ -93,7 +93,20 @@ class ExamenprogController extends Controller
      */
     public function update(Request $request, Examenprog $examenprog)
     {
-        //
+        $this->validate($request, [
+            'examen_id' => 'required',
+            'gp_id' => 'required',
+            'date_debut' => 'required',
+            'date_fin' => 'required', 
+        ]);
+
+        $examenprog->setAttribute("date_debut", $request->date_debut);
+        $examenprog->setAttribute("date_fin", $request->date_fin);
+        $examenprog->setAttribute("commentaire", $request->commentaire);
+        $examenprog->update();
+
+        return redirect()->route("examenprog.matiere-gp",["id"=>$request->examen_id,"gp_id"=>$request->gp_id])
+            ->with('success', 'Modification effectuée avec succès');
     }
 
     /**
@@ -102,8 +115,16 @@ class ExamenprogController extends Controller
      * @param  \App\Models\Examenprog  $examenprog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Examenprog $examenprog)
+    public function destroy($id)
     {
-        //
+        try {
+            $examenprog = Examenprog::find($id);
+            //Récupérer le libelle de l'élément supprimé 
+            $examenprog->delete(); 
+            return redirect()->back()->with('success', 'Opération bien effectuéé');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with("error", "Vous ne pouvez pas supprimer cet élément à cause du contrôle d'intégrité.");
+        }
     }
 }
