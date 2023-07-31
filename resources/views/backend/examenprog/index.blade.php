@@ -43,10 +43,10 @@
           @php
               $i = 1;
           @endphp
-          @foreach ($examenprog as $item )
+          @foreach ($examenprogs as $item )
           <tr>
               <td class="text-center"><b>{{$i++}}</b></td>  
-              <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}} -- {{$item->matiere_id}}</td> 
+              <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}} </td> 
               <td>{{$item->date_debut}}</td> 
               <td>{{$item->date_fin}}</td> 
               <td>{{$item->getExamen->annee_academique}}</td>  
@@ -133,9 +133,9 @@
                                       <label for="label">Matière <i class="text-danger">*</i></label>
                                       <select class="form-select" name="matiere_id" id="matiere_id" required>
                                         <option selected value="">Sélectionnez une option</option>
-                                        @foreach ($matieres as $item)
-                                        @if (checkMatiere($item->id,$examen->id))
-                                        <option value="{{$item->id}}">{{$item->libelle}}</option> 
+                                        @foreach ($matieres as $data)
+                                        @if (checkMatiere($data->id,$examen->id))
+                                        <option value="{{$data->id}}">{{$data->libelle}}</option> 
                                         @endif 
                                         @endforeach
                                       </select>

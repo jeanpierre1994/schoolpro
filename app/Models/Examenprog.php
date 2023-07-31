@@ -31,7 +31,7 @@ class Examenprog extends Model
     
     public function getMatiere()
     {
-        return $this->belongsTo(Matieres::class, 'matiere_id');
+        return $this->belongsTo(Matieres::class, 'matiere_id',"id");
     } 
     
     public function getExamen()

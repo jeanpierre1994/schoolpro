@@ -187,11 +187,14 @@ class ExamensController extends Controller
         $examen = Examens::find($request->id); 
         $matieres = Matieres::all(); // where("groupepedagogique_id",$request->gp_id)->where("statut_id",1)->get();
         $gp = Groupepedagogiques::find($request->gp_id); 
-        $examenprog = Examenprog::join("matieres","matieres.id","=","examenprogs.matiere_id")
-        ->where("examenprogs.examen_id",$examen->id)
-        ->where("groupepedagogique_id",$request->gp_id)
+        $examenprogs = Examenprog:: 
+        where("examenprogs.examen_id",$examen->id)
+        //join("examens","examens.id","=","examenprogs.examen_id") 
+        ->join("matieres","examenprogs.matiere_id","=","matieres.id")
+        ->where("matieres.groupepedagogique_id",$request->gp_id)
         ->get();
-        return view("backend.examenprog.index", compact("examenprog", "examen","matieres","gp"));
+       // dd($examenprogs);
+        return view("backend.examenprog.index", compact("examenprogs", "examen","matieres","gp"));
     }
 
     /**

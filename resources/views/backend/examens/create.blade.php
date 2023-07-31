@@ -84,31 +84,31 @@
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Année académique <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="annee_academique" id="annee_academique" min="0" max="9999" >
+                  <input type="number" class="form-control" required name="annee_academique" id="annee_academique" value="{{date(Y)}}" min="0" max="9999" >
                 </div>  
               </div> 
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Note maximum <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="note_max" id="note_max" min="0" max="100" >
+                  <input type="number" class="form-control" required name="note_max" value="20" id="note_max" min="0" max="100" >
                 </div>  
               </div> 
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Moyenne min <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="min_moyenne" id="min_moyenne" min="0" max="100" >
+                  <input type="number" class="form-control" required name="min_moyenne" value="12" id="min_moyenne" min="0" max="100" >
                 </div>  
               </div> 
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Moyenne max <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="max_moyenne" id="max_moyenne" min="0" max="100" >
+                  <input type="number" class="form-control" required name="max_moyenne" value="20" id="max_moyenne" min="0" max="100" >
                 </div>  
               </div> 
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Pondération<i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" name="ponderation" id="ponderation" min="0" max="255" value="" required>
+                  <input type="number" class="form-control" name="ponderation" id="ponderation" value="1" min="0" max="255" value="" required>
                 </div>  
               </div> 
               <div class="col-md-4">
