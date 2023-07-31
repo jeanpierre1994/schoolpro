@@ -265,9 +265,21 @@ class GroupepedagogiquesController extends Controller
     {
         $this->validate($request, [
             'prof_matiere_id'  => 'required',
-            'professeur_id' => 'required',     
-        ]); 
+            'professeur_id' => '',     
+        ]);
+        if(isset($request->coef) || isset($request->moyenne) || isset($request->note_max) || isset($request->section_id))
+        {
+            $attributes = $request->validate([
+                'coef' => 'numeric',
+                'moyenne' => 'min:2|numeric',
+                'note_max' => 'numeric',
+                'section_id' => 'exists:sections,id'
+            ]);
+            $matiere = Matieres::where('id', $request->prof_matiere_id)->get()->first();
+            $matiere->update($attributes);
+            return redirect()->back()->with("success", "Opération effectuée avec succès.");
 
+        }
         $check_data = Matiereprofesseurs::where("matiere_id",$request->prof_matiere_id)->where("professeur_id",$request->professeur_id)->exists();
         if ($check_data) {
             # code...
