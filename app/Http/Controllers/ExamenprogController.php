@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Matieres;
 use App\Models\Examenprog;
 use Illuminate\Http\Request;
 
@@ -79,8 +80,12 @@ class ExamenprogController extends Controller
      * @param  \App\Models\Examenprog  $examenprog
      * @return \Illuminate\Http\Response
      */
-    public function edit(Examenprog $examenprog)
+    public function edit($matiere)
     {
+        $examenprog = Examenprog::where('matiere_id', $matiere)
+        ->where('examen_id', \request()->examen_id)
+        ->get()
+        ->first();
         return view("backend.examenprog.edit", compact("examenprog"));
     }
 

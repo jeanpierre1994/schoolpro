@@ -46,13 +46,20 @@
           @foreach ($examenprogs as $item )
           <tr>
               <td class="text-center"><b>{{$i++}}</b></td>  
+<<<<<<< HEAD
               <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}} </td> 
+=======
+              <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}}</td> 
+>>>>>>> origin/schoolpro_v02
               <td>{{$item->date_debut}}</td> 
               <td>{{$item->date_fin}}</td> 
               <td>{{$item->getExamen->annee_academique}}</td>  
               <td>{{$item->commentaire}}</td> 
               <td class="text-center">
-                <a href="{{ route('examenprog.edit',$item->id) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
+                <form action="{{ route('examenprog.edit',$item->getMatiere->id) }}" method="get">
+                    <input type="hidden" name="examen_id" value="{{ $item->examen_id }}">
+                    <button type="submit" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button>
+                </form>
                 &nbsp;
                 <a href="#" data-bs-toggle="modal"
                 data-bs-target="#myModal_{{ $item->id }}">
@@ -62,7 +69,7 @@
             </a>
              </td>
           </tr>
-
+            <input type="hidden" name="examen_id" value="{{ $item->examen_id }}">
            <!-- The Modal -->
            <div class="modal text-center" id="myModal_{{ $item->id }}">
             <div class="modal-dialog modal-md modal-dialog-centered">

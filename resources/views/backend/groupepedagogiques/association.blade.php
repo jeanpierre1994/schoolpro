@@ -1,3 +1,4 @@
+use App\Models\Sections;
 @extends('backend/include/layout')
 
 @section('title')
@@ -9,10 +10,10 @@
         <h1>Paramètres</h1>
         <nav>
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{{route('dashboard_parent')}}">Accueil</a></li> 
-                <li class="breadcrumb-item"><a href="{{route('groupepedagogiques.index')}}">Groupe Pédagogique</a></li> 
+                <li class="breadcrumb-item"><a href="{{ route('dashboard_parent') }}">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('groupepedagogiques.index') }}">Groupe Pédagogique</a></li>
                 <li class="breadcrumb-item active" aria-current="page"> Nouveau</li>
-              </ol>
+            </ol>
         </nav>
     </div>
 @endsection
@@ -86,7 +87,7 @@
                                 <div class="col-md-4 mx-auto">
                                     <button class="btn btn-primary show-modal" type="button">Ajouter matière ou
                                         professeur</button>
-                                </div> 
+                                </div>
 
                             </div>
                         </div>
@@ -125,9 +126,9 @@
                                                     <td>{{ $item->getSection->libelle }}</td>
                                                     <td>
                                                         @foreach (getProfByMatiere($item->id, $item->groupepedagogique_id) as $data)
-                                                        @php
-                                                            $have_prof = true;
-                                                        @endphp
+                                                            @php
+                                                                $have_prof = true;
+                                                            @endphp
                                                             @if ($loop->last)
                                                                 <span class="badge bg-primary">{{ $data->nom }}
                                                                     {{ $data->prenoms }} {{ $data->email }}</span>
@@ -135,19 +136,32 @@
                                                                 <span class="badge bg-primary">{{ $data->nom }}
                                                                     {{ $data->prenoms }} {{ $data->email }}</span> &nbsp;
                                                             @endif
-                                                            <input type="hidden" id="prof_delete_id" name="prof_delete_id" value="{{$data->user_id}}">
+                                                            <input type="hidden" id="prof_delete_id"
+                                                                name="prof_delete_id" value="{{ $data->user_id }}">
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <div class="d-flex justify-content-evenly"> 
-                                                            <a href="#" title="Ajouter professeur" data-matiere="{{$item->id}}" data-libelle-matiere="{{$item->libelle}}" data-gp="{{$gp->id}}" class="show-prof-modal">
-                                                                <button type="button"
-                                                                    class="btn btn-sm btn-warning"><i
+                                                        <div class="d-flex justify-content-evenly">
+                                                            <a href="#" title="Ajouter professeur"
+                                                                data-matiere="{{ $item->id }}"
+                                                                data-libelle-matiere="{{ $item->libelle }}"
+                                                                data-note_max="{{ $item->note_max }}"
+                                                                data-moyenne="{{ $item->moyenne }}"
+                                                                data-section_id="{{ $sec = $item->section_id }}"
+                                                                data-coef="{{ $item->coef }}"
+                                                                data-gp="{{ $gp->id }}" class="show-prof-modal">
+                                                                <button type="button" class="btn btn-sm btn-warning"><i
                                                                         class="bi bi-person" style="color: white"
-                                                                        aria-hidden="true"></i></button></a>           
-                                                            <a href="#" title="Supprimer"><button type="button" data-matiere="{{$item->id}}" data-libelle-matiere="{{$item->libelle}}" data-gp="{{$gp->id}}" class="btn btn-sm btn-danger show-delete-modal"><i class="bi bi-trash" style="color: white" aria-hidden="true"></i></button></a>
+                                                                        aria-hidden="true"></i></button></a>
+                                                            <a href="#" title="Supprimer"><button type="button"
+                                                                    data-matiere="{{ $item->id }}"
+                                                                    data-libelle-matiere="{{ $item->libelle }}"
+                                                                    data-gp="{{ $gp->id }}"
+                                                                    class="btn btn-sm btn-danger show-delete-modal"><i
+                                                                        class="bi bi-trash" style="color: white"
+                                                                        aria-hidden="true"></i></button></a>
                                                         </div>
-                                                    </td> 
+                                                    </td>
                                                 </tr>
                                             @endforeach
 
@@ -188,9 +202,9 @@
                                 <select class="form-select" name="matiere_id" id="matiere_id" required>
                                     <option selected value="">Sélectionnez une option</option>
                                     @foreach ($listeMatieres as $donnees)
-                                    @if (!checkGpMatiere($gp->id,$donnees->id))
+                                        @if (!checkGpMatiere($gp->id, $donnees->id))
                                             <option value="{{ $donnees->id }}">{{ $donnees->libelle }}</option>
-                                    @endif
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -241,9 +255,9 @@
     </div>
     <!-- end modal export -->
 
-        <!-- modal delete data -->
+    <!-- modal delete data -->
 
-        <div class="modal fade" id="modalDeleteMatiere" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="modalDeleteMatiere" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="modaledeletematiere" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content">
@@ -251,34 +265,40 @@
                     <h5 class="modal-title text-white" id="modalDelete">Suppression d'une matière ou professeur</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="form" action="{{route('groupepedagogiques.delete-data')}}" method="post">
+                <form id="form" action="{{ route('groupepedagogiques.delete-data') }}" method="post">
                     @csrf
                     <input type="hidden" value="" name="gp_id" id="gp_id">
                     <input type="hidden" name="prof_sup_id" id="prof_sup_id">
-                    <input type="hidden" value="" name="matiere_delete_id" id="matiere_delete_id"> 
+                    <input type="hidden" value="" name="matiere_delete_id" id="matiere_delete_id">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                  <label for="" class="form-label">Matière</label>
-                                  <input type="text"
-                                    class="form-control" disabled name="" id="libelle_matiere" aria-describedby="helpId" placeholder="">
+                                    <label for="" class="form-label">Matière</label>
+                                    <input type="text" class="form-control" disabled name=""
+                                        id="libelle_matiere" aria-describedby="helpId" placeholder="">
                                 </div>
-                            </div> 
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="delete_data" value="1">
                                     <label class="form-check-label" for="">Matière</label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
+                                </div>
+                                <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="delete_data" value="2">
                                     <label class="form-check-label" for="">Professeur</label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
+                                </div>
+                                <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="delete_data" value="3">
                                     <label class="form-check-label" for="">Matière et professeur</label>
-                                  </div> 
-                            </div>   
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -293,49 +313,73 @@
     <!-- modal add prof data -->
 
     <div class="modal fade" id="modalProf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modaleprof" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary w-100 text-center text-white">
-                <h5 class="modal-title text-white" id="modalDelete">Ajouter un professeur</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="form" action="{{route('groupepedagogiques.update-profmatiere')}}" method="post">
-                @csrf
-                <input type="hidden" value="" name="prof_gp_id" id="prof_gp_id"> 
-                <input type="hidden" value="" name="prof_matiere_id" id="prof_matiere_id"> 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                              <label for="" class="form-label">Matière</label>
-                              <input type="text"
-                                class="form-control" disabled name="" id="prof_libelle_matiere" aria-describedby="helpId" placeholder="">
+        aria-labelledby="modaleprof" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary w-100 text-center text-white">
+                    <h5 class="modal-title text-white" id="modalDelete">Ajouter un professeur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form" action="{{ route('groupepedagogiques.update-profmatiere') }}" method="post">
+                    @csrf
+                    <input type="hidden" value="" name="prof_gp_id" id="prof_gp_id">
+                    <input type="hidden" value="" name="prof_matiere_id" id="prof_matiere_id">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Matière</label>
+                                    <input type="text" class="form-control" disabled name=""
+                                        id="prof_libelle_matiere" aria-describedby="helpId" placeholder="">
+                                </div>
                             </div>
-                        </div> 
-
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                              <label for="" class="form-label">Professeur</label>
-                              <select class="form-select" name="professeur_id">
-                                <option selected value=""></option>
-                                @foreach ($professeurs as $data)
-                                    <option value="{{ $data->compte_id }}">{{ $data->nom }} {{ $data->prenoms }}
-                                    </option>
-                                @endforeach
-                            </select> 
+                            <div class="form-group col-md-12 ">
+                                <label for="label">Section <i class="text-danger">*</i></label>
+                                <select class="form-select" name="section_id" id="section_id" required>
+                                    <option selected value="">Sélectionnez une option</option>
+                                    @foreach ($sections as $section)
+                                        <option value="{{ $section->id }}" {{ $section->id == $sec ? 'selected' : '' }}>{{ $section->libelle }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                        </div>    
+                            <div class="form-group col-md-4 ">
+                                <label for="label">Note max <i class="text-danger">*</i></label>
+                                <input type="number" min="0" name="note_max" id="note_max2"
+                                    class="form-control" value="20" required>
+                            </div>
+                            <div class="form-group col-md-4 ">
+                                <label for="label">Moyenne <i class="text-danger">*</i></label>
+                                <input type="number" min="0" value="10" name="moyenne" id="moyenne2"
+                                    class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4 ">
+                                <label for="label">Coef <i class="text-danger">*</i></label>
+                                <input type="number" min="1" value="1" name="coef" id="coef2"
+                                    class="form-control" required>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Professeur</label>
+                                    <select class="form-select" name="professeur_id">
+                                        <option selected value=""></option>
+                                        @foreach ($professeurs as $data)
+                                            <option value="{{ $data->compte_id }}">{{ $data->nom }}
+                                                {{ $data->prenoms }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="submit" id="valider-prof" class="btn btn-primary">Valider</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" id="valider-prof" class="btn btn-primary">Valider</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
     <!-- end modal export -->
 @endsection
 
@@ -357,7 +401,7 @@
             });
 
             // show delete modal
-            $(".show-delete-modal").on("click", function() {  
+            $(".show-delete-modal").on("click", function() {
                 $("#libelle_matiere").val($(this).attr("data-libelle-matiere"));
                 $("#gp_id").val($(this).attr("data-gp"));
                 $("#matiere_delete_id").val($(this).attr("data-matiere"));
@@ -365,11 +409,15 @@
                 $('#modalDeleteMatiere').modal('show')
             });
             // show prof modal
-            $(".show-prof-modal").on("click", function() {  
+            $(".show-prof-modal").on("click", function() {
                 $("#prof_libelle_matiere").val($(this).attr("data-libelle-matiere"));
                 $("#prof_gp_id").val($(this).attr("data-gp"));
-                $("#prof_matiere_id").val($(this).attr("data-matiere")); 
+                $("#prof_matiere_id").val($(this).attr("data-matiere"));
                 $('#modalProf').modal('show')
+                $('#note_max2').val($(this).attr("data-note_max"));
+                $('#section_id2').val($(this).attr("data-section_id"));
+                $('#moyenne2').val($(this).attr("data-moyenne"));
+                $('#coef2').val($(this).attr("data-coef"));
             });
         });
 
