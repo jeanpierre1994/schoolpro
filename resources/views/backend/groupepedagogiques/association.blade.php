@@ -109,6 +109,9 @@ use App\Models\Sections;
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Matière</th>
+                                                <th scope="col">Coef</th>
+                                                <th scope="col">Note max</th>
+                                                <th scope="col">Moyenne</th>
                                                 <th scope="col">Section</th>
                                                 <th scope="col">Professeur</th>
                                                 <th scope="col">Action</th>
@@ -123,6 +126,9 @@ use App\Models\Sections;
                                                 <tr>
                                                     <td>{{ $i++ }}</td>
                                                     <td>{{ $item->libelle }}</td>
+                                                    <td class="text-center">{{ $item->coef }}</td>
+                                                    <td class="text-center">{{ $item->note_max }}</td>
+                                                    <td class="text-center">{{ $item->moyenne }}</td>
                                                     <td>{{ $item->getSection->libelle }}</td>
                                                     <td>
                                                         @foreach (getProfByMatiere($item->id, $item->groupepedagogique_id) as $data)

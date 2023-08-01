@@ -46,11 +46,7 @@
           @foreach ($examenprogs as $item )
           <tr>
               <td class="text-center"><b>{{$i++}}</b></td>  
-<<<<<<< HEAD
-              <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}} </td> 
-=======
               <td>{{$item->matiere_id ? $item->getMatiere->libelle : ''}}</td> 
->>>>>>> origin/schoolpro_v02
               <td>{{$item->date_debut}}</td> 
               <td>{{$item->date_fin}}</td> 
               <td>{{$item->getExamen->annee_academique}}</td>  

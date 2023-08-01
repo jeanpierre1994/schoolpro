@@ -20,6 +20,7 @@ class Matieres extends Model
     protected $fillable = [
         'libelle',
         'sigle', 
+        'coef',
         'groupepedagogique_id',// FK
         'categorie_id',
         'section_id',

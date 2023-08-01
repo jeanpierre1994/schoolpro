@@ -264,8 +264,7 @@ class GroupepedagogiquesController extends Controller
     public function updateMatiereProf(Request $request)
     {
         $this->validate($request, [
-            'prof_matiere_id'  => 'required',
-            'professeur_id' => '',     
+            'prof_matiere_id'  => 'required',  
         ]);
         if(isset($request->coef) || isset($request->moyenne) || isset($request->note_max) || isset($request->section_id))
         {
@@ -275,26 +274,52 @@ class GroupepedagogiquesController extends Controller
                 'note_max' => 'numeric',
                 'section_id' => 'exists:sections,id'
             ]);
-            $matiere = Matieres::where('id', $request->prof_matiere_id)->get()->first();
-            $matiere->update($attributes);
-            return redirect()->back()->with("success", "Opération effectuée avec succès.");
+            $matiere = Matieres::find($request->prof_matiere_id);
+            $matiere->setAttribute("coef",$request->coef);
+            $matiere->setAttribute("moyenne",$request->moyenne);
+            $matiere->setAttribute("note_max",$request->note_max);
+            $matiere->setAttribute("section_id",$request->section_id);
+            $matiere->update();
+           // return redirect()->back()->with("success", "Opération effectuée avec succès.");
 
         }
-        $check_data = Matiereprofesseurs::where("matiere_id",$request->prof_matiere_id)->where("professeur_id",$request->professeur_id)->exists();
+
+        if ($request->professeur_id) {
+            # code...
+            $check_data = Matiereprofesseurs::where("matiere_id",$request->prof_matiere_id)->where("professeur_id",$request->professeur_id)->exists();
         if ($check_data) {
             # code...
             return redirect()->back()->with("error", "Le professeur est déjà associé à cette matière.");
         } else {
             # code...
-            $save_data = new Matiereprofesseurs();
+            $check = Matiereprofesseurs::where("matiere_id",$request->prof_matiere_id)->exists();
+            if ($check) {
+                # code...
+                $save_data = Matiereprofesseurs::where("matiere_id",$request->prof_matiere_id)->first();
+                $save_data->setAttribute('matiere_id', $request->prof_matiere_id);
+                $save_data->setAttribute('professeur_id', $request->professeur_id);
+                $save_data->setAttribute('statut_id', 1);
+                $save_data->setAttribute('created_by', auth()->user()->id);
+                $save_data->setAttribute('updated_by', auth()->user()->id);
+                $save_data->update();
+            } else {
+                # code...
+                $save_data = new Matiereprofesseurs();
                 $save_data->setAttribute('matiere_id', $request->prof_matiere_id);
                 $save_data->setAttribute('professeur_id', $request->professeur_id);
                 $save_data->setAttribute('statut_id', 1);
                 $save_data->setAttribute('created_by', auth()->user()->id);
                 $save_data->setAttribute('updated_by', auth()->user()->id);
                 $save_data->save();
-            return redirect()->back()->with("success", "Opération effectuée avec succès.");
+            } 
+            
         } 
+
+        }
+
+        return redirect()->back()->with("success", "Opération effectuée avec succès.");
+
+        
     }
     /**
      * Display the specified resource.
