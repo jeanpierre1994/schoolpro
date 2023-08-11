@@ -130,7 +130,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     // ajax requête
  });
 
- Route::get('pdf', PdfController::class)->name('pdf');
+ Route::get('pdf/{examens:id}', PdfController::class)->name('pdf');
 
 Auth::routes();
 // check_dashboard

@@ -84,7 +84,7 @@
               <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Année académique <i class="text-danger">*</i></label>
                 <div>
-                  <input type="number" class="form-control" required name="annee_academique" id="annee_academique" value="{{date(Y)}}" min="0" max="9999" >
+                  <input type="number" class="form-control" required name="annee_academique" id="annee_academique" value="{{date('Y')}}" min="0" max="9999" >
                 </div>  
               </div> 
               <div class="col-md-4">
