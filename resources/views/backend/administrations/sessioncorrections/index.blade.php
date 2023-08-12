@@ -57,7 +57,7 @@
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
                                             <td class="text-center">{{ $item->code_examen}}</td>
                                             <td>{{ $item->libelle }}</td>
-                                            <td>{{ $item->libelle_classe }}</td>
+                                            <td>{{$item->pole}} {{$item->filiere}} {{ $item->libelle_classe }} {{$item->libelle_secondaire}}</td>
                                             <td>{{ $item->matiere }}</td> 
                                             <td class="text-center">
                                                 @if (checkSession($item->id))

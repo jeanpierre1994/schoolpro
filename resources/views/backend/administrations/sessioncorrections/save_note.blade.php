@@ -35,11 +35,12 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                 @endif
                     <div class="card-body">
                         <div class="card-body row mb-2" style="border-bottom: 2px #e0adad solid;">
+                            <div class="col-md-12 mb-2">Groupe péda. : <b>{{$session->getExamenprog->getMatiere->getGp->getPole->libelle}} {{$session->getExamenprog->getMatiere->getGp->getFiliere->libelle}} {{$session->getExamenprog->getMatiere->getGp->libelle_classe}} {{$session->getExamenprog->getMatiere->getGp->libelle_secondaire}}</b> </div>
                             <div class="col-md-12 mb-2">Session de correction d'examen N° <b>{{$session->getExamenprog->getExamen->code_examen}} || {{$session->getExamenprog->getExamen->libelle}}</b> </div>
                             <div class="col-md-12 mb-2">Epreuve de : <b>{{$session->getExamenprog->getMatiere->libelle}}</b> </div>
                             <div class="col-md-12 mb-2">Nbre d'étudiants notés : <b>{{$notes_etudiants_valide}}</b> 
                                 @if ($notes_etudiants_valide > 0)
-                                <a href="{{route("sessionscorrections.liste",$session->id)}}"><span class="badge bg-primary p-1">consulter la liste</span></a>
+                                <a href="{{route("sessionscorrections.liste",$session->getExamenprog->id)}}"><span class="badge bg-primary p-1">consulter la liste</span></a>
                                 @endif
                             </div>
                             <div class="col-md-12">Statut de la session : 
@@ -61,7 +62,7 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                                         <th scope="col">Matricule</th>
                                         <th scope="col">Nom</th>
                                         <th scope="col">Prénoms</th> 
-                                        <th scope="col">Commentaire</th> 
+                                        <th scope="col">Note</th> 
                                         <th scope="col"><button type="submit" class="btn btn-primary btn-sm" title="Validation en max"><i class="bi bi-check text-white"></i> Validation Note</button></th>  
                                      </tr>
                                 </thead>
@@ -74,11 +75,11 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                                             <td>{{ $data->etudiant_id ?  $data->getEtudiant->matricule : ''}}</td>
                                             <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
                                             <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
-                                            <td><input type="text" name="commentaire[]" class="form-control"></td> 
                                             <td>
-                                                <input type="number" name="note[]" value="" class="form-control">
+                                                <input type="number" name="note[]" value="{{$data->note}}" class="form-control">
                                                 <input type="hidden" name="note_id[]" value="{{$data->id}}">
                                             </td>   
+                                            <td><input type="text" name="commentaire[]" class="form-control" value="{{$data->commentaire}}"></td> 
                                         </tr>
                                     @endforeach
                                 </tbody>

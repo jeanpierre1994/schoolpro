@@ -19,6 +19,26 @@
 
 @else
     
+<!-- Etudiant -->
+<li class="nav-item">
+  <a class="nav-link collapsed" data-bs-target="#etudiants-nav" data-bs-toggle="collapse" href="#">
+    <i class="ri-newspaper-fill"></i><span>Etudiants</span><i class="bi bi-chevron-down ms-auto"></i>
+  </a>
+  <ul id="etudiants-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+    <li>
+      <a href="{{route('admin.add-etudiant')}}" id="etudiants-add" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Ajouter</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="dossier-valide" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Liste</span>
+      </a>
+    </li>  
+  </ul>
+</li>
+<!-- End Etudiant Nav -->
+    
 <!-- dossier -->
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#dossiers-nav" data-bs-toggle="collapse" href="#">

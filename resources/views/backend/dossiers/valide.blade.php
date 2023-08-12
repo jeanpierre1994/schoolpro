@@ -35,6 +35,7 @@
                                         <th>Pôle</th>
                                         <th>Filière</th>
                                         <th>Cycle</th>
+                                        <th>Groupe Péda.</th>
                                         <th>Niveau</th>
                                         <th>Année</th>
                                         <th>Sponsor</th>
@@ -71,6 +72,7 @@
                                             </td>
                                             <td>{{ $item->getDossier->getFiliere->libelle }}</td>
                                             <td>{{ $item->getDossier->getCycle->libelle }}</td>
+                                            <td>{{ $item->getGp->libelle_classe }} {{ $item->getGp->libelle_secondaire }}</td>
                                             <td>{{ $item->getDossier->getNiveau->libelle }}</td>
                                             <td>{{ $item->getDossier->annee }}</td>
                                             <td>

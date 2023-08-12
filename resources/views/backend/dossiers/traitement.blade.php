@@ -111,7 +111,7 @@
                     <select class="form-select" name="groupepedagogique_id" id="groupepedagogique_id" required>
                         <option value="" selected>Choisissez une option</option>  
                         @foreach ($gp as $item)
-                        <option value="{{$item->id}}">{{$item->libelle_classe}}</option>
+                        <option value="{{$item->id}}">{{$item->getPole->libelle}} {{$item->getFiliere->libelle}} {{$item->libelle_classe}} {{$item->libelle_secondaire}}</option>
                         @endforeach
                       </select>
                  </div>

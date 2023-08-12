@@ -60,7 +60,7 @@
               <td>{{$item->max_moyenne}}</td>
               <td class="text-center">
                 <a href="{{ route('examens.edit',$item->id) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
-                <a href="{{ route('examens.show',$item->id) }}" title="Matière"><button type="button" class="btn btn-sm btn-primary"><i class="bi bi-list" style="color: white" aria-hidden="true"></i></button></a>
+                <a href="{{ route('examens.show',$item->id) }}" title="Groupe pédagogique"><button type="button" class="btn btn-sm btn-primary"><i class="bi bi-list" style="color: white" aria-hidden="true"></i></button></a>
               </td>
           </tr>
           @endforeach

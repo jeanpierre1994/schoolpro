@@ -32,9 +32,10 @@ Liste des notes || {{ env('APP_NAME') }}
                         </ul>
                     </div>
                 @endif
-                    <div class="card-body"> 
-                        <h5 class="card-title">Session de correction d'examen N° <b>{{$session->getExamenprog->getExamen->code_examen}} || {{$session->getExamenprog->getExamen->libelle}}</b>
-                        <br>Epreuve de : <b>{{$session->getExamenprog->getMatiere->libelle}}</b> 
+                    <div class="card-body">  
+                        <h5 class="card-title">Groupe péda. : <b>{{$session->getExamenprog->getMatiere->getGp->getPole->libelle}} {{$session->getExamenprog->getMatiere->getGp->getFiliere->libelle}} {{$session->getExamenprog->getMatiere->getGp->libelle_classe}} {{$session->getExamenprog->getMatiere->getGp->libelle_secondaire}}</b> <br> <br>
+                        Session de correction d'examen N° <b>{{$session->getExamenprog->getExamen->code_examen}} || {{$session->getExamenprog->getExamen->libelle}}</b> <br>
+                        <br>Epreuve de : <b>{{$session->getExamenprog->getMatiere->libelle}}</b> <br>
                         <br> <code>Liste des notes</code>
                     </h5>  
                         <!-- Bordered Table -->
@@ -48,6 +49,7 @@ Liste des notes || {{ env('APP_NAME') }}
                                         <th scope="col">Nom</th>
                                         <th scope="col">Prénoms</th> 
                                         <th scope="col">Note</th>    
+                                        <th scope="col">Commentaire</th>    
                                      </tr>
                                 </thead>
                                 <tbody>
@@ -60,6 +62,7 @@ Liste des notes || {{ env('APP_NAME') }}
                                             <td class="text-center">{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
                                             <td class="text-center">{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
                                             <td class="text-center">{{$data->note}}</td>  
+                                            <td class="text-center">{{$data->commentaire}}</td>  
                                         </tr>
                                     @endforeach
                                 </tbody>

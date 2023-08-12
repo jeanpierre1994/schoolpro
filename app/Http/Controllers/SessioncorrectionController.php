@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiants;
 use App\Models\Examenprog;
+use App\Models\Matiereprofesseurs;
 use App\Models\Notes;
 use App\Models\Profil;
 use App\Models\Sessioncorrections;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class SessioncorrectionController extends Controller
 {
@@ -21,15 +23,21 @@ class SessioncorrectionController extends Controller
             # code...
             switch ($user_profil->libelle) {
                 case "PROFESSEUR":
-                    # code...
-                    $examenprog = Examenprog::join("examens", "examens.id", "=", "examenprogs.id")
-                        ->join("matieres", "matieres.id", "=", "examenprogs.matiere_id")
-                        ->join("groupepedagogiques", "groupepedagogiques.id", "=", "matieres.groupepedagogique_id")
-                        ->join("matiereprofesseurs", "matieres.id", "=", "matiereprofesseurs.matiere_id")
-                        ->where("matiereprofesseurs.professeur_id", Auth()->user()->id)
-                        ->where("examens.statut_id", 1)
-                        ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.libelle_classe", "matieres.libelle as matiere"])
-                        ->get();
+                    # code... 
+                    $examenprog = Matiereprofesseurs::
+                    where("matiereprofesseurs.professeur_id", Auth()->user()->id)
+                    ->join("matieres","matiereprofesseurs.matiere_id","=","matieres.id")
+                    ->leftjoin("groupepedagogiques", "groupepedagogiques.id", "=", "matieres.groupepedagogique_id")
+                    ->leftjoin("poles","groupepedagogiques.pole_id","=","poles.id")
+                    ->leftjoin("niveaux","groupepedagogiques.niveau_id","=","niveaux.id")
+                    ->leftjoin("cycles","groupepedagogiques.cycle_id","=","cycles.id")
+                    ->leftjoin("filieres","groupepedagogiques.filiere_id","=","filieres.id")
+                    ->join("examenprogs","matieres.id","=","examenprogs.matiere_id")
+                    ->leftjoin("examens", "examens.id", "=", "examenprogs.examen_id") 
+                    ->where("examens.statut_id", 1)
+                    ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
+                    ->get();
+                       // dd(Auth()->user()->id);
                     break;
 
                 case "ADMIN":
@@ -73,12 +81,12 @@ class SessioncorrectionController extends Controller
                         # code...
                         $session = Sessioncorrections::where("professeur_id", $prof->id)->where("examen_prog_id", $id)->first();
                         $notes_etudiants_valide = Notes::where("examen_prog_id", $id)->where("professeur_id", $prof->id)->where("statutvalidation_id", 2)->count();
-                        $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->where("professeur_id", $prof->id)->where("statutvalidation_id", 1)->get();
+                        $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->where("professeur_id", $prof->id)->get();
                         return view("backend.administrations.sessioncorrections.save_note", compact("session", "notes_etudiants_valide", "notes_etudiants_encours"));
                     } else {
-
+                        //dd($examenprog->getMatiere->groupepedagogique_id);
                         // récupérer la liste des étudiants/élèves du groupe pédagogique en cours
-                        $etudiants = Etudiants::where("groupepedagogique_id", $examenprog->getExamen->groupepedagogique_id)->get();
+                        $etudiants = Etudiants::where("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id)->get();
                         if ($etudiants->count() > 0) {
                             # code...
                             $session = new Sessioncorrections();
@@ -96,7 +104,7 @@ class SessioncorrectionController extends Controller
                                 $note = new Notes();
                                 $note->setAttribute("sessioncorrection_id", $session->id);
                                 $note->setAttribute("examen_prog_id", $id);
-                                $note->setAttribute("groupepedagogique_id", $examenprog->getExamen->groupepedagogique_id);
+                                $note->setAttribute("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id);
                                 $note->setAttribute("etudiant_id", $etudiant->id);
                                 $note->setAttribute("professeur_id", $prof->id);
                                 $note->setAttribute("statutvalidation_id", 1);
@@ -176,8 +184,8 @@ class SessioncorrectionController extends Controller
 
     public function listeEtudiant(Request $request, $id)
     {
-        $notes = Notes::where("statutvalidation_id", 2)->where("sessioncorrection_id", $id)->get();
-        $session = Sessioncorrections::find($id);
+        $session = Sessioncorrections::where("examen_prog_id",$id)->where("professeur_id",Auth()->user()->id)->first();
+        $notes = Notes::where("statutvalidation_id", 2)->where("sessioncorrection_id", $session->id)->get();
         $user_profil = Profil::find(Auth()->user()->profil_id); 
         if ($user_profil) {
             # code...

@@ -25,7 +25,7 @@ class Notes extends Model
         'professeur_id',
         'note_examen',
         'note',
-        'commentaitaire',
+        'commentaire',
         'statutvalidation_id',
         'created_by', 
     ];

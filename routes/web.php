@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminEtudiantController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\CyclesController;
@@ -234,6 +235,10 @@ Route::post('admin/association/delete/data-GpProf', [GroupepedagogiquesControlle
 Route::get('admin/examenprogs/gp/{id}/{gp_id}/matieres', [ExamensController::class, 'showMatieres'])->name('examenprog.matiere-gp')->middleware("auth");
 // updateMatiereProf
 Route::post('admin/association/update/prof-matiere', [GroupepedagogiquesController::class, 'updateMatiereProf'])->name('groupepedagogiques.update-profmatiere')->middleware("auth");
+
+// add etudiant admin.add-etudiant
+Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant'])->name('admin.add-etudiant')->middleware("auth");
+
 
  // Lien symbolique vers dossier de stockage
  Route::get('/ActiveStorage', function () {
