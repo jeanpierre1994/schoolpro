@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cycles;
 use App\Models\Etablissements;
+use App\Models\Etudiants;
+use App\Models\Examens;
 use App\Models\Groupepedagogiques;
 use App\Models\Matiereconfig;
 use App\Models\Matiereprofesseurs;
@@ -474,6 +476,34 @@ class GroupepedagogiquesController extends Controller
         }
  
     }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listeEtudiant(Request $request, $id)
+    {
+        $etudiants = Etudiants::where("groupepedagogique_id",$id)->orderBy("matricule","asc")->get();
+        $gp = Groupepedagogiques::find($id);
+        return view("backend.groupepedagogiques.lise-etudiant", compact("etudiants","gp"));
+    }
+
+    // listeExamen
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listeExamen(Request $request, $id, $etudiant_id)
+    {
+        $etudiant = Etudiants::find($etudiant_id);
+        $gp = Groupepedagogiques::find($id);
+        $examens = Examens::all();
+        return view("backend.groupepedagogiques.lise-examens", compact("etudiant","gp","examens"));
+    }
+
 
     /**
      * Remove the specified resource from storage.

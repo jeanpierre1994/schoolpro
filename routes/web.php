@@ -1,39 +1,40 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminEtudiantController;
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\CustomAuthController;
-use App\Http\Controllers\CyclesController;
-use App\Http\Controllers\DossiersController;
-use App\Http\Controllers\EtablissementsController;
-use App\Http\Controllers\EtudiantController;
-use App\Http\Controllers\ExamenprogController;
-use App\Http\Controllers\ExamensController;
-use App\Http\Controllers\ExamentypesController;
-use App\Http\Controllers\FilieresController;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\GenresController;
-use App\Http\Controllers\GroupepedagogiquesController;
-use App\Http\Controllers\MatiereconfigController;
-use App\Http\Controllers\MatieresController;
-use App\Http\Controllers\NiveauxController;
-use App\Http\Controllers\ParentsController;
-use App\Http\Controllers\PersonnesController;
-use App\Http\Controllers\PolesController;
-use App\Http\Controllers\ProfesseursController;
-use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\SectionsController;
-use App\Http\Controllers\SessioncorrectionController;
-use App\Http\Controllers\SitesController;
-use App\Http\Controllers\StatutjuridiquesController;
-use App\Http\Controllers\StatutsController;
-use App\Http\Controllers\TypesponsorsController;
-use App\Models\Etablissements;
 use App\Models\Examenprog;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\Etablissements;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminEtudiantController;
+use App\Http\Controllers\PolesController;
+use App\Http\Controllers\SitesController;
+use App\Http\Controllers\CyclesController;
+use App\Http\Controllers\GenresController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\ExamensController;
+use App\Http\Controllers\NiveauxController;
+use App\Http\Controllers\ParentsController;
+use App\Http\Controllers\StatutsController;
+use App\Http\Controllers\DossiersController;
+use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\FilieresController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MatieresController;
+use App\Http\Controllers\SectionsController;
+use App\Http\Controllers\PersonnesController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\ExamenprogController;
+use App\Http\Controllers\ExamentypesController;
+use App\Http\Controllers\ProfesseursController;
+use App\Http\Controllers\TypesponsorsController;
+use App\Http\Controllers\MatiereconfigController;
+use App\Http\Controllers\EtablissementsController;
+use App\Http\Controllers\StatutjuridiquesController;
+use App\Http\Controllers\SessioncorrectionController;
+use App\Http\Controllers\GroupepedagogiquesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +131,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     // ajax requête
  });
 
+ Route::get('pdf/{id}/{gp_id}/{etudiant_id}', PdfController::class)->name('pdf');
 
 Auth::routes();
 // check_dashboard
@@ -238,6 +240,11 @@ Route::post('admin/association/update/prof-matiere', [GroupepedagogiquesControll
 
 // add etudiant admin.add-etudiant
 Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant'])->name('admin.add-etudiant')->middleware("auth");
+
+// liste etudiant groupe pedagogique
+Route::get('admin/gp/{id}/etudiant', [GroupepedagogiquesController::class, 'listeEtudiant'])->name('groupepedagogiques.etudiants')->middleware("auth");
+// liste examen par gp groupepedagogiques.examens
+Route::get('admin/examen/gp/{id}/{etudiant_id}/etudiant', [GroupepedagogiquesController::class, 'listeExamen'])->name('groupepedagogiques.examens')->middleware("auth");
 
 
  // Lien symbolique vers dossier de stockage

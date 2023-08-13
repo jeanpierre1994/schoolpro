@@ -101,6 +101,92 @@
                                 </select>                         
                             </div>
                         </div>
+
+                        <!--  -->
+                        {{--<div class="form-row">
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Etablissement <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="profil_id" id="profil_id" required>
+                                  <option value="" selected>Choisissez votre type</option>
+                                  @foreach ($profils as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Site <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="genre_id" id="genre_id" required>
+                                  <option value="" selected>Choisissez votre genre</option>
+                                  @foreach ($genres as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Pôle <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="profil_id" id="profil_id" required>
+                                  <option value="" selected>Choisissez votre type</option>
+                                  @foreach ($profils as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Filière <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="genre_id" id="genre_id" required>
+                                  <option value="" selected>Choisissez votre genre</option>
+                                  @foreach ($genres as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Cycle <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="profil_id" id="profil_id" required>
+                                  <option value="" selected>Choisissez votre type</option>
+                                  @foreach ($profils as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Niveau <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="genre_id" id="genre_id" required>
+                                  <option value="" selected>Choisissez votre genre</option>
+                                  @foreach ($genres as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Année <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="profil_id" id="profil_id" required>
+                                  <option value="" selected>Choisissez votre type</option>
+                                  @foreach ($profils as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label for="form-label">Type sponsor <i class="text-danger">*</i></label>
+                                <select class="browser-default custom-select" name="genre_id" id="genre_id" required>
+                                  <option value="" selected>Choisissez votre genre</option>
+                                  @foreach ($genres as $item)
+                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                  @endforeach
+                                </select>                         
+                            </div>
+                        </div>--}}
+                        <!--  -->
                         <div class="form-row">
                             <div class="col-md-6 mb-2">
                                 <label for="form-label">Mot de passe <i class="text-danger">*</i></label>
