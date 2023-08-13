@@ -38,10 +38,10 @@ class PdfController extends Controller
 
         foreach( $notes as $note )
         { 
-            if (!empty($note) && !empty($note->examen_prog_id)) {
+            if (!empty($note) && !empty($note[0]->examen_prog_id)) {
                 # code...
 
-            $matiere = Matieres::findOrFail($note->getExamenprog->matiere_id);
+            $matiere = Matieres::findOrFail($note[0]->getExamenprog->matiere_id);
             if($matiere->section_id == 1)
             {
                 $notesSectionFrench[] = $note;
