@@ -23,6 +23,7 @@ use App\Models\Etablissements;
 use App\Models\Statutjuridiques;
 use App\Models\Groupepedagogiques;
 use App\Models\Matiereprofesseurs;
+use App\Models\Sessioncorrections;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert as Alert; 
@@ -126,7 +127,8 @@ class AdminController extends Controller
         $nbre_matiere = Matieres::all()->count();
         $nbre_examentype = Examentypes::all()->count();
         $nbre_examen = Examens::all()->count();
-
+        $nbre_matiere_prof = Matiereprofesseurs::all()->count();
+        $sessionCorrection = Sessioncorrections::all()->count();
         $profil_professeur = Profil::where("libelle","PROFESSEUR")->first();
         if ($profil_professeur) {
             # code...
@@ -136,7 +138,7 @@ class AdminController extends Controller
             $nbre_professeur = 0;
         } 
         
-        return view("backend.parametres",compact("nbre_categorie","nbre_gp","nbre_section","nbre_niveau","nbre_typesponsor","nbre_matiere", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","nbre_profil","nbre_site","nbre_etablissement","nbre_examentype","nbre_examen","nbre_professeur"));
+        return view("backend.parametres",compact("nbre_categorie","nbre_gp","nbre_section", 'sessionCorrection','nbre_matiere_prof',"nbre_niveau","nbre_typesponsor","nbre_matiere", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","nbre_profil","nbre_site","nbre_etablissement","nbre_examentype","nbre_examen","nbre_professeur"));
          
      }
 
