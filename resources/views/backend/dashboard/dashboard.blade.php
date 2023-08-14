@@ -37,7 +37,7 @@
                       <i class="ri-user-3-fill"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>0</h6> 
+                      <h6>{{ $dossierEnAttente }}</h6> 
                     </div>
                   </div>
                 </div> 
@@ -57,7 +57,7 @@
                       <i class="ri-user-3-fill text-dark"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>0</h6>  
+                      <h6>{{ $dossierValide }}</h6>  
                     </div>
                   </div>
                 </div>
@@ -79,7 +79,7 @@
                       <i class="bi bi-person-x-fill"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>0</h6> 
+                      <h6>{{ $dossierRejete }}</h6> 
                     </div>
                   </div>
                 </div>

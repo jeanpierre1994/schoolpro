@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
+use App\Models\User;
+use App\Models\Poles;
+use App\Models\Sites;
 use App\Models\Cycles;
-use App\Models\Etablissements;
-use App\Models\Examens;
-use App\Models\Examentypes;
-use App\Models\Filieres;
 use App\Models\Genres;
+use App\Models\Profil;
+use App\Models\Examens;
+use App\Models\Niveaux;
+use App\Models\Statuts;
+use App\Models\Dossiers;
+use App\Models\Filieres;
+use App\Models\Matieres;
+use App\Models\Sections;
+use App\Models\Categories;
+use App\Models\Examentypes;
+use App\Models\Typesponsors;
+use Illuminate\Http\Request;
+use App\Models\Etablissements;
+use App\Models\Statutjuridiques;
 use App\Models\Groupepedagogiques;
 use App\Models\Matiereprofesseurs;
-use App\Models\Matieres;
-use App\Models\Niveaux;
-use App\Models\Poles;
-use App\Models\Profil;
-use App\Models\Sections;
-use App\Models\Sites;
-use App\Models\Statutjuridiques;
-use App\Models\Statuts;
-use App\Models\Typesponsors;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert as Alert; 
 
 class AdminController extends Controller
@@ -57,9 +58,12 @@ class AdminController extends Controller
      */
    
     public function dashboard()
-    { 
+    {
+        $dossierEnAttente = Dossiers::where('statuttraitement_id', 1)->count(); 
+        $dossierValide = Dossiers::where('statuttraitement_id', 2)->count(); 
+        $dossierRejete = Dossiers::where('statuttraitement_id', 3)->count();
         if(Auth::check()){
-            return view('backend.dashboard.dashboard');
+            return view('backend.dashboard.dashboard', compact('dossierRejete', 'dossierValide', 'dossierEnAttente'));
         }
         Alert::toast("Vous n'êtes pas autorisé à accéder.",'error');
         return redirect()->route('login');
@@ -80,10 +84,13 @@ class AdminController extends Controller
     } 
 
     public function dashboardParent()
-    { 
+    {
+        $dossierEnAttente = Dossiers::where('statuttraitement_id', 1)->where('created_by', auth()->user()->id)->count(); 
+        $dossierValide = Dossiers::where('statuttraitement_id', 2)->where('created_by', auth()->user()->id)->count(); 
+        $dossierRejete = Dossiers::where('statuttraitement_id', 3)->where('created_by', auth()->user()->id)->count(); 
         if(Auth::check()){
             if(auth()->user()->profil_id == 3){ 
-                return view('frontend.dashboard.dashboard_parent');
+                return view('frontend.dashboard.dashboard_parent', compact('dossierRejete', 'dossierEnAttente', 'dossierValide'));
             }else{ 
                 Alert::toast("Vous n'êtes pas autorisé à accéder à cette page.",'error');
                 return redirect()->route('logout');  

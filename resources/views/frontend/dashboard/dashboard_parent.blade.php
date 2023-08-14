@@ -59,7 +59,7 @@
                             </div>
                           </div>
                           <div class="align-self-center">
-                            <h2 class="h1 mb-0">0</h2>
+                            <h2 class="h1 mb-0">{{ $dossierEnAttente }}</h2>
                           </div>
                         </div>
                       </div>
@@ -80,7 +80,7 @@
                               </div>
                             </div>
                             <div class="align-self-center">
-                              <h2 class="h1 mb-0">0</h2>
+                              <h2 class="h1 mb-0">{{ $dossierValide }}</h2>
                             </div>
                           </div>
                         </div>
@@ -101,7 +101,7 @@
                                 </div>
                               </div>
                               <div class="align-self-center">
-                                <h2 class="h1 mb-0">0</h2>
+                                <h2 class="h1 mb-0">{{ $dossierRejete }}</h2>
                               </div>
                             </div>
                           </div>
