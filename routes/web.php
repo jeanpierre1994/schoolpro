@@ -240,7 +240,8 @@ Route::post('admin/association/update/prof-matiere', [GroupepedagogiquesControll
 
 // add etudiant admin.add-etudiant
 Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant'])->name('admin.add-etudiant')->middleware("auth");
-
+//liste etudiant 
+Route::get('admin/etudiants', [AdminEtudiantController::class, 'index'])->name('admin.etudiants');
 // liste etudiant groupe pedagogique
 Route::get('admin/gp/{id}/etudiant', [GroupepedagogiquesController::class, 'listeEtudiant'])->name('groupepedagogiques.etudiants')->middleware("auth");
 // liste examen par gp groupepedagogiques.examens

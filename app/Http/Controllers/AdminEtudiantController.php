@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cycles;
-use App\Models\Etablissements;
-use App\Models\Genres;
 use App\Models\Poles;
+use App\Models\Cycles;
+use App\Models\Genres;
 use App\Models\Profil;
+use App\Models\Etudiants;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
+use App\Models\Etablissements;
 
 class AdminEtudiantController extends Controller
 {
@@ -27,5 +28,13 @@ class AdminEtudiantController extends Controller
         $cycles = Cycles::where("statut_id", 1)->get();
         $typesponsors = Typesponsors::where("statut_id", 1)->get();
         return view("backend.administrations.etudiants.create", compact("genres", "profils","etablissements","poles","cycles","typesponsors"));
+    }
+
+    public function index()
+    {
+        $etudiants = Etudiants::with('getDossier')->latest()->get();
+        return view('backend.administrations.etudiants.index', [
+            'etudiants' => $etudiants
+        ]);
     }
 }

@@ -21,6 +21,9 @@ class PdfController extends Controller
      */
     public function __invoke( $id, $gp_id, $etudiant_id)
     {
+        $id = \Crypt::decrypt($id);
+        $gp_id = \Crypt::decrypt($gp_id);
+        $etudiant_id = \Crypt::decrypt($etudiant_id);
         $examen = Examens::find($id);
         $etudiant = Etudiants::find($etudiant_id);
         $examenprogs = Examenprog::where('examen_id', $examen->id)

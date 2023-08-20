@@ -66,7 +66,7 @@
               <td>{{$item->min_moyenne}}</td>
               <td>{{$item->max_moyenne}}</td>
               <td class="text-center">
-                <a target="_blank" href="{{route('pdf',['id'=>$item->id,'gp_id'=>$gp->id,'etudiant_id'=>$etudiant->id])}}" title="Relevé de note"><button type="button" class="btn btn-sm btn-danger"><i class="bi bi-file-earmark-pdf text-white" style="color: white" aria-hidden="true"></i></button></a> 
+                <a target="_blank" href="{{route('pdf', ['id'=>\Crypt::encrypt($item->id),'gp_id'=>\Crypt::encrypt($gp->id),'etudiant_id'=>\Crypt::encrypt($etudiant->id)] )}}" title="Relevé de note"><button type="button" class="btn btn-sm btn-danger"><i class="bi bi-file-earmark-pdf text-white" style="color: white" aria-hidden="true"></i></button></a> 
               </td>
           </tr>
           @endforeach

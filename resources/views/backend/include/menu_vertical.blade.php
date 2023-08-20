@@ -31,7 +31,7 @@
       </a>
     </li> 
     <li>
-      <a href="#" id="dossier-valide" style="text-decoration: none;">
+      <a href="{{ route('admin.etudiants') }}" id="dossier-valide" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Liste</span>
       </a>
     </li>  
