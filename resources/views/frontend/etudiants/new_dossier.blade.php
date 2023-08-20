@@ -34,10 +34,10 @@
                   </ul>
               </div>
           @endif
-      <form action="{{route('etudiant.dossier-store')}}" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data"> 
+      <form action="{{route('etudiant.dossierExpress-store')}}" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data"> 
         @csrf
         <input type="hidden" name="etudiant_id" id="etudiant_id" class="form-control" value="{{$etudiant->id}}">
-         
+          
         <div class="form-row">
               <div class="col-md-6 mb-1">
                   <div class="input-group form-outline">

@@ -41,7 +41,7 @@
                                         <th scope="col">Filière</th>
                                         <th scope="col">Libelle</th>
                                         <th scope="col">Libelle 2</th>
-                                        <th scope="col">Descripion</th> 
+                                        <th scope="col">Description</th> 
                                         <th scope="col">Date modification</th>
                                         <th scope="col">Modifié par</th>
                                         <th scope="col">Action</th>
@@ -57,7 +57,7 @@
                                         <th scope="col">Filière</th>
                                         <th scope="col">Libelle</th>
                                         <th scope="col">Libelle 2</th>
-                                        <th scope="col">Descripion</th> 
+                                        <th scope="col">Description</th> 
                                         <th scope="col">Date modification</th>
                                         <th scope="col">Modifié par</th>
                                         <th scope="col">Action</th>
