@@ -47,7 +47,7 @@
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i> </a>
                             <div class="dropdown-menu">
-                                <form action="" method="get">
+                                <form action="{{ route('admin.etudiant.edit', \Crypt::encrypt($etudiant->id)) }}" method="get">
                                     @csrf
                                     <button type="submit" class="dropdown-item d-flex align-items-center">
                                         <i class=" dropdown-item-icon" data-feather="edit"></i>Modifier Détails
@@ -56,11 +56,10 @@
 
 
                                 <div class="dropdown-divider"></div>
-                                <form action="" method="post">
-                                    @csrf
-                                    @method('')
+                                <form action="{{ route('admin.etudiant.releve',\Crypt::encrypt($etudiant->id)) }}" method="get">
+                                    
                                     <button class="dropdown-item d-flex align-items-center" href="#!">
-                                        <i class=" dropdown-item-icon" data-feather="printer"></i>Liste des devoirs
+                                        <i class=" dropdown-item-icon" data-feather="printer"></i>Relevé de notes
                                     </button>
                                 </form>
                                 <div class="dropdown-divider"></div>

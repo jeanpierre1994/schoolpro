@@ -6,6 +6,7 @@ use App\Models\Poles;
 use App\Models\Cycles;
 use App\Models\Genres;
 use App\Models\Profil;
+use App\Models\Examens;
 use App\Models\Etudiants;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
@@ -39,5 +40,31 @@ class AdminEtudiantController extends Controller
             'etudiants' => $etudiants,
             'poles' => $poles
         ]);
+    }
+
+    public function edit($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $etudiant = Etudiants::where('id', $id)->get()->first();
+        $genres = Genres::where("statut_id", 1)->get();
+        $profils = Profil::where("statut_id", "=", 1)->where("id", "=", 2)->orWhere("id", "=", 3)->get();
+        $etablissements = Etablissements::where("statut_id", 1)->get();
+        $poles = Poles::where("statut_id", 1)->get();
+        $cycles = Cycles::where("statut_id", 1)->get();
+        $typesponsors = Typesponsors::where("statut_id", 1)->get();
+
+        return view('backend.administrations.etudiants.edit', compact("genres", "profils","etablissements","poles","cycles","typesponsors", "etudiant"));
+    }
+
+    public function releve($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $etudiant = Etudiants::where('id', $id)->get()->first();
+        $gp = Groupepedagogiques::find($etudiant->groupepedagogique_id);
+
+        $examens = Examens::all();
+        return view("backend.groupepedagogiques.lise-examens", compact("etudiant","gp","examens"));
+
+
     }
 }
