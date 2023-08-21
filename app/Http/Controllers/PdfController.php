@@ -27,24 +27,23 @@ class PdfController extends Controller
         $examen = Examens::find($id);
         $etudiant = Etudiants::find($etudiant_id);
         $examenprogs = Examenprog::where('examen_id', $examen->id)
-                        ->join('matieres',"examenprogs.matiere_id","=","matieres.id")
+                        ->join('matieres',"examenprogs.matiere_id","matieres.id")
                         ->where("matieres.groupepedagogique_id",$gp_id)
                         ->get();
-        $notes=[];
-        foreach($examenprogs as $examenprog )
-        {
-            $notes[] = Notes::with('getExamenprog')->where('examen_prog_id', $examenprog->id)->where('etudiant_id', $etudiant->id)->get();
-
-        }
+        $notes=Notes::
+            join("examenprogs","examenprogs.id","=","notes.examen_prog_id")
+            ->join("matieres","matieres.id","=","examenprogs.matiere_id")
+            ->where("examenprogs.examen_id",$examen->id)
+            ->where("notes.groupepedagogique_id", $gp_id)
+            ->where("notes.etudiant_id", $etudiant_id)
+            ->get();
         $notesSectionFrench = [];
         $notesSectionEng = [];
-
         foreach( $notes as $note )
         { 
-            if (!empty($note) && !empty($note[0]->examen_prog_id)) {
+            if (!empty($note) || !empty($note->examen_prog_id)) {
                 # code...
-
-            $matiere = Matieres::findOrFail($note[0]->getExamenprog->matiere_id);
+            $matiere = Matieres::findOrFail($note->getExamenprog->matiere_id);
             if($matiere->section_id == 1)
             {
                 $notesSectionFrench[] = $note;
