@@ -12,6 +12,8 @@
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
                         style="text-decoration: none;">Paramètres</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url()->previous() }}"
+                                style="text-decoration: none;">Liste des étudiants</a></li>
                 <li class="breadcrumb-item active">Note étudiant </li>
             </ol>
         </nav>
