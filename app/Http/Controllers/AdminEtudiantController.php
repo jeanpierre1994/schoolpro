@@ -10,6 +10,7 @@ use App\Models\Etudiants;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
+use App\Models\Groupepedagogiques;
 
 class AdminEtudiantController extends Controller
 {
@@ -33,8 +34,10 @@ class AdminEtudiantController extends Controller
     public function index()
     {
         $etudiants = Etudiants::with('getDossier')->latest()->get();
+        $poles = Poles::with('groupePedagogiques')->get();
         return view('backend.administrations.etudiants.index', [
-            'etudiants' => $etudiants
+            'etudiants' => $etudiants,
+            'poles' => $poles
         ]);
     }
 }

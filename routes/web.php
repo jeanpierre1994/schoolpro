@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\TreeController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminEtudiantController;
 use App\Http\Controllers\PolesController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\CyclesController;
@@ -30,6 +30,7 @@ use App\Http\Controllers\ExamenprogController;
 use App\Http\Controllers\ExamentypesController;
 use App\Http\Controllers\ProfesseursController;
 use App\Http\Controllers\TypesponsorsController;
+use App\Http\Controllers\AdminEtudiantController;
 use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\StatutjuridiquesController;
@@ -247,7 +248,7 @@ Route::get('admin/gp/{id}/etudiant', [GroupepedagogiquesController::class, 'list
 // liste examen par gp groupepedagogiques.examens
 Route::get('admin/examen/gp/{id}/{etudiant_id}/etudiant', [GroupepedagogiquesController::class, 'listeExamen'])->name('groupepedagogiques.examens')->middleware("auth");
 
-
+Route::get('/load-students/{groupePedagogique}', TreeController::class);
  // Lien symbolique vers dossier de stockage
  Route::get('/ActiveStorage', function () {
     Artisan::call('storage:link');

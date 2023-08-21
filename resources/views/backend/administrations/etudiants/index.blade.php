@@ -24,61 +24,115 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des étudiants enregistrés</h5>
-                        <!-- Bordered Table -->
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered data-tables">
-                                <thead>
-                                    <tr>
-                                        <th>Etablissement</th>
-                                        <th>N° Dossier</th>
-                                        <th>Photo</th>
-                                        <th>Nom</th>
-                                        <th>Prénoms</th>
-                                        <th>Groupe Pédagogique</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($etudiants as $etudiant)
-                                        <tr>
-                                            <td class="scol text-center">
-                                                <b>{{ $etudiant->getDossier->getSite->sigle }}</b>
-                                            </td>
-                                            <td class="scol text-center">
-                                                <b>{{ $etudiant->matricule }}</b>
-                                            </td>
-                                            <td>
-                                                @if ($etudiant->getDossier->getPersonne->photo)
-                                                    <img src="{{ asset('storage/photos/' . $item->photo) }}" alt=""
-                                                        style="width: 45px; height: 45px" class="rounded-circle" />
-                                                @else
-                                                    <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
-                                                        style="width: 45px; height: 45px" class="rounded-circle" />
-                                                @endif
-                                            </td>
-                                            <td>
-                                                {{ $etudiant->getDossier->getPersonne->nom }} 
-                                            </td>
-                                            <td>
-                                                {{ $etudiant->getDossier->getPersonne->prenoms }} 
-
-                                            </td>
-                                            <td>
-                                                {{ $etudiant->getGp->libelle_classe . " | " . $etudiant->getGp->libelle_secondaire }} 
-
-                                            </td>
-                                        </tr>
+                        <div class="container">
+                            <div class="treeview">
+                                <ul>
+                                    @foreach ($poles as $pole)
+                                        <li class="node">{{ $pole->libelle }}
+                                            <ul>
+                                                @foreach ($pole->groupePedagogiques as $gp)
+                                                    <li class="node groupe" data-id="{{ $gp->id }}">
+                                                        {{ $gp->libelle_classe . ' ' . $gp->libelle_secondaire }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
                                     @endforeach
-                                </tbody>
-                            </table>
+                                </ul>
+                            </div>
+                            <div class="student-list">
+                                <!-- Ici, vous afficherez la liste des étudiants du groupe pédagogique sélectionné -->
+                            </div>
                         </div>
-                        <!-- End Bordered Table -->
 
 
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.treeview .node.parent').click(function() {
+                $(this).children('ul').slideToggle();
+                $('.treeview .node.parent').removeClass('selected');
+                // Ajoutez la classe 'selected' à l'élément parent cliqué
+                $(this).addClass('selected');
+            });
+            $('.treeview .groupe').click(function() {
+                $('.treeview .groupe').removeClass('selected');
+                $(this).addClass('selected');
+
+                // Charger la liste des étudiants ici en fonction du groupe pédagogique sélectionné
+                const groupePedagogique = $(this).data('id');
+                loadStudentList(groupePedagogique);
+            });
+
+            function loadStudentList(groupePedagogique) {
+                $.ajax({
+                    url: '/load-students/' + encodeURIComponent(groupePedagogique),
+                    success: function(response) {
+                        $('.student-list').html(response);
+                    }
+                });
+            }
+        });
+    </script>
+
+
+    <style>
+        .container {
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
+            float: left;
+        }
+
+        .treeview {
+            flex: 1;
+            align-items: left;
+            font-family: Arial, sans-serif;
+            float: left;
+        }
+
+        .node {
+            cursor: pointer;
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .student-list {
+            flex: 2;
+            font-family: Arial, sans-serif;
+            margin-left: 1rem;
+            border-left: 1px solid #ccc;
+            padding-left: 1rem;
+            box-sizing: border-box;
+        }
+
+        .selected {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .treeview .node {
+            font-size: 14px;
+            /* Ajustez la taille du texte pour la treeview */
+        }
+
+        .student-list {
+            font-size: 14px;
+            /* Ajustez la taille du texte pour la liste d'étudiants */
+        }
+    </style>
 @endsection
 
 <!-- jsScript -->
