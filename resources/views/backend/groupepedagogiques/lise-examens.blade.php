@@ -45,7 +45,7 @@
             <th scope="col">Note max</th>
             <th scope="col">Moyen. min</th>
             <th scope="col">Moyen. max</th>
-            <th scope="col-2">Action</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -67,10 +67,11 @@
               <td>{{$item->max_moyenne}}</td>
               <td class="text-center">
                 <a target="_blank" href="{{route('pdf', ['id'=>\Crypt::encrypt($item->id),'gp_id'=>\Crypt::encrypt($gp->id),'etudiant_id'=>\Crypt::encrypt($etudiant->id)] )}}" title="Relevé de note"><button type="button" class="btn btn-sm btn-danger"><i class="bi bi-file-earmark-pdf text-white" style="color: white" aria-hidden="true"></i></button></a> 
-              </td>
-              <td>
-                <a href="">
-                  <i class="bi bi-file-earmark-pdf text-white" style="color: white" aria-hidden="true"></i>                </a>
+                @if (request()->is('/admin/etudiant/releve'))
+                  <a target="_blank" href="{{route('pdf', ['id'=>\Crypt::encrypt($item->id),'gp_id'=>\Crypt::encrypt($gp->id),'etudiant_id'=>\Crypt::encrypt($etudiant->id)] )}}" title="Relevé de note"><button type="button" class="btn btn-sm btn-primary"><i class="bi bi-envelope text-white" style="color: white" aria-hidden="true"></i></button></a> 
+
+                @endif
+
               </td>
           </tr>
           @endforeach
