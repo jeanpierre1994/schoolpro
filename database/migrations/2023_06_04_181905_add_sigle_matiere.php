@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('matiereconfigs', function (Blueprint $table) {  
-            $table->string('sigle',100)->nullable()->after("libelle_secondaire"); 
+            //$table->string('sigle',100)->nullable()->after("libelle_secondaire"); 
         });
     }
 

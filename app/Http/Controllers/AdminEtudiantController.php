@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Poles;
 use App\Models\Cycles;
+use App\Models\Etablissements;
 use App\Models\Genres;
+use App\Models\Groupepedagogiques;
+use App\Models\Parents;
+use App\Models\Pays;
+use App\Models\Personnes;
+use App\Models\Poles;
 use App\Models\Profil;
 use App\Models\Examens;
 use App\Models\Etudiants;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
-use App\Models\Etablissements;
-use App\Models\Groupepedagogiques;
 
 class AdminEtudiantController extends Controller
 {
@@ -29,7 +32,18 @@ class AdminEtudiantController extends Controller
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get();
         $typesponsors = Typesponsors::where("statut_id", 1)->get();
-        return view("backend.administrations.etudiants.create", compact("genres", "profils","etablissements","poles","cycles","typesponsors"));
+        $gp = Groupepedagogiques::all();
+        $pays = Pays::all();
+
+        $parents = Personnes::join("users","users.id","=","personnes.compte_id")
+        ->where("users.profil_id",3)
+        ->get(["personnes.id","personnes.nom","personnes.prenoms"]);
+
+        $etudiants = Personnes::join("users","users.id","=","personnes.compte_id")
+        ->where("users.profil_id",2)
+        ->get(["personnes.id","personnes.nom","personnes.prenoms"]);
+
+        return view("backend.administrations.etudiants.create", compact("pays", "genres", "profils","etablissements","poles","cycles","typesponsors","gp","parents","etudiants"));
     }
 
     public function index()

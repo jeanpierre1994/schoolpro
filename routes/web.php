@@ -36,6 +36,7 @@ use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
+use App\Http\Controllers\PaiementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,8 +135,10 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
 
  Route::get('pdf/{id}/{gp_id}/{etudiant_id}', PdfController::class)->name('pdf');
 
-Auth::routes();
-// check_dashboard
+
+ Auth::routes();
+
+ // check_dashboard
 Route::get('admin/check/dashboard', [AdminController::class, 'checkDashboard'])->name('check_dashboard'); 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -245,6 +248,7 @@ Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant']
 Route::get('admin/etudiants', [AdminEtudiantController::class, 'index'])->name('admin.etudiants')->middleware('auth');
 Route::get('admin/etudiant/edit/{id}', [AdminEtudiantController::class, 'edit'])->name('admin.etudiant.edit')->middleware('auth');
 Route::get('admin/etudiant/releve/{id}', [AdminEtudiantController::class, 'releve'])->name('admin.etudiant.releve');
+
 // liste etudiant groupe pedagogique
 Route::get('admin/gp/{id}/etudiant', [GroupepedagogiquesController::class, 'listeEtudiant'])->name('groupepedagogiques.etudiants')->middleware("auth");
 // liste examen par gp groupepedagogiques.examens
@@ -287,3 +291,23 @@ Route::get('/load-students/{groupePedagogique}', TreeController::class);
   
   })->name('vider_cache'); 
   
+
+  // add etudiant admin.add-etudiant
+Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant'])->name('admin.add-etudiant')->middleware("auth");
+//
+Route::post('admin/store/etudiant/express', [EtudiantController::class, 'storeEtudiant'])->name('etudiant.dossierExpress-store')->middleware("auth");
+//
+Route::post('admin/store/dossier/etudiant/express', [EtudiantController::class, 'storeDossierSansInscription'])->name('etudiant.dossierExpress-sansInscription')->middleware("auth");
+
+// 
+Route::get('admin/sessions/corrections/{id}/etudiant', [SessioncorrectionController::class, 'listeEtudiantByGP'])->name('sessioncorrections.gp-etudiants')->middleware("auth");
+// 
+Route::any('admin/note/{id}/{etudiant_id}/etudiant/{examen_id?}', [SessioncorrectionController::class, 'showNoteEtudiant'])->name('sessioncorrections.show-note')->middleware("auth");
+// paiement.kkiapay
+Route::get('admin/{reference}/paiement', [PaiementController::class, 'paiementKkiapay'])->name('paiement.kkiapay')->middleware("auth");
+// 
+Route::get('admin/{reference}/paiement/store', [PaiementController::class, 'paiementKkiapayStore'])->name('paiement.kkiapay-store')->middleware("auth");
+// 
+Route::get('admin/{reference}/paiement/express', [PaiementController::class, 'paiementKkiapayExpress'])->name('paiement-express.kkiapay')->middleware("auth");
+// 
+Route::get('admin/{reference}/paiement/express/store', [PaiementController::class, 'paiementKkiapayExpressStore'])->name('paiement-express.kkiapay-store')->middleware("auth");
