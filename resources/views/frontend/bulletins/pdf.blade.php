@@ -47,7 +47,7 @@
 
 <body class="h-full container mx-auto">
     <div class="header">
-        <h1 class="text-lg font-extrabold ">Examen : {{ $examen->libelle }}</h1>
+        <h1 class="text-lg font-extrabold ">Relevé de Note : {{ $examen->libelle }}</h1>
         <p class="text-md font-extralight "></p>
     </div>
     <div class="student-info">

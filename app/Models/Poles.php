@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Groupepedagogiques;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Poles extends Model
 {
@@ -39,5 +40,10 @@ class Poles extends Model
     public function getUserUpdated()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function groupePedagogiques()
+    {
+        return $this->hasMany(Groupepedagogiques::class, 'pole_id');
     }
 }
