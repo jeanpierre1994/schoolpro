@@ -602,6 +602,16 @@ class EtudiantController extends Controller
             $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
             $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
 
+            $preuve_path = null;
+            $preuve = $request->preuve;
+    
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
+
             // enregistrement du paiement
             $paiement = new Paiements();
             $paiement->setAttribute('reference', $reference_paiement);
@@ -613,7 +623,7 @@ class EtudiantController extends Controller
                 # code...
                 $paiement->setAttribute('mod_paiement', $request->mode_paiement);
             }
-
+            $paiement->setAttribute('preuve', $preuve_path);
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
             // redirection sur le formulaire de paiement kkiapay
@@ -909,6 +919,16 @@ class EtudiantController extends Controller
             $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
             $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
 
+            $preuve_path = null;
+            $preuve = $request->preuve;
+    
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
+
             // enregistrement du paiement
             $paiement = new Paiements();
             $paiement->setAttribute('reference', $reference_paiement);
@@ -920,7 +940,7 @@ class EtudiantController extends Controller
                 # code...
                 $paiement->setAttribute('mod_paiement', $request->mode_paiement);
             }
-
+            $paiement->setAttribute('preuve', $preuve_path);
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
             // redirection sur le formulaire de paiement kkiapay

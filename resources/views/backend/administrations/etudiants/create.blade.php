@@ -69,7 +69,7 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        <form action="{{ route('etudiant.dossierExpress-store') }}" method="post">
+                                        <form action="{{ route('etudiant.dossierExpress-store') }}" method="post"  enctype="multipart/form-data">
                                             @csrf
                                             <div class="form-row">
                                                 <div class="col-md-4 mb-2">
@@ -364,6 +364,26 @@
                                                   </div>
                                             </div>
 
+
+                            <div class="row"> 
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="inputText" class="col-form-label">Mode de paiement <i
+                                            class="text-danger"></i></label>
+                                    <select class="form-select" name="mode_paiement" id="mode_paiement" required>
+                                        <option value="" selected>Choisissez une option</option>
+                                        <option value="Manuel">Manuel</option>
+                                        <option value="Virement">Virement</option>
+                                        <option value="MoMo">MoMo</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="inputText" class="col-form-label">Preuve (image)<i
+                                            class="text-danger"></i></label>
+                                    <input type="file" class="form-control" name="preuve" id="preuve">
+                                </div>
+                            </div>
+
                                             <div class="row mb-3">
                                                 <div class="col-md-6"> 
                                                   <label class="col-form-label"></label>
@@ -416,7 +436,7 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        <form action="{{ route('etudiant.dossierExpress-sansInscription') }}" method="post">
+                                        <form action="{{ route('etudiant.dossierExpress-sansInscription') }}" method="post"  enctype="multipart/form-data">
                                             @csrf
                                             <div class="form-row">    
                                                 <div class="col-md-4 mb-2">
@@ -587,6 +607,26 @@
                                                   </div>
                                             </div>
 
+
+                            <div class="row"> 
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="inputText" class="col-form-label">Mode de paiement <i
+                                            class="text-danger"></i></label>
+                                    <select class="form-select" name="mode_paiement" id="mode_paiement" required>
+                                        <option value="" selected>Choisissez une option</option>
+                                        <option value="Manuel">Manuel</option>
+                                        <option value="Virement">Virement</option>
+                                        <option value="MoMo">MoMo</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="inputText" class="col-form-label">Preuve (image)<i
+                                            class="text-danger"></i></label>
+                                    <input type="file" class="form-control" name="preuve" id="preuve">
+                                </div>
+                            </div>
+
                                             <div class="row mb-3">
                                                 <div class="col-md-6"> 
                                                   <label class="col-form-label"></label>
@@ -602,10 +642,7 @@
                                                 </div>
                                               </div>
 
-
-                                            <div class="col-12 mt-2 mt-3 mb-3">
-                                                <button class="btn btn-primary" type="submit">Valider</button>
-                                            </div>
+ 
                                         </form><!-- End General Form Elements -->
                                     </div>
                                 </div>
