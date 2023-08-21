@@ -90,15 +90,15 @@
             @endif
             @foreach ($notesSectionEng as $note)
                 <tr>
-                    <td>{{ $note[0]->getExamenprog->getMatiere->libelle }}</td>
-                    <td>{{ $note[0]->note }}</td>
-                    <td>{{ $note[0]->getExamenprog->getMatiere->coef }}</td>
-                    <td>{{ $note[0]->note * $note[0]->getExamenprog->getMatiere->coef }}</td>
-                    <td>{{ $note[0]->commentaire ?? '' }}</td>
+                    <td>{{ $note->getExamenprog->getMatiere->libelle }}</td>
+                    <td>{{ $note->note }}</td>
+                    <td>{{ $note->getExamenprog->getMatiere->coef }}</td>
+                    <td>{{ $note->note * $note->getExamenprog->getMatiere->coef }}</td>
+                    <td>{{ $note->commentaire ?? '' }}</td>
                 </tr>
                 @php
-                    $totalCoefEn += $note[0]->getExamenprog->getMatiere->coef;
-                    $totalNoteEn += $note[0]->note * $note[0]->getExamenprog->getMatiere->coef;
+                    $totalCoefEn += $note->getExamenprog->getMatiere->coef;
+                    $totalNoteEn += $note->note * $note->getExamenprog->getMatiere->coef;
                     $moyEn = $totalNoteEn / $totalCoefEn;
                 @endphp
             @endforeach
@@ -116,15 +116,15 @@
             @endif
             @foreach ($notesSectionFrench as $note)
                 <tr>
-                    <td>{{ $note[0]->getExamenprog->getMatiere->libelle }}</td>
-                    <td>{{ $note[0]->note }}</td>
-                    <td>{{ $note[0]->getExamenprog->getMatiere->coef }}</td>
-                    <td>{{ $note[0]->note * $note[0]->getExamenprog->getMatiere->coef }}</td>
-                    <td>{{ $note[0]->commentaire ?? '' }}</td>
+                    <td>{{ $note->getExamenprog->getMatiere->libelle }}</td>
+                    <td>{{ $note->note }}</td>
+                    <td>{{ $note->getExamenprog->getMatiere->coef }}</td>
+                    <td>{{ $note->note * $note->getExamenprog->getMatiere->coef }}</td>
+                    <td>{{ $note->commentaire ?? '' }}</td>
                 </tr>
                 @php
-                    $totalCoefFr += $note[0]->getExamenprog->getMatiere->coef;
-                    $totalNoteFr += $note[0]->note * $note[0]->getExamenprog->getMatiere->coef;
+                    $totalCoefFr += $note->getExamenprog->getMatiere->coef;
+                    $totalNoteFr += $note->note * $note->getExamenprog->getMatiere->coef;
                     $moyFr = $totalNoteFr / $totalCoefFr;
                 @endphp
             @endforeach
