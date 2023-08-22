@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cycles;
-use App\Models\Etablissements;
-use App\Models\Genres;
-use App\Models\Groupepedagogiques;
-use App\Models\Parents;
 use App\Models\Pays;
-use App\Models\Personnes;
 use App\Models\Poles;
+use App\Models\Cycles;
+use App\Models\Genres;
 use App\Models\Profil;
 use App\Models\Examens;
+use App\Models\Parents;
+use App\Mail\ReleveNotes;
 use App\Models\Etudiants;
+use App\Models\Personnes;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
+use App\Models\Etablissements;
+use App\Models\Groupepedagogiques;
+use Illuminate\Support\Facades\Mail;
 
 class AdminEtudiantController extends Controller
 {
@@ -80,5 +82,17 @@ class AdminEtudiantController extends Controller
         return view("backend.groupepedagogiques.lise-examens", compact("etudiant","gp","examens"));
 
 
+    }
+
+    public function sendMail($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $examen = Examens::find($id);
+        $etudiant_id = \Crypt::decrypt(request()->etudiant_id);
+        $etudiant = Etudiants::find($etudiant_id);
+        $parentEmail = $etudiant->getDossier->getUserCreated->email;
+        Mail::to($parentEmail)->send(new ReleveNotes($etudiant, $examen ));
+
+        return redirect()->back()->with('success', 'Mail Envoyé avec succès');
     }
 }
