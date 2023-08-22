@@ -205,16 +205,31 @@ class DossiersController extends Controller
             $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
 
             // enregistrement du paiement
+
+            $preuve_path = null;
+        $preuve = $request->preuve;
+
+        if (!empty($preuve)) {
+            # code... 
+            $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+            $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+            $preuve->storeAs('preuve', $preuve_path, 'public');
+        }
+
             $paiement = new Paiements();
             $paiement->setAttribute('reference', $reference_paiement);
             $paiement->setAttribute('montant_a_payer', $request->montant_a_payer);
             $paiement->setAttribute('montant_paye', $request->montant_payer);
             $paiement->setAttribute('statut_traitement', "ATTENTE");
             $paiement->setAttribute('etudiant_id', $inscription->id);
+
             if (isset($_POST["mode_paiement"])) {
                 # code...
                 $paiement->setAttribute('mod_paiement', $request->mode_paiement);
             }
+ 
+            $paiement->setAttribute('preuve', $preuve_path);
+             
 
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
