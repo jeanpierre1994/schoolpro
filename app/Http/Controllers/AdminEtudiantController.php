@@ -95,4 +95,10 @@ class AdminEtudiantController extends Controller
 
         return redirect()->back()->with('success', 'Mail Envoyé avec succès');
     }
+
+    public function update(Etudiants $etudiant)
+    {
+        dd('ok');
+        return redirect()->back();
+    }
 }
