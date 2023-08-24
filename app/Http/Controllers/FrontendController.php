@@ -65,7 +65,7 @@ class FrontendController extends Controller
             'nom' => 'required',
             'prenoms' => 'required',
             'telephone' => 'required',
-            'email' => 'required|unique:users,email',
+            'email' => 'required|unique:users,email|indisposable',
             'profil_id' => 'required', 
             'genre_id' => 'required', 
             'password' => 'required|min:3|confirmed',
