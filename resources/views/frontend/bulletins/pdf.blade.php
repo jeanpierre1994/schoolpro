@@ -138,8 +138,8 @@
 
     <div class="footer">
         <p>Total Coeffient: {{ $totalCoefFr + $totalCoefEn }} </p>
-        <p>Moyenne Coefficiée: {{ $totalNoteFr + $totalNoteEn  }} </p>
-        <p>Moyenne Générale: {{ ($moyFr + $moyEn)/2 }} </p>
+        <p>Moyenne Coefficiée: {{ $totalNoteFr + $totalNoteEn }} </p>
+        <p>Moyenne Générale: {{ ($moyFr + $moyEn) / 2 }} </p>
     </div>
 </body>
 

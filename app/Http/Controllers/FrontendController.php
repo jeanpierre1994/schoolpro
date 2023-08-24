@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Etablissements;
+use Closure;
+use App\Models\User;
+use App\Models\Sites;
 use App\Models\Genres;
-use App\Models\Lienparentals;
+use App\Models\Profil;
 use App\Models\Parents;
 use App\Models\Personnes;
-use App\Models\Profil;
-use App\Models\Sites;
-use App\Models\User;
-use Illuminate\Console\View\Components\Alert as ComponentsAlert;
 use Illuminate\Http\Request;
+use App\Models\Lienparentals;
+use App\Models\Etablissements;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Console\View\Components\Alert as ComponentsAlert;
 
 class FrontendController extends Controller
 { 
@@ -67,6 +69,19 @@ class FrontendController extends Controller
             'profil_id' => 'required', 
             'genre_id' => 'required', 
             'password' => 'required|min:3|confirmed',
+            'g-recaptcha-response' => ['required', function (string $attribute, mixed $value, Closure $fail){
+                $g_response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' =>$value,
+                    'remoteip' => request()->ip()
+                ]);
+
+                if(!$g_response->json('success'))
+                {
+                    $fail("The {$attribute} is invalid");
+                }
+
+            }]
         ]);
 
         // vérifier si l'étudiant existe déjà

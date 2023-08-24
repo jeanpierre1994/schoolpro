@@ -40,7 +40,6 @@ Author URL: http://w3layouts.com
 
 @yield("js-script")
 
-
 </body>
 
 </html>
