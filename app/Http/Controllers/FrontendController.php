@@ -14,6 +14,7 @@ use App\Models\Lienparentals;
 use App\Models\Etablissements;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Auth\Events\Registered;
 use RealRashid\SweetAlert\Facades\Alert as Alert;
 use Illuminate\Console\View\Components\Alert as ComponentsAlert;
 
@@ -70,11 +71,12 @@ class FrontendController extends Controller
             'genre_id' => 'required', 
             'password' => 'required|min:3|confirmed',
             'g-recaptcha-response' => ['required', function (string $attribute, mixed $value, Closure $fail){
-                $g_response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                    'secret' => config('services.recaptcha.secret_key'),
-                    'response' =>$value,
-                    'remoteip' => request()->ip()
-                ]);
+
+                    $g_response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                        'secret' => config('services.recaptcha.secret_key'),
+                        'response' =>$value,
+                        'remoteip' => request()->ip()
+                    ]);
 
                 if(!$g_response->json('success'))
                 {
@@ -104,6 +106,8 @@ class FrontendController extends Controller
         $compte_user->setAttribute('code_email', $code_email);
         $compte_user->setAttribute('profil_id', $request->profil_id ); // profil etudiant 
         $compte_user->save();
+
+        event(new Registered($compte_user) );
 
         // enregistrement compte étudiant
         $personne = new Personnes();

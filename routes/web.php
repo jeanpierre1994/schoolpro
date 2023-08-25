@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Examenprog;
+use Illuminate\Http\Request;
 use App\Models\Etablissements;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\FilieresController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MatieresController;
+use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\CategoriesController;
@@ -31,12 +33,13 @@ use App\Http\Controllers\ExamentypesController;
 use App\Http\Controllers\ProfesseursController;
 use App\Http\Controllers\TypesponsorsController;
 use App\Http\Controllers\AdminEtudiantController;
+use App\Http\Controllers\EmailVerifiedController;
 use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\StatutjuridiquesController;
-use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
-use App\Http\Controllers\PaiementController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\SessioncorrectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +73,16 @@ Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name(
 Route::get('registration', [CustomAuthController::class, 'registration'])->name('register-user');
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom'); 
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout'); 
+
+Auth::routes(['verified' => true]);
+
+Route::get('/email/verify', [EmailVerifiedController::class, 'notice'])->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', [EmailVerifiedController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', [EmailVerifiedController::class, 'send'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
 // check code activation compte 
 Route::get('/activation/compte/user/{code_activation}', [CustomAuthController::class, 'checkmailConfirmation'])->name('tojumi.checkmailActivation');
 
@@ -134,9 +147,6 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
  });
 
  Route::get('pdf/{id}/{gp_id}/{etudiant_id}', PdfController::class)->name('pdf');
-
-
- Auth::routes();
 
  // check_dashboard
 Route::get('admin/check/dashboard', [AdminController::class, 'checkDashboard'])->name('check_dashboard'); 
