@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Famillerubriques;
+use App\Models\Lignetarifs;
 use Illuminate\Http\Request;
 
-class FamillerubriquesController extends Controller
+class LignetarifsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class FamillerubriquesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Famillerubriques  $famillerubriques
+     * @param  \App\Models\Lignetarifs  $lignetarifs
      * @return \Illuminate\Http\Response
      */
-    public function show(Famillerubriques $famillerubriques)
+    public function show(Lignetarifs $lignetarifs)
     {
         //
     }
@@ -52,10 +52,10 @@ class FamillerubriquesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Famillerubriques  $famillerubriques
+     * @param  \App\Models\Lignetarifs  $lignetarifs
      * @return \Illuminate\Http\Response
      */
-    public function edit(Famillerubriques $famillerubriques)
+    public function edit(Lignetarifs $lignetarifs)
     {
         //
     }
@@ -64,10 +64,10 @@ class FamillerubriquesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Famillerubriques  $famillerubriques
+     * @param  \App\Models\Lignetarifs  $lignetarifs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Famillerubriques $famillerubriques)
+    public function update(Request $request, Lignetarifs $lignetarifs)
     {
         //
     }
@@ -75,10 +75,10 @@ class FamillerubriquesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Famillerubriques  $famillerubriques
+     * @param  \App\Models\Lignetarifs  $lignetarifs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Famillerubriques $famillerubriques)
+    public function destroy(Lignetarifs $lignetarifs)
     {
         //
     }

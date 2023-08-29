@@ -15,14 +15,13 @@ return new class extends Migration
     {
         Schema::create('rubriques', function (Blueprint $table) {
             $table->unsignedBigInteger("id")->autoIncrement(); 
-            $table->string('code',100)->nullable(); 
+            $table->string('code',100)->unique()->nullable(); 
+            $table->string('famille_rubrique',100); 
             $table->string('libelle',100); 
-            $table->string('description',255);   
-            $table->unsignedBigInteger('famillerubrique_id');  
+            $table->string('libelle_secondaire',100)->nullable();  
             $table->unsignedBigInteger('statut_id');   
             $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by')->nullable();  
-            $table->foreign('famillerubrique_id')->references('id')->on('famillerubriques'); 
+            $table->unsignedBigInteger('updated_by')->nullable();   
             $table->foreign('statut_id')->references('id')->on('statuts'); 
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users'); 

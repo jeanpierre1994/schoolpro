@@ -15,19 +15,12 @@ return new class extends Migration
     {
         Schema::create('grilletarifaires', function (Blueprint $table) {
             $table->unsignedBigInteger("id")->autoIncrement(); 
-            $table->string('code',100)->nullable(); 
-            $table->integer('annee')->default(0);
-            $table->boolean('choix')->default(true);
-            $table->unsignedBigInteger('rubrique_id'); 
-            $table->unsignedBigInteger('gp_id'); 
-            $table->integer('montant_base')->default(0);   
-            $table->integer('montant_condition')->default(0); 
-            $table->date('echeance')->nullable(); 
+            $table->string('code',100)->unique()->nullable();  
+            $table->string('libelle',100);  
+            $table->string('libelle_secondaire',100)->nullable();  
             $table->unsignedBigInteger('statut_id');   
             $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by')->nullable();  
-            $table->foreign('rubrique_id')->references('id')->on('rubriques'); 
-            $table->foreign('gp_id')->references('id')->on('groupepedagogiques');
+            $table->unsignedBigInteger('updated_by')->nullable();   
             $table->foreign('statut_id')->references('id')->on('statuts'); 
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users'); 

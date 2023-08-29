@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('echeanciers', function (Blueprint $table) {
             $table->unsignedBigInteger("id")->autoIncrement(); 
-            $table->string('code',100)->nullable();  
+            $table->string('code',100)->unique()->nullable();  
             $table->boolean('active')->default(true);
             $table->unsignedBigInteger('dossier_id'); 
-            $table->unsignedBigInteger('grilletarifaire_id');  
+            $table->unsignedBigInteger('lignetarif_id');  
             $table->integer('montant_rubrique')->default(0);   
             $table->integer('montant_payer')->default(0); 
             $table->integer('montant_restant')->default(0); 
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();  
             $table->foreign('dossier_id')->references('id')->on('dossiers'); 
-            $table->foreign('grilletarifaire_id')->references('id')->on('grilletarifaires');
+            $table->foreign('lignetarif_id')->references('id')->on('lignetarifs');
             $table->foreign('statutpaiement_id')->references('id')->on('statutpaiements'); 
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users'); 
