@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Rubriques;
 use Illuminate\Http\Request;
+use App\Models\FamilleRubrique;
+use App\Http\Requests\StoreRubriqueRequest;
+use App\Http\Requests\UpdateRubriqueRequest;
 
 class RubriquesController extends Controller
 {
@@ -14,7 +17,8 @@ class RubriquesController extends Controller
      */
     public function index()
     {
-        //
+        $rubriques = Rubriques::all();
+        return view('backend.frais.rubriques.index', compact('rubriques'));
     }
 
     /**
@@ -24,7 +28,8 @@ class RubriquesController extends Controller
      */
     public function create()
     {
-        //
+        $familleRubriques = FamilleRubrique::all();
+        return view('backend.frais.rubriques.create', compact('familleRubriques'));
     }
 
     /**
@@ -33,31 +38,29 @@ class RubriquesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRubriqueRequest $request)
     {
-        //
+        Rubriques::create($request->validated());
+        return redirect()->route('rubriques.index')->with('success', 'Rubrique crée avec succès');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Rubriques  $rubriques
+     * @param  \App\Models\Rubriques  $rubrique
      * @return \Illuminate\Http\Response
      */
-    public function show(Rubriques $rubriques)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Rubriques  $rubriques
+     * @param  \App\Models\Rubriques  $rubrique
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rubriques $rubriques)
+    public function edit(Rubriques $rubrique)
     {
-        //
+        $familleRubriques = FamilleRubrique::all();
+        return view('backend.frais.rubriques.edit', compact('familleRubriques', 'rubrique'));
     }
 
     /**
@@ -67,19 +70,22 @@ class RubriquesController extends Controller
      * @param  \App\Models\Rubriques  $rubriques
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rubriques $rubriques)
+    public function update(UpdateRubriqueRequest $request, Rubriques $rubrique)
     {
-        //
+        $rubrique->update($request->validated());
+        return redirect()->route('rubriques.index')->with('success', 'Rubrique modifié avec succès');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Rubriques  $rubriques
+     * @param  \App\Models\Rubriques  $rubrique
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rubriques $rubriques)
+    public function destroy(Rubriques $rubrique)
     {
-        //
+        $rubrique->delete();
+
+        return redirect()->route('rubriques.index')->with('success', 'Rubriques deleted successfully');;
     }
 }

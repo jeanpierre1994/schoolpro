@@ -1,18 +1,16 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Matière || {{ env('APP_NAME') }}
+    Dossier validé || {{ env('APP_NAME') }}
 @endsection
 
 @section('fil-arial')
     <div class="pagetitle">
-        <h1>Paramètres</h1>
+        <h1>Familles de Rubrique</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
-                        style="text-decoration: none;">Paramètres</a></li>
-                <li class="breadcrumb-item active">Matières</li>
+                <li class="breadcrumb-item active">Familles de Rubrique</li>
             </ol>
         </nav>
     </div>
@@ -24,54 +22,54 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des matières <a href="{{ route('matieres.create') }}"
-                                title="Ajouter"><button style="font-size: 5px;" type="button"
-                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle" aria-hidden="true"
-                                        style="font-size: 10px;"></i></button></a></h5>
+                        <h5 class="card-title">Liste des familles
+                            <a href="{{ route('famille_rubriques.create') }}" data-mdb-toggle="tooltip"
+                                data-mdb-placement="right" title="Ajouter un membre"
+                                class="btn btn-primary btn-floating btn-sm">
+                                Ajouter
+                            </a>
+                        </h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
-                            <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
+                            <table class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Section</th>
-                                        <th scope="col">Groupe Péda.</th>
-                                        <th scope="col">Matière</th>
-                                        <th scope="col">Note max</th>
-                                        <th scope="col">Moyenne</th>
-                                        <th scope="col">Coef</th>
-                                        <th scope="col">Date modification</th>
-                                        <th scope="col">Modifié par</th>
-                                        <th scope="col">Action</th>
+                                        <th>N°</th>
+                                        <th>Code</th>
+                                        <th>Libelle</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($matieres as $item)
+                                    @foreach ($familleRubriques as $familleRubrique)
                                         <tr>
-                                            <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td>{{ $item->section_id ? $item->getSection->libelle : '' }}</td>
-                                            <td>{{ $item->groupepedagogique_id ? $item->getGP->libelle_classe : '' }}</td>
-                                            <td>{{ $item->getMatiereconfig->libelle }}</td>
-                                            <td>{{ $item->note_max }}</td>
-                                            <td>{{ $item->moyenne }}</td>
-                                            <td>{{ $item->coef }}</td>
-                                            <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
-                                            <td>{{ $item->getUserUpdated->name }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ route('matieres.edit', $item->id) }}" title="Modifier"><button
-                                                        type="button" class="btn btn-sm btn-warning"><i
-                                                            class="bi bi-pencil-square" style="color: white"
-                                                            aria-hidden="true"></i></button></a>
-                                                {{-- <a href="{{ route('matieres.show',$item->id) }}" title="Voir les détails du statut"><button type="button" class="btn btn-sm btn-secondary"><i class="bi bi-eye" style="color: white" aria-hidden="true"></i></button></a> --}}
-                                                {{-- <a href="#" class="page-constructionv" data-bs-toggle="modal" data-bs-target="#myModal_{{ $item->id }}">
-                  <button type="button" title="Supprimer" class="btn btn-sm btn-danger"><i class="bi bi-trash" style="color: white" aria-hidden="true"></i></button>
-                </a> --}}
+                                            <td class="scol text-center">
+                                                <b>{{ $familleRubrique->id }}</b>
+                                            </td>
+                                            <td>
+                                                {{ $familleRubrique->code }}
+                                            </td>
+                                            <td>
+                                                {{ $familleRubrique->libelle }}
+                                            </td>
+                                            <td>
+
+                                                <a href="{{ route('famille_rubriques.edit', $familleRubrique->id) }}" title="Modifier"><button type="button"
+                                                        class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"
+                                                            style="color: white" aria-hidden="true"></i></button></a>
+
+                                                <a href="#" class="page-constructionv" data-bs-toggle="modal"
+                                                    data-bs-target="#myModal_{{ $familleRubrique->id }}">
+                                                    <button type="button" title="Supprimer"
+                                                        class="btn btn-sm btn-danger"><i class="bi bi-trash"
+                                                            style="color: white" aria-hidden="true"></i></button>
+                                                </a>
 
                                                 <!-- The Modal -->
-                                                <div class="modal text-center" id="myModal_{{ $item->id }}">
+                                                <div class="modal text-center" id="myModal_{{ $familleRubrique->id }}">
                                                     <div class="modal-dialog modal-md modal-dialog-centered">
                                                         <div class="modal-content text-center">
 
@@ -97,7 +95,8 @@
                                                             <!-- Modal footer -->
                                                             <div class="modal-footer">
 
-                                                                <form action="{{ route('matieres.destroy', $item->id) }}"
+                                                                <form
+                                                                    action="{{ route('famille_rubriques.destroy', $familleRubrique->id) }}"
                                                                     method="post">
                                                                     @method('DELETE')
                                                                     @csrf
@@ -112,15 +111,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- End modal -->
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
                         <!-- End Bordered Table -->
+
 
                     </div>
                 </div>
@@ -134,27 +132,6 @@
     <script>
         $(document).ready(function() {
 
-            // Setup - add a text input to each footer cell
-            $('#tableHead thead th').each(function() {
-                var title = $(this).text();
-                if (title == "Catégorie") {
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-                }
-
-                if (title == "Section") {
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-                }
-
-                if (title == "Matière") {
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-                }
-
-                if (title == "Groupe Péda.") {
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-                }
-
-
-            });
             // remove menu active
             $("ul").removeClass('show');
             $("ul li a").removeClass('active');

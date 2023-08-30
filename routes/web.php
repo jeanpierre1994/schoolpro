@@ -3,6 +3,7 @@
 use App\Models\Examenprog;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
+use App\Models\FamilleRubrique;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\MatieresController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\PersonnesController;
+use App\Http\Controllers\RubriquesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\ExamenprogController;
@@ -36,10 +38,11 @@ use App\Http\Controllers\AdminEtudiantController;
 use App\Http\Controllers\EmailVerifiedController;
 use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\EtablissementsController;
+use App\Http\Controllers\FamilleRubriqueController;
 use App\Http\Controllers\StatutjuridiquesController;
+use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\SessioncorrectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +146,9 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('examens', ExamensController::class);
     Route::resource('examenprog', ExamenprogController::class);
     Route::resource('matiereconfigs', MatiereconfigController::class);
+
+    Route::resource('famille_rubriques', FamilleRubriqueController::class);
+    Route::resource('rubriques', RubriquesController::class);
     // ajax requête
  });
 

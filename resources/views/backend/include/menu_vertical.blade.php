@@ -84,6 +84,37 @@
   </ul>
 </li>
 <!-- EndImports -->
+
+
+<!-- Frais & Finances -->
+<li class="nav-item">
+  <a class="nav-link collapsed" data-bs-target="#frais-nav" data-bs-toggle="collapse" href="#">
+    <i class="ri-newspaper-fill"></i><span>Frais & Finances</span><i class="bi bi-chevron-down ms-auto"></i>
+  </a>
+  <ul id="frais-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li>
+      <a href="{{route('famille_rubriques.index')}}" id="import-personnes" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Famille de Rubriques</span>
+      </a>
+    </li> 
+    <li>
+      <a href="{{route('rubriques.index')}}" id="import-personnes" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Rubriques</span>
+      </a>
+    </li> 
+        <li>
+      <a href="{{route('import-personnes')}}" id="import-personnes" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Grilles Tarifaire</span>
+      </a>
+    </li> 
+        <li>
+      <a href="{{route('import-personnes')}}" id="import-personnes" style="text-decoration: none;">
+        <i class="bi bi-circle"></i><span>Détails des G.T.</span>
+      </a>
+    </li> 
+  </ul>
+</li>
+<!-- End Frais & Finances -->
   
 <li class="nav-item">
   <a class="nav-link collapsed" data-bs-target="#optimisation-nav" data-bs-toggle="collapse" href="#" style="text-decoration: none;">

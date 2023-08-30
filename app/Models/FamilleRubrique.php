@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\FamilleRubrique;
+use App\Models\Rubriques;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Rubriques extends Model
+class FamilleRubrique extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-
-    public function familleRubrique() : BelongsTo
+    public function rubriques() : HasMany
     {
-        return $this->belongsTo(FamilleRubrique::class);
+        return $this->hasMany(Rubriques::class);
     }
 
     protected static function boot()
@@ -24,8 +24,7 @@ class Rubriques extends Model
         parent::boot();
 
         self::creating(function($model){
-            $model->created_by = auth()->id();
-            $model->statut_id = 1;
+            $model->code = "FM" . $model->code . "000";
         });
     }
 }
