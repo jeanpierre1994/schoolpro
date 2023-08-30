@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Grilletarifaires;
 use Illuminate\Http\Request;
+use App\Models\Grilletarifaires;
+use App\Http\Requests\StoreGrilleRequest;
+use App\Http\Requests\UpdateGrilleRequest;
 
 class GrilletarifairesController extends Controller
 {
@@ -14,7 +16,8 @@ class GrilletarifairesController extends Controller
      */
     public function index()
     {
-        //
+        $grilleTarifaires = Grilletarifaires::all();
+        return view('backend.frais.grilleTarifaires.index', compact('grilleTarifaires'));
     }
 
     /**
@@ -24,7 +27,7 @@ class GrilletarifairesController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.frais.grilleTarifaires.create');
     }
 
     /**
@@ -33,15 +36,17 @@ class GrilletarifairesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGrilleRequest $request)
     {
-        //
+        Grilletarifaires::create($request->validated());
+
+        return redirect()->route('grille_tarifaires.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Grilletarifaires  $grilletarifaires
+     * @param  \App\Models\Grilletarifaires  $grilletarifaire
      * @return \Illuminate\Http\Response
      */
     public function show(Grilletarifaires $grilletarifaires)
@@ -52,12 +57,13 @@ class GrilletarifairesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Grilletarifaires  $grilletarifaires
+     * @param  \App\Models\Grilletarifaires  $grilletarifaire
      * @return \Illuminate\Http\Response
      */
-    public function edit(Grilletarifaires $grilletarifaires)
+    public function edit($id)
     {
-        //
+        $grilleTarifaire = Grilletarifaires::find($id);
+        return view('backend.frais.grilleTarifaires.edit', compact('grilleTarifaire'));
     }
 
     /**
@@ -67,9 +73,10 @@ class GrilletarifairesController extends Controller
      * @param  \App\Models\Grilletarifaires  $grilletarifaires
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Grilletarifaires $grilletarifaires)
+    public function update(UpdateGrilleRequest $request, Grilletarifaires $grilleTarifaire)
     {
-        //
+        $grilleTarifaire->update($request->validated());
+        return redirect()->route('grille_tarifaires.index')->with('success', 'Modification effectuée avec succès !');
     }
 
     /**
@@ -78,8 +85,11 @@ class GrilletarifairesController extends Controller
      * @param  \App\Models\Grilletarifaires  $grilletarifaires
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Grilletarifaires $grilletarifaires)
+    public function destroy($id)
     {
-        //
+        $grilletarifaire = Grilletarifaires::find($id);
+        $grilletarifaire->delete();
+
+        return redirect()->back()->with('success', 'Suppression effectuée');
     }
 }

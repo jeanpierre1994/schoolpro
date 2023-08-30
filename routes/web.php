@@ -39,6 +39,7 @@ use App\Http\Controllers\EmailVerifiedController;
 use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\EtablissementsController;
 use App\Http\Controllers\FamilleRubriqueController;
+use App\Http\Controllers\GrilletarifairesController;
 use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
@@ -149,6 +150,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
 
     Route::resource('famille_rubriques', FamilleRubriqueController::class);
     Route::resource('rubriques', RubriquesController::class);
+    Route::resource('grille_tarifaires', GrilletarifairesController::class);
     // ajax requête
  });
 

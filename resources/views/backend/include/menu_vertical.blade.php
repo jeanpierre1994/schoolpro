@@ -103,7 +103,7 @@
       </a>
     </li> 
         <li>
-      <a href="{{route('import-personnes')}}" id="import-personnes" style="text-decoration: none;">
+      <a href="{{route('grille_tarifaires.index')}}" id="import-personnes" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Grilles Tarifaire</span>
       </a>
     </li> 
