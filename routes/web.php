@@ -330,3 +330,6 @@ Route::get('admin/{reference}/paiement/store', [PaiementController::class, 'paie
 Route::get('admin/{reference}/paiement/express', [PaiementController::class, 'paiementKkiapayExpress'])->name('paiement-express.kkiapay')->middleware("auth");
 // 
 Route::get('admin/{reference}/paiement/express/store', [PaiementController::class, 'paiementKkiapayExpressStore'])->name('paiement-express.kkiapay-store')->middleware("auth");
+
+// route parent compte
+Route::get('admin/parent/compte', [ParentsController::class, 'compte'])->name('parent.compte')->middleware("auth");

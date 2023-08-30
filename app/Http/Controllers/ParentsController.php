@@ -14,6 +14,8 @@ use App\Models\Personnes;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
+use App\Models\Historiqueportefeuilles;
+use App\Models\Portefeuilles;
 use App\Models\Statuttraitements;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert as Alert;
@@ -30,6 +32,41 @@ class ParentsController extends Controller
         $user = Auth()->user();
         $parent = Personnes::where("compte_id", $user->id)->first();
         return view("frontend.parents.identite", compact("parent"));
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function compte()
+    {
+        $user = Auth()->user();
+        $portefeuille = Portefeuilles::where("created_by", $user->id)->first();
+        $personne = Personnes::where("compte_id",$user->id)->first();
+        // check if portefeuille is created 
+        if ($portefeuille) {
+            # code... nothing to do
+        } else {
+            # code... create acompte
+            if ($personne) {
+                # code... 
+                $portefeuille = new Portefeuilles();
+                $portefeuille->setAttribute("montant",0);
+                $portefeuille->setAttribute("personne_id",$personne->id);
+                $portefeuille->setAttribute("statut_id",1);
+                $portefeuille->setAttribute("created_by",$user->id);
+                $portefeuille->setAttribute("updated_by",$user->id);
+                $portefeuille->save();
+            } else {
+                # code...
+                Alert::toast("L'identifiant personne n'existe pas.",'error');
+                return redirect()->back();
+            }
+            
+        } 
+        $historiques = Historiqueportefeuilles::where("portefeuille_id",$portefeuille->id)->get();
+        
+        return view("frontend.parents.portefeuille", compact("portefeuille","historiques","personne"));
     }
 
      // editProfil

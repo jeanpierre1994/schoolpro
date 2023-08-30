@@ -34,6 +34,9 @@
             <a href="{{route('dashboard_parent')}}" id="dashboard" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
                 <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
             </a>
+            <a href="{{route('parent.compte')}}" id="parent-portefeuille" class="list-group-item list-group-item-action py-2 ripple active">
+                <i class="fas fa-user fa-fw me-3"></i><span>Portefeuille</span>
+            </a>
             <a href="{{route('parent.identite')}}" id="identite" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-user fa-fw me-3"></i><span>Identité</span>
             </a>
