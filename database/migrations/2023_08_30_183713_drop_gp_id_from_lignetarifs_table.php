@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rubriques', function (Blueprint $table) {
-            //$table->dropColumn('famille_rubrique');
+        Schema::table('lignetarifs', function (Blueprint $table) {
+          //  $table->dropConstrainedForeignId('gp_id');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('rubriques', function (Blueprint $table) {
+        Schema::table('lignetarifs', function (Blueprint $table) {
             //
         });
     }

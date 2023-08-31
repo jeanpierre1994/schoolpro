@@ -32,6 +32,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\ExamenprogController;
 use App\Http\Controllers\ExamentypesController;
+use App\Http\Controllers\LignetarifsController;
 use App\Http\Controllers\ProfesseursController;
 use App\Http\Controllers\TypesponsorsController;
 use App\Http\Controllers\AdminEtudiantController;
@@ -151,6 +152,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('famille_rubriques', FamilleRubriqueController::class);
     Route::resource('rubriques', RubriquesController::class);
     Route::resource('grille_tarifaires', GrilletarifairesController::class);
+    Route::resource('ligne_tarifaires', LignetarifsController::class);
     // ajax requête
  });
 

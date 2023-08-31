@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Grille Tarifaires
                             <a href="{{ route('grille_tarifaires.create') }}" data-mdb-toggle="tooltip"
-                                data-mdb-placement="right" title="Ajouter un membre"
+                                data-mdb-placement="right" title="Ajouter"
                                 class="btn btn-primary btn-floating btn-sm">
                                 Ajouter
                             </a>

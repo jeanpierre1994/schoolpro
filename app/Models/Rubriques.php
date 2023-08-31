@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\GenereCode;
 use App\Models\FamilleRubrique;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,7 @@ class Rubriques extends Model
         self::creating(function($model){
             $model->created_by = auth()->id();
             $model->statut_id = 1;
+            $model->code = (new GenereCode)->handle(Rubriques::class, "RB");
         });
     }
 }
