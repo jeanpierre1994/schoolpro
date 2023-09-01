@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Liste des familles
                             <a href="{{ route('famille_rubriques.create') }}" data-mdb-toggle="tooltip"
-                                data-mdb-placement="right" title="Ajouter un membre"
+                                data-mdb-placement="right" title="Ajouter"
                                 class="btn btn-primary btn-floating btn-sm">
                                 Ajouter
                             </a>

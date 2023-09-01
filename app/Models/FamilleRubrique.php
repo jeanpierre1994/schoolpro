@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Rubriques;
+use App\Actions\GenereCode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +25,7 @@ class FamilleRubrique extends Model
         parent::boot();
 
         self::creating(function($model){
-            $model->code = "FM" . $model->code . "000";
+            $model->code = (new GenereCode)->handle(FamilleRubrique::class, "FM");
         });
     }
 }

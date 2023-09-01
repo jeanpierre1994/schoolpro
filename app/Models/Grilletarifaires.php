@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Actions\GenereCode;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Grilletarifaires extends Model
 {
@@ -18,6 +19,7 @@ class Grilletarifaires extends Model
         self::creating(function($model){
             $model->created_by = auth()->id();
             $model->statut_id = 1;
+            $model->code = (new GenereCode)->handle(Grilletarifaires::class, "GT");
         });
     }
 }

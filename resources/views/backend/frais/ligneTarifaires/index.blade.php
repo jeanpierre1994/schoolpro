@@ -1,16 +1,16 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Rubriques || {{ env('APP_NAME') }}
+    Dossier validé || {{ env('APP_NAME') }}
 @endsection
 
 @section('fil-arial')
     <div class="pagetitle">
-        <h1>Rubriques</h1>
+        <h1>Détails des Grilles Tarifaires</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item active">Rubriques </li>
+                <li class="breadcrumb-item active">Détails des Grilles Tarifaires</li>
             </ol>
         </nav>
     </div>
@@ -22,9 +22,9 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des rubriques
-                            <a href="{{ route('rubriques.create') }}" data-mdb-toggle="tooltip" data-mdb-placement="right"
-                                title="Ajouter" class="btn btn-primary btn-floating btn-sm">
+                        <h5 class="card-title">Détails des Grilles Tarifaires
+                            <a href="{{ route('ligne_tarifaires.create') }}" data-mdb-toggle="tooltip"
+                                data-mdb-placement="right" title="Ajouter" class="btn btn-primary btn-floating btn-sm">
                                 Ajouter
                             </a>
                         </h5>
@@ -34,10 +34,10 @@
                                 <thead>
                                     <tr>
                                         <th>N°</th>
-                                        <th>Famille</th>
                                         <th>Code</th>
-                                        <th>Libelle</th>
-                                        <th>Libelle Secondaire</th>
+                                        <th>Rubrique</th>
+                                        <th>Grille Tarifaire</th>
+                                        <th>Montant</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -45,39 +45,40 @@
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($rubriques as $rubrique)
+                                    @foreach ($ligneTarifaires as $ligneTarifaire)
                                         <tr>
                                             <td class="scol text-center">
-                                                <b>{{ $rubrique->id }}</b>
+                                                <b>{{ $ligneTarifaire->id }}</b>
                                             </td>
                                             <td class="scol text-center">
-                                                <b>{{ $rubrique->familleRubrique->libelle }}</b>
+                                                <b>{{ $ligneTarifaire->code }}</b>
                                             </td>
                                             <td>
-                                                <b>{{ $rubrique->code }}</b>
+                                                {{ $ligneTarifaire->rubrique->libelle }}
                                             </td>
                                             <td>
-                                                {{ $rubrique->libelle }}
+                                                {{ $ligneTarifaire->grilleTarifaire->libelle }}
                                             </td>
+
                                             <td>
-                                                {{ $rubrique->libelle_secondaire }}
+                                                {{ $ligneTarifaire->montant }}
                                             </td>
                                             <td>
 
-                                                <a href="{{ route('rubriques.edit', $rubrique->id) }}"
+                                                <a href="{{ route('ligne_tarifaires.edit', $ligneTarifaire->id) }}"
                                                     title="Modifier"><button type="button"
                                                         class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"
                                                             style="color: white" aria-hidden="true"></i></button></a>
 
                                                 <a href="#" class="page-constructionv" data-bs-toggle="modal"
-                                                    data-bs-target="#myModal_{{ $rubrique->id }}">
+                                                    data-bs-target="#myModal_{{ $ligneTarifaire->id }}">
                                                     <button type="button" title="Supprimer"
                                                         class="btn btn-sm btn-danger"><i class="bi bi-trash"
                                                             style="color: white" aria-hidden="true"></i></button>
                                                 </a>
 
                                                 <!-- The Modal -->
-                                                <div class="modal text-center" id="myModal_{{ $rubrique->id }}">
+                                                <div class="modal text-center" id="myModal_{{ $ligneTarifaire->id }}">
                                                     <div class="modal-dialog modal-md modal-dialog-centered">
                                                         <div class="modal-content text-center">
 
@@ -104,7 +105,7 @@
                                                             <div class="modal-footer">
 
                                                                 <form
-                                                                    action="{{ route('rubriques.destroy', $rubrique->id) }}"
+                                                                    action="{{ route('ligne_tarifaires.destroy', $ligneTarifaire->id) }}"
                                                                     method="post">
                                                                     @method('DELETE')
                                                                     @csrf
