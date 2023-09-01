@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('groupepedagogiques', function (Blueprint $table) {  
-            $table->unsignedBigInteger('grilletarifaire_id');   
-            $table->foreign('grilletarifaire_id')->references('id')->on('grilletarifaires');   
+           // $table->unsignedBigInteger('grilletarifaire_id');   
+           // $table->foreign('grilletarifaire_id')->references('id')->on('grilletarifaires');   
         });
     }
 

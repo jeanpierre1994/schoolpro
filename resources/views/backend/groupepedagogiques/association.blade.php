@@ -1,4 +1,3 @@
-use App\Models\Sections;
 @extends('backend/include/layout')
 
 @section('title')

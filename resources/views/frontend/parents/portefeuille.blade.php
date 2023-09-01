@@ -4,6 +4,9 @@
     Portefeuille Parent || {{ env('APP_NAME') }}
 @endsection
 
+<style>
+    label{ font-weight: bold;}
+</style>
 @section('contenu') 
 <section style="background-color: #eee;">
     <div class="container py-1">
@@ -121,23 +124,35 @@
                     <input type="hidden" value="{{ $personne->id }}" name="personne_id">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="label">Solde actuel <i class="text-danger">*</i></label>
                                 <input type="number" min="0" name="note_max" id="note_max"
                                 class="form-control" value="20" required>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="label">Montant à recharger <i class="text-danger">*</i></label>
                                 <input type="number" min="0" name="note_max" id="note_max"
                                 class="form-control" value="20" required>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="label">Mode de paiement <i class="text-danger">*</i></label>
                                 <select class="form-select" name="section_id" id="section_id" required>
                                     <option selected value="">Sélectionnez une option</option>
                                     <option value="MoMo">MoMo</option>
+                                    <option value="MoMo">Virement</option>
+                                    <option value="MoMo">Chèque</option>
                                 </select>
-                            </div>    
+                            </div> 
+                            <div class="form-group col-md-6">
+                                <label for="label">Preuve de paiement<i class="text-danger">*</i></label>
+                                <input type="file" min="0" name="note_max" id="note_max"
+                                class="form-control" value="20" required>
+                            </div>   
+                            <div class="form-group col-md-12">
+                                <label for="label">Référence de paiement <i class="text-danger">*</i></label>
+                                <input type="text" min="0" name="note_max" id="note_max"
+                                class="form-control" placeholder="AZ2817281" value="20" required>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
