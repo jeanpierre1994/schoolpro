@@ -26,6 +26,11 @@ class Portefeuilles extends Model
         'updated_by',
     ];
     
+    public function getPersonne()
+    {
+        return $this->belongsTo(Personnes::class, 'personne_id');
+    }
+
     public function getStatut()
     {
         return $this->belongsTo(Statuts::class, 'statut_id');

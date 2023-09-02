@@ -39,11 +39,13 @@ use App\Http\Controllers\AdminEtudiantController;
 use App\Http\Controllers\EmailVerifiedController;
 use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\EtablissementsController;
+use App\Http\Controllers\EtudiantsController;
 use App\Http\Controllers\FamilleRubriqueController;
 use App\Http\Controllers\GrilletarifairesController;
 use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
+use App\Http\Controllers\PortefeuillesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -335,3 +337,27 @@ Route::get('admin/{reference}/paiement/express/store', [PaiementController::clas
 
 // route parent compte
 Route::get('admin/parent/compte', [ParentsController::class, 'compte'])->name('parent.compte')->middleware("auth");
+// route etudiant compte
+Route::get('admin/etudiant/compte', [EtudiantController::class, 'compte'])->name('etudiant.compte')->middleware("auth");
+
+Route::get('admin/dossier/{id}/choix_rubrique', [PaiementController::class, 'choixRubrique'])->name('paiements.choix_rubrique')->middleware("auth");
+Route::get('admin/retirer/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirer-rubrique')->middleware("auth");
+// 
+Route::post('admin/recharge/portefeuille', [PaiementController::class, 'rechargePortefeuille'])->name('paiements.rechargePortefeuille')->middleware("auth");
+
+Route::get('admin/recharge/portefeuille/{id}/{reference}/kkiapay', [PortefeuillesController::class, 'rechargePortefeuilleParent'])->name('recharge-portefeuille-parent.kkiapay')->middleware("auth");
+Route::get('admin/recharge/portefeuille/etudiant/{id}/{reference}/kkiapay', [PortefeuillesController::class, 'rechargePortefeuilleEtudiant'])->name('recharge-portefeuille-etudiant.kkiapay')->middleware("auth");
+
+//
+Route::get('admin/recharge/portefeuille/parent/{id}/{reference}/kkiapay', [PortefeuillesController::class, 'rechargePortefeuilleParentStore'])->name('paiement_portefeuille_parent.kkiapay-store')->middleware("auth");
+Route::get('admin/recharge/portefeuille/etudiant/{id}/{reference}/kkiapay', [PortefeuillesController::class, 'rechargePortefeuilleEtudiantStore'])->name('paiement_portefeuille_etudiant.kkiapay-store')->middleware("auth");
+
+// rechargerPortefeuilleParent
+Route::post('admin/recharge/portefeuille/parent', [ParentsController::class, 'rechargerPortefeuilleParent'])->name('recharge.portefeuille-parent')->middleware("auth");
+Route::post('admin/recharge/portefeuille/etudiant', [EtudiantsController::class, 'rechargerPortefeuilleEtudiant'])->name('recharge.portefeuille-etudiant')->middleware("auth");
+
+
+
+
+
+

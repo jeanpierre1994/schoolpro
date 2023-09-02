@@ -23,16 +23,16 @@ class Paiements extends Model
         'email',
         'montant_a_payer',
         'montant_payer',
-        'etudiant_id',
+        'dossier_id',
         'num_transaction',
         'statut_transaction',
         'mod_paiement',
         'enregistrer_par',
     ];
     
-    public function getEtudiant()
+    public function getDossier()
     {
-        return $this->belongsTo(Etudiants::class, 'etudiant_id');
+        return $this->belongsTo(Dossiers::class, 'dossier_id');
     }
 
     public function getEnregistrerPar()

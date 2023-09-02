@@ -15,6 +15,7 @@ use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
 use App\Models\Historiqueportefeuilles;
+use App\Models\Paiements;
 use App\Models\Portefeuilles;
 use App\Models\Statuttraitements;
 use Illuminate\Support\Facades\Hash;
@@ -33,41 +34,7 @@ class ParentsController extends Controller
         $parent = Personnes::where("compte_id", $user->id)->first();
         return view("frontend.parents.identite", compact("parent"));
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function compte()
-    {
-        $user = Auth()->user();
-        $portefeuille = Portefeuilles::where("created_by", $user->id)->first();
-        $personne = Personnes::where("compte_id",$user->id)->first();
-        // check if portefeuille is created 
-        if ($portefeuille) {
-            # code... nothing to do
-        } else {
-            # code... create acompte
-            if ($personne) {
-                # code... 
-                $portefeuille = new Portefeuilles();
-                $portefeuille->setAttribute("montant",0);
-                $portefeuille->setAttribute("personne_id",$personne->id);
-                $portefeuille->setAttribute("statut_id",1);
-                $portefeuille->setAttribute("created_by",$user->id);
-                $portefeuille->setAttribute("updated_by",$user->id);
-                $portefeuille->save();
-            } else {
-                # code...
-                Alert::toast("L'identifiant personne n'existe pas.",'error');
-                return redirect()->back();
-            }
-            
-        } 
-        $historiques = Historiqueportefeuilles::where("portefeuille_id",$portefeuille->id)->get();
-        
-        return view("frontend.parents.portefeuille", compact("portefeuille","historiques","personne"));
-    }
+    
 
      // editProfil
     /**
@@ -421,6 +388,209 @@ class ParentsController extends Controller
         $dossiers = Dossiers::where("created_by", $user->id)->where("statuttraitement_id", 2)->get();
         
         return view("frontend.parents.inscriptions", compact("etudiant","dossiers"));
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function compte()
+    {
+        $user = Auth()->user();
+        $portefeuille = Portefeuilles::where("created_by", $user->id)->first();
+        $personne = Personnes::where("compte_id",$user->id)->first(); 
+        // check if portefeuille is created 
+        if ($portefeuille) {
+            # code... nothing to do
+        } else {
+            # code... create acompte
+            if ($personne) {
+                # code... 
+                $portefeuille = new Portefeuilles();
+                $portefeuille->setAttribute("montant",0);
+                $portefeuille->setAttribute("personne_id",$personne->id);
+                $portefeuille->setAttribute("statut_id",1);
+                $portefeuille->setAttribute("created_by",$user->id);
+                $portefeuille->setAttribute("updated_by",$user->id);
+                $portefeuille->save();
+            } else {
+                # code...
+                Alert::toast("L'identifiant personne n'existe pas.",'error');
+                return redirect()->back();
+            }
+            
+        } 
+        $historiques = Historiqueportefeuilles::where("portefeuille_id",$portefeuille->id)->get();
+        
+        return view("frontend.parents.portefeuille", compact("portefeuille","historiques","personne"));
+    }
+
+    // recharger portefeuille
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rechargerPortefeuilleParent(Request $request)
+    {
+        $this->validate($request, [
+            'montant' => 'required',
+            'portefeuille_id' => 'required'
+        ]);
+        // enregistrement du paiement
+        $user = auth()->user();
+        $portefeuille = Portefeuilles::find($request->portefeuille_id);
+        // check mode paiement
+
+        if (!empty($request->modepaiement) && $request->modepaiement == "MoMo") {
+            # code...
+            // création paiement 
+            // enregistrer le paiement avec statut en attente
+            // générer le numero de reference facture
+            // procédure d'incrémentation du numéro inventaire
+            $annee_actuelle = date('Y');
+            $type_reference = "FACT";
+            $indicatif = "SCH";
+            $id_1 = "";
+            // récupérer le dernier enregistrement
+            $last_numero_paiement = Paiements::orderBy('id', 'desc')->first();
+
+            if ($last_numero_paiement == NULL) {
+                $last_id = "";
+            } else {
+                $last_id = $last_numero_paiement->reference;
+            }
+
+            if (!empty($last_id)) {
+                $id_1 = explode('-', $last_id);
+                //vérifier si nous somme dans une nouvelle année pour réinitialiser le compteur
+                $get_date = $id_1[1];
+                if ($annee_actuelle > $get_date) {
+                    # code...
+                    $numero = '0000000';
+                } else {
+                    # code...
+                    $numero = $id_1[3];
+                }
+            } else {
+                $id_1 = '000000';
+                $numero = '000000';
+            }
+
+            $numero_fact = $numero + 1;
+
+            $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
+            $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
+
+            $preuve_path = null;
+            $preuve = $request->preuve;
+
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
+
+            // enregistrement du paiement
+            $paiement = new Paiements();
+            $paiement->setAttribute('reference', $reference_paiement);
+            $paiement->setAttribute('montant_a_payer', $request->montant);
+            $paiement->setAttribute('montant_paye', $request->montant);
+            $paiement->setAttribute('statut_traitement', "ATTENTE"); 
+            if (isset($_POST["mode_paiement"])) {
+                # code...
+                $paiement->setAttribute('mod_paiement', $request->modepaiement);
+            }
+            $paiement->setAttribute('preuve', $preuve_path);
+            $paiement->setAttribute('enregistrer_par', $user->id);
+            $paiement->save();
+            // redirection sur le formulaire de paiement kkiapay
+            return redirect()->route("recharge-portefeuille-parent.kkiapay", ['id'=>$portefeuille->id,'reference'=>$paiement->reference]);
+        } else {
+            # code...
+            // création paiement 
+            // enregistrer le paiement avec statut en attente
+            // générer le numero de reference facture
+            // procédure d'incrémentation du numéro inventaire
+            $annee_actuelle = date('Y');
+            $type_reference = "FACT";
+            $indicatif = "SCH";
+            $id_1 = "";
+            // récupérer le dernier enregistrement
+            $last_numero_paiement = Paiements::orderBy('id', 'desc')->first();
+
+            if ($last_numero_paiement == NULL) {
+                $last_id = "";
+            } else {
+                $last_id = $last_numero_paiement->reference;
+            }
+
+            if (!empty($last_id)) {
+                $id_1 = explode('-', $last_id);
+                //vérifier si nous somme dans une nouvelle année pour réinitialiser le compteur
+                $get_date = $id_1[1];
+                if ($annee_actuelle > $get_date) {
+                    # code...
+                    $numero = '0000000';
+                } else {
+                    # code...
+                    $numero = $id_1[3];
+                }
+            } else {
+                $id_1 = '000000';
+                $numero = '000000';
+            }
+
+            $numero_fact = $numero + 1;
+
+            $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
+            $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
+
+            $preuve_path = null;
+            $preuve = $request->preuve;
+
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
+
+            // enregistrement du paiement
+            $paiement = new Paiements();
+            $paiement->setAttribute('reference', $reference_paiement);
+            $paiement->setAttribute('montant_a_payer', $request->montant);
+            $paiement->setAttribute('montant_paye', $request->montant);
+            $paiement->setAttribute('statut_traitement', "VALIDE"); // à revoir 
+            if (isset($_POST["mode_paiement"])) {
+                # code...
+                $paiement->setAttribute('mod_paiement', $request->modepaiement);
+            }
+            $paiement->setAttribute('preuve', $preuve_path);
+            $paiement->setAttribute('enregistrer_par', $user->id);
+            $paiement->save();
+
+            // enregistrement historique paiement 
+            $historique = new Historiqueportefeuilles();
+            $historique->setAttribute("old_montant", $portefeuille->montant);
+            $historique->setAttribute("new_montant", $request->montant);
+            $historique->setAttribute("type", "CREDIT"); // CREDIT ou DEBIT
+            $historique->setAttribute("portefeuille_id", $portefeuille->id);
+            $historique->setAttribute("created_by", $user->id);
+            $historique->save();
+
+            // update portefeuille
+            $new_montant = $portefeuille->montant + $request->montant;
+            $portefeuille->setAttribute("montant", $new_montant);
+            $portefeuille->setAttribute("updated_at", Date("Y-m-d H:i:s"));
+            $portefeuille->update(); 
+
+            // redirection 
+            return redirect()->route("parent.compte")->with("success", "Opération effectuée avec succès.");
+        }
     }
 
 }

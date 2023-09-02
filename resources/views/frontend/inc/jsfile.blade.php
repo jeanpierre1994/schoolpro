@@ -6,6 +6,9 @@
     });
 </script>
   
+  <!-- bmda --> 
+  <script type="text/javascript" src="{{ asset('frontpage/bmad/js/mdb.min.js')}}"></script>
+  <!-- end bmad -->
   <!-- jQuery first, then Popper.js") }}, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
@@ -19,43 +22,13 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- Template JavaScript -->
-  <script src="{{ asset("frontpage/assets/js/all.js") }}"></script>
   <!-- Smooth scrolling -->
-  <!-- <script src="{{ asset("frontpage/assets/js/smoothscroll.js") }}"></script> -->
-  <script src="{{ asset("frontpage/assets/js/owl.carousel.js") }}"></script>
+  {{-- 
+  <script src="{{ asset("frontpage/assets/js/all.js") }}"></script>
+   <script src="{{ asset("frontpage/assets/js/smoothscroll.js") }}"></script> -->
+  <script src="{{ asset("frontpage/assets/js/owl.carousel.js") }}"></script> --}}
   <!-- script for -->
-  <!-- bmda --> 
-  <script type="text/javascript" src="{{ asset('frontpage/bmad/js/mdb.min.js')}}"></script>
-  <!-- end bmad -->
   <script>
-    $(document).ready(function () {
-      $('.owl-one').owlCarousel({
-        loop: true,
-        margin: 0,
-        nav: true,
-        responsiveClass: true,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        autoplaySpeed: 1000,
-        autoplayHoverPause: false,
-        responsive: {
-          0: {
-            items: 1,
-            nav: false
-          },
-          480: {
-            items: 1,
-            nav: false
-          },
-          667: {
-            items: 1,
-            nav: true
-          },
-          1000: {
-            items: 1,
-            nav: true
-          }
-        }
-      })
+    $(document).ready(function () { 
     })
   </script>

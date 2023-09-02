@@ -170,7 +170,7 @@
                                     <input type="text" class="form-control" value="" name="commentaire"
                                         id="commentaire">
                                 </div>
-                                <div class="form-group col-md-6 mb-3">
+                                {{--<div class="form-group col-md-6 mb-3">
                                     <label for="inputText" class="col-form-label">montant à payer<i
                                             class="text-danger"></i></label>
                                     <input type="text" class="form-control" value="98000" name="montant_a_payer"
@@ -181,9 +181,9 @@
                                             class="text-danger">*</i></label>
                                     <input type="number" class="form-control" value="0" name="montant_payer"
                                         id="montant_payer" required>
-                                </div>
+                                </div>--}}
                             </div>
-                            <div class="row"> 
+                            {{--<div class="row"> 
                                 <div class="form-group col-md-6 mb-3">
                                     <label for="inputText" class="col-form-label">Mode de paiement <i
                                             class="text-danger"></i></label>
@@ -200,20 +200,21 @@
                                             class="text-danger"></i></label>
                                     <input type="file" class="form-control" name="preuve" id="preuve">
                                 </div>
-                            </div>
+                            </div>--}}
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                {{--<div class="col-md-6">
                                     <label class="col-form-label"></label>
                                     <div class="">
                                         <input type="hidden" name="id" value="{{ $dossier->id }}">
                                         <input type="submit" value="Procéder au paiement" id="paiement"
                                             class="btn btn-primary" name="paiement">
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+                                </div>--}}
+                                <div class="col-md-12">
                                     <label class="col-form-label"></label>
-                                    <div class="">
-                                        <input type="submit" class="btn btn-warning" value="Valider sans payer"
+                                    <input type="hidden" name="id" value="{{ $dossier->id }}">
+                                    <div class="">&nbsp; &nbsp;
+                                        <input type="submit" class="btn btn-primary" value="Valider"
                                             id="no_paiement" name="no_paiement" />
                                     </div>
                                 </div>

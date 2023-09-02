@@ -1,7 +1,7 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Paiement Express || {{ env('APP_NAME') }}
+    Paiement || {{ env('APP_NAME') }}
 @endsection
 
   
@@ -22,7 +22,7 @@
       <div class="container" data-aos="fade-up">
 <br>
         <div class="section-title"> 
-         <h2>PAIEMENT DOSSIER N° {{$paiement->getDossier->code}}</h2> 
+         <h2>PAIEMENT  N° {{$paiement->reference}}</h2> 
         </div>
         <div class="row text-center">          
           <i class="fa fa-spinner fa-pulse fa-10x"></i>
@@ -39,7 +39,7 @@
 
 $(document).ready(function() {
                 var montant = parseInt('{{ $paiement->montant_paye}}') ;
-                var nom_client = '{{ $paiement->getDossier->getPersonne->nom}} {{ $paiement->getDossier->getPersonne->prenoms}}';
+                var nom_client = '{{ $portefeuille->getPersonne->nom}} {{ $portefeuille->getPersonne->prenoms}}';
                 var reference = '{{ $paiement->reference}}';  
                   status_sandbox = "true";
                   var key = '{{env("KKIAPAY_SANDBOX_PUBLIC_KEY")}}';
@@ -51,7 +51,7 @@ $(document).ready(function() {
                     position: "center",
                     data: reference,
                     name: nom_client,
-                    callback: "{{route('paiement-express.kkiapay-store',$paiement->reference)}}",
+                    callback: "{{route('paiement_portefeuille_parent.kkiapay-store',['id'=>$portefeuille->id,'reference'=>$paiement->reference])}}",
                     theme: "blue",
                     sandbox: status_sandbox,
                     key: key,
@@ -91,7 +91,7 @@ $(document).ready(function() {
                     position: "center",
                     data: reference,
                     name: nom_client,
-                    callback: "{{route('paiement-express.kkiapay-store',$paiement->reference)}}",
+                    callback: "{{route('paiement_portefeuille_parent.kkiapay-store',['id'=>$portefeuille->id,'reference'=>$paiement->reference])}}",
                     theme: "blue",
                     sandbox: status_sandbox,
                     key: key,

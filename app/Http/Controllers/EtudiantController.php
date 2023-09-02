@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Cycles;
 use App\Models\Dossiers;
+use App\Models\Echeanciers;
 use App\Models\Etablissements;
 use App\Models\Etudiants;
 use App\Models\Filieres;
 use App\Models\Genres;
 use App\Models\Groupepedagogiques;
+use App\Models\Historiqueportefeuilles;
+use App\Models\Lignetarifs;
 use App\Models\Niveaux;
 use App\Models\Paiements;
 use App\Models\Personnes;
 use App\Models\Poles;
+use App\Models\Portefeuilles;
 use App\Models\Statuttraitements;
 use App\Models\Typesponsors;
 use App\Models\User;
@@ -177,7 +181,7 @@ class EtudiantController extends Controller
         ]);
 
         // vérifier si le dossier existe déjà
-        $check_dossier = Dossiers::where("personne_id", $request->etudiant_id)->where("site_id", $request->site_id)->where("pole_id", $request->pole_id)->where("filiere_id", $request->filiere_id)
+        /*$check_dossier = Dossiers::where("personne_id", $request->etudiant_id)->where("site_id", $request->site_id)->where("pole_id", $request->pole_id)->where("filiere_id", $request->filiere_id)
             ->where("cycle_id", $request->cycle_id)->where("niveau_id", $request->niveau_id)
             ->where("typesponsor_id", $request->typesponsor_id)
             ->exists();
@@ -185,7 +189,7 @@ class EtudiantController extends Controller
         if ($check_dossier) {
             // if categorie exist redirect to form with error message
             return redirect()->back()->with('error', "Ce dossier existe déjà.");
-        }
+        }*/
 
         $user = Auth()->user();
         $statut_traitement = Statuttraitements::where("libelle", "EN ATTENTE")->first();
@@ -306,8 +310,10 @@ class EtudiantController extends Controller
             'annee'  => 'required',
             'sponsor_id'  => 'required',
             'password'  => 'required',
-            'nationalite'  => 'required',            
+            'nationalite'  => 'required',
         ]);
+
+        $gp = Groupepedagogiques::find($request->gp_id);
 
         // vérifier si l'étudiant existe déjà 
         $check_personne = Personnes::where("nom", $request->nom)->where("prenoms", $request->prenoms)->where("tel", $request->telephone)->where("email", $request->email)
@@ -338,11 +344,10 @@ class EtudiantController extends Controller
         $personne->setAttribute('genre', trim($request->genre_id));
         $personne->setAttribute('tel', trim($request->telephone));
         $personne->setAttribute('email', trim($request->email));
-        $personne->setAttribute('created_by', $compte_user->id);
-        $personne->setAttribute('updated_by', $compte_user->id);
+        $personne->setAttribute('created_by', $user->id);
+        $personne->setAttribute('updated_by', $user->id);
         $personne->setAttribute('ddn', $request->ddn);
         $personne->setAttribute('nationalite', $request->nationalite);
-        $personne->setAttribute('updated_by', $compte_user->id);
         $personne->setAttribute('statut_id', 1);
         $personne->save();
 
@@ -353,6 +358,7 @@ class EtudiantController extends Controller
         $check_dossier = Dossiers::where("personne_id", $personne->id)->where("site_id", $gp->site_id)->where("pole_id", $gp->pole_id)->where("filiere_id", $gp->filiere_id)
             ->where("cycle_id", $gp->cycle_id)->where("niveau_id", $gp->niveau_id)
             ->where("typesponsor_id", $request->sponsor_id)
+            ->where("groupepedagogique_id",$request->gp_id)
             ->exists();
 
         if ($check_dossier) {
@@ -428,6 +434,7 @@ class EtudiantController extends Controller
         $dossier->setAttribute('typesponsor_id', trim($request->sponsor_id));
         $dossier->setAttribute('sponsor', trim($request->sponsor));
         $dossier->setAttribute('parent_created', false);
+        $dossier->setAttribute("groupepedagogique_id",$request->gp_id);
         $dossier->setAttribute('statuttraitement_id', trim($statut_traitement->id));
         $dossier->setAttribute('created_by', $user->id);
         $dossier->setAttribute('updated_by', $user->id);
@@ -439,11 +446,13 @@ class EtudiantController extends Controller
             # code... none
             if (!empty($request->choix_parent_id)) {
                 # code...
-                $personne->setAttribute("created_by", $request->choix_parent_id);
+                $pr = Personnes::find($request->choix_parent_id);
+                $personne->setAttribute("parent_id", $pr->compte_id);
+                $personne->setAttribute("created_by", $user->id);
                 $personne->setAttribute("famille", true);
                 $personne->update();
 
-                $dossier->setAttribute("created_by", $request->choix_parent_id);
+                $dossier->setAttribute("parent_id", $pr->compte_id);
                 $dossier->update();
             }
         }
@@ -485,17 +494,88 @@ class EtudiantController extends Controller
                     $parent->setAttribute('statut_id', 1);
                     $parent->save();
 
-                    $personne->setAttribute("created_by", $compte_parent->id);
+                    $personne->setAttribute("parent_id", $compte_parent->id);
                     $personne->setAttribute("famille", true);
                     $personne->update();
 
-                    $dossier->setAttribute("created_by", $compte_parent->id);
+                    $dossier->setAttribute("parent_id", $compte_parent->id);
                     $dossier->update();
-
                 }
             }
         }
- 
+
+        // création du portefeuille selon le type de sponsoir choisir
+        switch ($request->typesponsor_id) {
+            case 3:
+                # code... parent
+                // vérifier si le compte parent existe
+                if ($dossier->parent_id) {
+                    # code...
+                    $get_parent = Personnes::where("compte_id", $dossier->parent_id)->first();
+                    // vérifier si le parent dispose déjà de portefeuille
+                    $check_portefeuille = Portefeuilles::where("personne_id", $get_parent->id)->first();
+                    if ($check_portefeuille) {
+                        # code...
+                        $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                        $dossier->update();
+                    } else {
+                        # code... new portefeuille
+                        $portefeuille = new Portefeuilles();
+                        $portefeuille->setAttribute("montant", 0);
+                        $portefeuille->setAttribute("personne_id", $get_parent->id);
+                        $portefeuille->setAttribute("statut_id", 1);
+                        $portefeuille->setAttribute("created_by", $dossier->parent_id);
+                        $portefeuille->setAttribute("updated_by", $dossier->parent_id);
+                        $portefeuille->save();
+                        $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                        $dossier->update();
+                    }
+                } else {
+                    # code... prendre le portefeuille de l'étudiant même
+                    $check_portefeuille = Portefeuilles::where("personne_id", $personne->id)->first();
+                    if ($check_portefeuille) {
+                        # code...
+                        $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                        $dossier->update();
+                    } else {
+                        # code... new portefeuille
+                        $portefeuille = new Portefeuilles();
+                        $portefeuille->setAttribute("montant", 0);
+                        $portefeuille->setAttribute("personne_id", $personne->id);
+                        $portefeuille->setAttribute("statut_id", 1);
+                        $portefeuille->setAttribute("created_by", $compte_user->id);
+                        $portefeuille->setAttribute("updated_by", $compte_user->id);
+                        $portefeuille->save();
+                        $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                        $dossier->update();
+                    }
+                }
+
+                break;
+
+            default:
+                # code... moi même 
+                # code... prendre le portefeuille de l'étudiant même
+                $check_portefeuille = Portefeuilles::where("personne_id", $personne->id)->first();
+                if ($check_portefeuille) {
+                    # code...
+                    $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                    $dossier->update();
+                } else {
+                    # code... new portefeuille
+                    $portefeuille = new Portefeuilles();
+                    $portefeuille->setAttribute("montant", 0);
+                    $portefeuille->setAttribute("personne_id", $personne->id);
+                    $portefeuille->setAttribute("statut_id", 1);
+                    $portefeuille->setAttribute("created_by", $compte_user->id);
+                    $portefeuille->setAttribute("updated_by", $compte_user->id);
+                    $portefeuille->save();
+                    $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                    $dossier->update();
+                }
+                break;
+        }
+
         // enregistrement des paiement
         if (isset($_POST["paiement"]) && $request->montant_payer > 0) {
             // création du compte de l'étudiant
@@ -557,12 +637,8 @@ class EtudiantController extends Controller
             $inscription->setAttribute("matricule", $matricule);
             $inscription->setAttribute('groupepedagogique_id', $request->gp_id);
             $inscription->setAttribute("dossier_id", $dossier->id);
-            $inscription->setAttribute("validateur_id", $user->id);
-            if (!empty($request->montant_payer)) {
-                # code... 
-                $inscription->setAttribute("compte", $request->montant_payer);
-            }
-            $inscription->setAttribute("commentaitaire", $request->id);
+            $inscription->setAttribute("validateur_id", $user->id); 
+            $inscription->setAttribute("commentaitaire", "RAS");
             $inscription->save();
 
             // enregistrer le paiement avec statut en attente
@@ -604,7 +680,7 @@ class EtudiantController extends Controller
 
             $preuve_path = null;
             $preuve = $request->preuve;
-    
+
             if (!empty($preuve)) {
                 # code... 
                 $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
@@ -618,7 +694,7 @@ class EtudiantController extends Controller
             $paiement->setAttribute('montant_a_payer', $request->montant_a_payer);
             $paiement->setAttribute('montant_paye', $request->montant_payer);
             $paiement->setAttribute('statut_traitement', "ATTENTE");
-            $paiement->setAttribute('etudiant_id', $inscription->id);
+            $paiement->setAttribute('dossier_id', $dossier->id);
             if (isset($_POST["mode_paiement"])) {
                 # code...
                 $paiement->setAttribute('mod_paiement', $request->mode_paiement);
@@ -627,15 +703,41 @@ class EtudiantController extends Controller
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
             // redirection sur le formulaire de paiement kkiapay
-            return redirect()->route("paiement-express.kkiapay",$paiement->reference);
-
+            return redirect()->route("paiement-express.kkiapay", $paiement->reference);
         }
+
+        // vérifier si un la génération des échéances est faite : 
+        $checkGeneration = Echeanciers::where("dossier_id", $dossier->id)->exists();
+        if (!$checkGeneration) {
+            # code... génération de l'échéance
+            // vérifier si le groupe pédagogique possède déjà une grille tarifaire
+            if ($gp->grilletarifaire_id != null && $gp->grilletarifaire_id != 0) {
+                # code...
+                $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $gp->grilletarifaire_id)->get();
+                foreach ($ligne_tarif as $value) {
+                    # code...
+                    $echeancier = new Echeanciers();
+                    $echeancier->setAttribute("dossier_id", $dossier->id);
+                    $echeancier->setAttribute("lignetarif_id", $value->id);
+                    $echeancier->setAttribute("montant_rubrique", $value->montant);
+                    $echeancier->setAttribute("montant_restant", $value->montant);
+                    $echeancier->setAttribute("statutpaiement_id", 1); // en attente
+                    $echeancier->setAttribute("created_by", $user->id);
+                    $echeancier->setAttribute("updated_by", $user->id);
+                    $echeancier->save();
+                }
+
+                // afficher l'interface permettant de choisir les rubriques de paiement
+                return redirect()->route("paiements.choix_rubrique", $dossier->id);
+            }
+        }
+
 
         return redirect()->route("dossiers.en_attente")->with("success", "Enregistrement effectuée avec succès.");
     }
 
 
-     // ********* enregistrement express des dossier **************
+    // ********* enregistrement express des dossier **************
 
     /**
      * Display a listing of the resource.
@@ -646,24 +748,26 @@ class EtudiantController extends Controller
     {
         $user = Auth()->user();
         $this->validate($request, [
-            'etudiant_id' => 'required', 
+            'etudiant_id' => 'required',
             'gp_id'  => 'required',
-            'annee'  => 'required', 
+            'annee'  => 'required',
         ]);
 
         // vérifier si l'étudiant existe déjà 
         $personne = Personnes::where("id", $request->etudiant_id)->first();
 
-        if ($personne) { 
-        }else{
+        if ($personne) {
+
+        } else {
             return redirect()->back()->with('error', "Le compte de l'étudiant n'existe pas.");
         }
-  
+
         // vérifier si le dossier existe déjà
         $gp = Groupepedagogiques::find($request->gp_id);
 
         $check_dossier = Dossiers::where("personne_id", $personne->id)->where("site_id", $gp->site_id)->where("pole_id", $gp->pole_id)->where("filiere_id", $gp->filiere_id)
-            ->where("cycle_id", $gp->cycle_id)->where("niveau_id", $gp->niveau_id) 
+            ->where("cycle_id", $gp->cycle_id)->where("niveau_id", $gp->niveau_id)
+            ->where("groupepedagogique_id",$request->gp_id)
             ->exists();
 
         if ($check_dossier) {
@@ -738,6 +842,7 @@ class EtudiantController extends Controller
         $dossier->setAttribute('annee', trim($request->annee));
         $dossier->setAttribute('typesponsor_id', 1);
         $dossier->setAttribute('sponsor', "");
+        $dossier->setAttribute("groupepedagogique_id",$request->gp_id);
         $dossier->setAttribute('parent_created', false);
         $dossier->setAttribute('statuttraitement_id', trim($statut_traitement->id));
         $dossier->setAttribute('created_by', $user->id);
@@ -754,11 +859,12 @@ class EtudiantController extends Controller
             # code... none
             if (!empty($request->choix_parent_id)) {
                 # code...
-                $personne->setAttribute("created_by", $request->choix_parent_id);
+                $pr = Personnes::find($request->choix_parent_id);
+                $personne->setAttribute("parent_id", $pr->compte_id); 
                 $personne->setAttribute("famille", true);
                 $personne->update();
 
-                $dossier->setAttribute("created_by", $request->choix_parent_id);
+                $dossier->setAttribute("parent_id", $pr->compte_id);
                 $dossier->setAttribute('parent_created', true);
                 $dossier->update();
             }
@@ -801,87 +907,94 @@ class EtudiantController extends Controller
                     $parent->setAttribute('statut_id', 1);
                     $parent->save();
 
-                    $personne->setAttribute("created_by", $compte_parent->id);
+                    $personne->setAttribute("parent_id", $compte_parent->id); 
                     $personne->setAttribute("famille", true);
                     $personne->update();
 
-                    $dossier->setAttribute("created_by", $compte_parent->id);
+                    $dossier->setAttribute("parent_id", $compte_parent->id);
                     $dossier->setAttribute('parent_created', true);
                     $dossier->update();
-
                 }
             }
         }
- 
+
+
+        // création du portefeuille selon le type de sponsoir choisir
+        switch ($personne->typesponsor_id) {
+            case 3:
+                # code... parent
+                // vérifier si le compte parent existe
+                if ($dossier->parent_id) {
+                    # code...
+                    $get_parent = Personnes::where("compte_id", $dossier->parent_id)->first();
+                    // vérifier si le parent dispose déjà de portefeuille
+                    $check_portefeuille = Portefeuilles::where("personne_id", $get_parent->id)->first();
+                    if ($check_portefeuille) {
+                        # code...
+                        $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                        $dossier->update();
+                    } else {
+                        # code... new portefeuille
+                        $portefeuille = new Portefeuilles();
+                        $portefeuille->setAttribute("montant", 0);
+                        $portefeuille->setAttribute("personne_id", $get_parent->id);
+                        $portefeuille->setAttribute("statut_id", 1);
+                        $portefeuille->setAttribute("created_by", $dossier->parent_id);
+                        $portefeuille->setAttribute("updated_by", $dossier->parent_id);
+                        $portefeuille->save();
+                        $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                        $dossier->update();
+                    }
+                } else {
+                    # code... prendre le portefeuille de l'étudiant même
+                    $check_portefeuille = Portefeuilles::where("personne_id", $personne->id)->first();
+                    if ($check_portefeuille) {
+                        # code...
+                        $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                        $dossier->update();
+                    } else {
+                        # code... new portefeuille
+                        $portefeuille = new Portefeuilles();
+                        $portefeuille->setAttribute("montant", 0);
+                        $portefeuille->setAttribute("personne_id", $personne->id);
+                        $portefeuille->setAttribute("statut_id", 1);
+                        $portefeuille->setAttribute("created_by", $personne->compte_id);
+                        $portefeuille->setAttribute("updated_by", $personne->compte_id);
+                        $portefeuille->save();
+                        $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                        $dossier->update();
+                    }
+                }
+
+                break;
+
+            default:
+                # code... moi même 
+                # code... prendre le portefeuille de l'étudiant même
+                $check_portefeuille = Portefeuilles::where("personne_id", $personne->id)->first();
+                if ($check_portefeuille) {
+                    # code...
+                    $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                    $dossier->update();
+                } else {
+                    # code... new portefeuille
+                    $portefeuille = new Portefeuilles();
+                    $portefeuille->setAttribute("montant", 0);
+                    $portefeuille->setAttribute("personne_id", $personne->id);
+                    $portefeuille->setAttribute("statut_id", 1);
+                    $portefeuille->setAttribute("created_by", $personne->compte_id);
+                    $portefeuille->setAttribute("updated_by", $personne->compte_id);
+                    $portefeuille->save();
+                    $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                    $dossier->update();
+                }
+                break;
+        }
+
         // enregistrement des paiement
         if (isset($_POST["paiement"]) && $request->montant_payer > 0) {
             // création du compte de l'étudiant
-
-            //##################### générer le code  ###########################
-            // procédure d'incrémentation du code
-            $annee_actuelle = date('y');
-            $indicatif = "MT";
-            $id_1 = "";
-            // récupérer le dernier enregistrement
-            $last_numero = Etudiants::orderBy('id', 'desc')->first();
-
-            if ($last_numero == NULL) {
-                $last_id = "";
-            } else {
-                $last_id = $last_numero->matricule;
-            }
-
-            if (!empty($last_id)) {
-                $delete_bu = substr($last_id, -8);
-                // delete YEAR
-                $correct_code = substr($delete_bu, 0, 6);
-                $id_1 = $correct_code;
-            } else {
-                $id_1 = '000000';
-            }
-
-            // récupérer le numéro à incrémenter sur la position 2 du tableau $id_1
-            if (!empty($last_id)) {
-                //vérifier si nous somme dans une nouvelle année pour réinitialiser le compteur
-                $get_date = substr($last_id, -2);
-                if ($annee_actuelle > $get_date) {
-                    # code...
-                    $numero = '000000';
-                } else {
-                    # code...
-                    //$str = "BU111111122"; 
-                    // delete BU
-                    $delete_bu = substr($last_id, -8);
-                    // delete YEAR
-                    $correct_code = substr($delete_bu, 0, 6);
-                    $numero = $correct_code;
-                }
-            } else {
-                $numero = '000000';
-            }
-
-
-
-            $numero_user = $numero + 1;
-
-            $numero_user_formatted = str_pad($numero_user, 6, "0", STR_PAD_LEFT);
-            $matricule = $indicatif . $numero_user_formatted . $annee_actuelle;
-
-            //################################### end générer le code  ###################
-
-            // créer le compte étudiant
-            $inscription = new Etudiants();
-            $inscription->setAttribute("matricule", $matricule);
-            $inscription->setAttribute('groupepedagogique_id', $request->gp_id);
-            $inscription->setAttribute("dossier_id", $dossier->id);
-            $inscription->setAttribute("validateur_id", $user->id);
-            if (!empty($request->montant_payer)) {
-                # code... 
-                $inscription->setAttribute("compte", $request->montant_payer);
-            }
-            $inscription->setAttribute("commentaitaire", $request->id);
-            $inscription->save();
-
+ 
             // enregistrer le paiement avec statut en attente
             // générer le numero de reference facture
             // procédure d'incrémentation du numéro inventaire
@@ -921,7 +1034,7 @@ class EtudiantController extends Controller
 
             $preuve_path = null;
             $preuve = $request->preuve;
-    
+
             if (!empty($preuve)) {
                 # code... 
                 $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
@@ -935,7 +1048,7 @@ class EtudiantController extends Controller
             $paiement->setAttribute('montant_a_payer', $request->montant_a_payer);
             $paiement->setAttribute('montant_paye', $request->montant_payer);
             $paiement->setAttribute('statut_traitement', "ATTENTE");
-            $paiement->setAttribute('etudiant_id', $inscription->id);
+            $paiement->setAttribute('dossier_id', $dossier->id);
             if (isset($_POST["mode_paiement"])) {
                 # code...
                 $paiement->setAttribute('mod_paiement', $request->mode_paiement);
@@ -944,11 +1057,240 @@ class EtudiantController extends Controller
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
             // redirection sur le formulaire de paiement kkiapay
-            return redirect()->route("paiement-express.kkiapay",$paiement->reference);
-
+            return redirect()->route("paiement-express.kkiapay", $paiement->reference);
         }
+
+        // vérifier si un la génération des échéances est faite : 
+            $checkGeneration = Echeanciers::where("dossier_id", $dossier->id)->exists();
+            if (!$checkGeneration) {
+                # code... génération de l'échéance
+                // vérifier si le groupe pédagogique possède déjà une grille tarifaire
+                if ($gp->grilletarifaire_id != null && $gp->grilletarifaire_id != 0) {
+                    # code...
+                    $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $gp->grilletarifaire_id)->get();
+                    foreach ($ligne_tarif as $value) {
+                        # code...
+                        $echeancier = new Echeanciers();
+                        $echeancier->setAttribute("dossier_id", $dossier->id);
+                        $echeancier->setAttribute("lignetarif_id", $value->id);
+                        $echeancier->setAttribute("montant_rubrique", $value->montant);
+                        $echeancier->setAttribute("montant_restant", $value->montant);
+                        $echeancier->setAttribute("statutpaiement_id", 1); // en attente
+                        $echeancier->setAttribute("created_by", $user->id);
+                        $echeancier->setAttribute("updated_by", $user->id);
+                        $echeancier->save();
+                    }
+    
+                    // afficher l'interface permettant de choisir les rubriques de paiement
+                    return redirect()->route("paiements.choix_rubrique", $dossier->id);
+                }
+            }
 
 
         return redirect()->route("dossiers.en_attente")->with("success", "Enregistrement effectuée avec succès.");
     }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function compte()
+    {
+        $user = Auth()->user();
+        $portefeuille = Portefeuilles::where("created_by", $user->id)->first();
+        $personne = Personnes::where("compte_id",$user->id)->first();
+        // check if portefeuille is created 
+        if ($portefeuille) {
+            # code... nothing to do
+        } else {
+            # code... create acompte
+            if ($personne) {
+                # code... 
+                $portefeuille = new Portefeuilles();
+                $portefeuille->setAttribute("montant",0);
+                $portefeuille->setAttribute("personne_id",$personne->id);
+                $portefeuille->setAttribute("statut_id",1);
+                $portefeuille->setAttribute("created_by",$user->id);
+                $portefeuille->setAttribute("updated_by",$user->id);
+                $portefeuille->save();
+            } else {
+                # code...
+                Alert::toast("L'identifiant personne n'existe pas.",'error');
+                return redirect()->back();
+            }
+            
+        } 
+        $historiques = Historiqueportefeuilles::where("portefeuille_id",$portefeuille->id)->get();
+        
+        return view("frontend.etudiants.portefeuille", compact("portefeuille","historiques","personne"));
+    }
+
+
+    // recharger portefeuille
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rechargerPortefeuilleEtudiant(Request $request)
+    {
+        $this->validate($request, [
+            'montant' => 'required',
+            'portefeuille_id' => 'required'
+        ]);
+        // enregistrement du paiement
+        $user = auth()->user();
+        $portefeuille = Portefeuilles::find($request->portefeuille_id);
+        // check mode paiement
+
+        if (!empty($request->modepaiement) && $request->modepaiement == "MoMo") {
+            # code...
+            // création paiement 
+            // enregistrer le paiement avec statut en attente
+            // générer le numero de reference facture
+            // procédure d'incrémentation du numéro inventaire
+            $annee_actuelle = date('Y');
+            $type_reference = "FACT";
+            $indicatif = "SCH";
+            $id_1 = "";
+            // récupérer le dernier enregistrement
+            $last_numero_paiement = Paiements::orderBy('id', 'desc')->first();
+
+            if ($last_numero_paiement == NULL) {
+                $last_id = "";
+            } else {
+                $last_id = $last_numero_paiement->reference;
+            }
+
+            if (!empty($last_id)) {
+                $id_1 = explode('-', $last_id);
+                //vérifier si nous somme dans une nouvelle année pour réinitialiser le compteur
+                $get_date = $id_1[1];
+                if ($annee_actuelle > $get_date) {
+                    # code...
+                    $numero = '0000000';
+                } else {
+                    # code...
+                    $numero = $id_1[3];
+                }
+            } else {
+                $id_1 = '000000';
+                $numero = '000000';
+            }
+
+            $numero_fact = $numero + 1;
+
+            $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
+            $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
+
+            $preuve_path = null;
+            $preuve = $request->preuve;
+
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
+
+            // enregistrement du paiement
+            $paiement = new Paiements();
+            $paiement->setAttribute('reference', $reference_paiement);
+            $paiement->setAttribute('montant_a_payer', $request->montant);
+            $paiement->setAttribute('montant_paye', $request->montant);
+            $paiement->setAttribute('statut_traitement', "ATTENTE"); 
+            if (isset($_POST["mode_paiement"])) {
+                # code...
+                $paiement->setAttribute('mod_paiement', $request->modepaiement);
+            }
+            $paiement->setAttribute('preuve', $preuve_path);
+            $paiement->setAttribute('enregistrer_par', $user->id);
+            $paiement->save();
+            // redirection sur le formulaire de paiement kkiapay
+            return redirect()->route("recharge-portefeuille-etudiant.kkiapay", ['id'=>$portefeuille->id,'reference'=>$paiement->reference]);
+        } else {
+            # code...
+            // création paiement 
+            // enregistrer le paiement avec statut en attente
+            // générer le numero de reference facture
+            // procédure d'incrémentation du numéro inventaire
+            $annee_actuelle = date('Y');
+            $type_reference = "FACT";
+            $indicatif = "SCH";
+            $id_1 = "";
+            // récupérer le dernier enregistrement
+            $last_numero_paiement = Paiements::orderBy('id', 'desc')->first();
+
+            if ($last_numero_paiement == NULL) {
+                $last_id = "";
+            } else {
+                $last_id = $last_numero_paiement->reference;
+            }
+
+            if (!empty($last_id)) {
+                $id_1 = explode('-', $last_id);
+                //vérifier si nous somme dans une nouvelle année pour réinitialiser le compteur
+                $get_date = $id_1[1];
+                if ($annee_actuelle > $get_date) {
+                    # code...
+                    $numero = '0000000';
+                } else {
+                    # code...
+                    $numero = $id_1[3];
+                }
+            } else {
+                $id_1 = '000000';
+                $numero = '000000';
+            }
+
+            $numero_fact = $numero + 1;
+
+            $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
+            $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
+
+            $preuve_path = null;
+            $preuve = $request->preuve;
+
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
+
+            // enregistrement du paiement
+            $paiement = new Paiements();
+            $paiement->setAttribute('reference', $reference_paiement);
+            $paiement->setAttribute('montant_a_payer', $request->montant);
+            $paiement->setAttribute('montant_paye', $request->montant);
+            $paiement->setAttribute('statut_traitement', "VALIDE"); // à revoir 
+            if (isset($_POST["mode_paiement"])) {
+                # code...
+                $paiement->setAttribute('mod_paiement', $request->modepaiement);
+            }
+            $paiement->setAttribute('preuve', $preuve_path);
+            $paiement->setAttribute('enregistrer_par', $user->id);
+            $paiement->save();
+
+            // enregistrement historique paiement 
+            $historique = new Historiqueportefeuilles();
+            $historique->setAttribute("old_montant", $portefeuille->montant);
+            $historique->setAttribute("new_montant", $request->montant);
+            $historique->setAttribute("type", "CREDIT"); // CREDIT ou DEBIT
+            $historique->setAttribute("portefeuille_id", $portefeuille->id);
+            $historique->setAttribute("created_by", $user->id);
+            $historique->save();
+
+            // update portefeuille
+            $new_montant = $portefeuille->montant + $request->montant;
+            $portefeuille->setAttribute("montant", $new_montant);
+            $portefeuille->setAttribute("updated_at", Date("Y-m-d H:i:s"));
+            $portefeuille->update(); 
+
+            // redirection 
+            return redirect()->route("etudiant.compte")->with("success", "Opération effectuée avec succès.");
+        }
+    }
+
 }

@@ -56,5 +56,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Profil::class,'profil_id');
     }
+
+    public function getParentInfo($id)
+    {
+        return Personnes::where("compte_id",$id)->first();
+    }
+
  
 }

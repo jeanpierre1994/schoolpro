@@ -39,11 +39,16 @@ class Personnes extends Model
         'lien_parental',
         'site_id',
         'etablissement_id',
+        'parent_id',
     ]; 
     
     public function getSite()
     {
         return $this->belongsTo(Sites::class, 'site_id');
+    }
+    public function getParent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
     }
     
     public function getEtablissement()

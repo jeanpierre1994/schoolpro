@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dossiers;
+use App\Models\Echeanciers;
 use App\Models\Etudiants;
 use App\Models\Groupepedagogiques;
+use App\Models\Lignetarifs;
 use App\Models\Paiements;
+use App\Models\Personnes;
+use App\Models\Portefeuilles;
 use App\Models\Statuttraitements;
 use Illuminate\Http\Request;
 
@@ -79,6 +83,12 @@ class DossiersController extends Controller
 
         $user = auth()->user();
         $dossier = Dossiers::find($request->id);
+        $gp = Groupepedagogiques::find($request->groupepedagogique_id);
+        if ($gp->grilletarifaire_id) {
+            # code...
+        }else{
+            return redirect()->back()->with("error","La grille tarifaire n'est pas encore configuré pour ce groupe pédagogique.");
+        }
 
         if ($request->statuttraitement_id == 2) {
             # code...
@@ -163,10 +173,83 @@ class DossiersController extends Controller
             $dossier->setAttribute("date_traitement", date("d-m-Y"));
             $dossier->setAttribute("validateur_id", $user->id);
             $dossier->update();
+            return redirect()->route("dossiers.en_attente")->with("success", "Traitement effectué avec succès.");
         }
 
+         // vérifier si le compte parent existe
+         if ($dossier->parent_id) {
+            # code...
+            $get_parent = Personnes::where("compte_id", $dossier->parent_id)->first();
+            // vérifier si le parent dispose déjà de portefeuille
+            $check_portefeuille = Portefeuilles::where("personne_id", $get_parent->id)->first();
+            if ($check_portefeuille) {
+                # code...
+                $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                $dossier->update();
+            } else {
+                # code... new portefeuille
+                $portefeuille = new Portefeuilles();
+                $portefeuille->setAttribute("montant", 0);
+                $portefeuille->setAttribute("personne_id", $get_parent->id);
+                $portefeuille->setAttribute("statut_id", 1);
+                $portefeuille->setAttribute("created_by", $dossier->parent_id);
+                $portefeuille->setAttribute("updated_by", $dossier->parent_id);
+                $portefeuille->save();
+                $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                $dossier->update();
+            }
+        } else {
+            # code... prendre le portefeuille de l'étudiant même
+            $check_portefeuille = Portefeuilles::where("personne_id", $dossier->personne_id)->first();
+            if ($check_portefeuille) {
+                # code...
+                $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                $dossier->update();
+            } else {
+                # code... new portefeuille
+                $portefeuille = new Portefeuilles();
+                $portefeuille->setAttribute("montant", 0);
+                $portefeuille->setAttribute("personne_id", $dossier->personne_id);
+                $portefeuille->setAttribute("statut_id", 1);
+                $portefeuille->setAttribute("created_by", $dossier->getPersonne->compte_id);
+                $portefeuille->setAttribute("updated_by", $dossier->getPersonne->compte_id);
+                $portefeuille->save();
+                $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                $dossier->update();
+            }
+        }
+
+         // vérifier si un la génération des échéances est faite : 
+            $checkGeneration = Echeanciers::where("dossier_id", $dossier->id)->exists();
+            if (!$checkGeneration) {
+                # code... génération de l'échéance
+                // vérifier si le groupe pédagogique possède déjà une grille tarifaire
+                if ($gp->grilletarifaire_id != null && $gp->grilletarifaire_id != 0) {
+                    # code...
+                    $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $gp->grilletarifaire_id)->get();
+                    foreach ($ligne_tarif as $value) {
+                        # code...
+                        $echeancier = new Echeanciers();
+                        $echeancier->setAttribute("dossier_id", $dossier->id);
+                        $echeancier->setAttribute("lignetarif_id", $value->id);
+                        $echeancier->setAttribute("montant_rubrique", $value->montant);
+                        $echeancier->setAttribute("montant_restant", $value->montant);
+                        $echeancier->setAttribute("statutpaiement_id", 1); // en attente
+                        $echeancier->setAttribute("created_by", $user->id);
+                        $echeancier->setAttribute("updated_by", $user->id);
+                        $echeancier->save();
+                    }
+    
+                    // afficher l'interface permettant de choisir les rubriques de paiement
+                    return redirect()->route("paiements.choix_rubrique", $dossier->id);
+                }
+            }
+
+
+        // choix rubrique : 
+        return redirect()->route("paiements.choix_rubrique", $dossier->id);
         // enregistrement des paiement
-        if (isset($_POST["paiement"]) && $request->montant_payer > 0 && $request->statuttraitement_id == 2) {
+        /*if (isset($_POST["paiement"]) && $request->montant_payer > 0 && $request->statuttraitement_id == 2) {
             // enregistrer le paiement avec statut en attente
             // générer le numero de reference facture
             // procédure d'incrémentation du numéro inventaire
@@ -207,14 +290,14 @@ class DossiersController extends Controller
             // enregistrement du paiement
 
             $preuve_path = null;
-        $preuve = $request->preuve;
+            $preuve = $request->preuve;
 
-        if (!empty($preuve)) {
-            # code... 
-            $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
-            $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
-            $preuve->storeAs('preuve', $preuve_path, 'public');
-        }
+            if (!empty($preuve)) {
+                # code... 
+                $extension_preuve = $preuve->extension(); // getClientOriginalExtension();  
+                $preuve_path = "preuve_" . date('Ymd-His') . '.' . $extension_preuve;
+                $preuve->storeAs('preuve', $preuve_path, 'public');
+            }
 
             $paiement = new Paiements();
             $paiement->setAttribute('reference', $reference_paiement);
@@ -227,21 +310,17 @@ class DossiersController extends Controller
                 # code...
                 $paiement->setAttribute('mod_paiement', $request->mode_paiement);
             }
- 
+
             $paiement->setAttribute('preuve', $preuve_path);
-             
+
 
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
             // redirection sur le formulaire de paiement kkiapay
-            return redirect()->route("paiement.kkiapay",$paiement->reference);
-
-        }else{
+            return redirect()->route("paiement.kkiapay", $paiement->reference);
+        } else {
             return redirect()->route("dossiers.en_attente")->with("success", "Traitement effectué avec succès.");
-        }
-
-
-        
+        }*/
     }
 
     /**

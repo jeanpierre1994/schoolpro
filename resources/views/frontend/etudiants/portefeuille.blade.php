@@ -1,7 +1,7 @@
 @extends('frontend.inc.user_layout')
 
 @section('title')
-    Portefeuille Parent || {{ env('APP_NAME') }}
+    Portefeuille Etudiant || {{ env('APP_NAME') }}
 @endsection
 
 <style>
@@ -14,7 +14,7 @@
         <div class="col">
           <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
             <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item"><a href="{{route('dashboard_parent')}}">Accueil</a></li> 
+              <li class="breadcrumb-item"><a href="{{route('dashboard_etudiant')}}">Accueil</a></li> 
               <li class="breadcrumb-item active" aria-current="page">Portefeuille</li>
             </ol>
           </nav>
@@ -74,28 +74,28 @@
                         table-borderless
                         table-primary
                         align-middle">
-                            <thead class="table-light">
-                                <caption>Historiques</caption>
-                                <tr>
-                                    <th>N°</th>
-                                    <th>Montant</th>
-                                    <th>Type</th>
-                                    <th>Date opération</th>
-                                </tr>
-                                </thead>
-                                <tbody class="table-group-divider">
-                                    @php
-                                        $i=1;
-                                    @endphp
-                                    @foreach ($historiques as $data)
-                                    <tr class="table-primary">
-                                        <td scope="row text-center">{{$i++}}</td>
-                                        <td scope="row">{{ number_format($data->new_montant, 0, ',', '.') }} F CFA</td>
-                                        <td>{{$data->type}}</td>
-                                        <td>{{ $data->updated_at->format('d-m-Y à H:i:s') }}</td>
-                                    </tr>                                        
-                                    @endforeach
-                                </tbody>
+                        <thead class="table-light">
+                          <caption>Historiques</caption>
+                          <tr>
+                              <th>N°</th>
+                              <th>Montant</th>
+                              <th>Type</th>
+                              <th>Date opération</th>
+                          </tr>
+                          </thead>
+                          <tbody class="table-group-divider">
+                              @php
+                                  $i=1;
+                              @endphp
+                              @foreach ($historiques as $data)
+                              <tr class="table-primary">
+                                  <td scope="row text-center">{{$i++}}</td>
+                                  <td scope="row">{{ number_format($data->new_montant, 0, ',', '.') }} F CFA</td>
+                                  <td>{{$data->type}}</td>
+                                  <td>{{ $data->updated_at->format('d-m-Y à H:i:s') }}</td>
+                              </tr>                                        
+                              @endforeach
+                          </tbody>
                                 <tfoot>
                                     
                                 </tfoot>
@@ -123,7 +123,7 @@
                     <h5 class="modal-title text-white" id="modalDelete"><i class="fa fa-credit-card" aria-hidden="true"></i> Crédité portefeuille</h5>
                     <button type="button" class="btn-close hide-modal" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="form" action="{{route('recharge.portefeuille-parent')}}" method="post" enctype="multipart/form-data">
+                <form id="form" action="{{route('recharge.portefeuille-etudiant')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" value="{{ $portefeuille->id }}" name="portefeuille_id">
                     <div class="modal-body">
@@ -136,7 +136,7 @@
                             <div class="form-group col-md-6">
                                 <label for="label">Montant à recharger <i class="text-danger">*</i></label>
                                 <input type="number" min="0" name="montant" id="montant"
-                                class="form-control" value="20" required>
+                                class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="label">Mode de paiement <i class="text-danger">*</i></label>

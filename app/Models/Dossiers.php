@@ -36,8 +36,19 @@ class Dossiers extends Model
         'updated_by', // FK
         'created_at',
         'updated_at', 
-        'groupepedagogique_id'
+        'groupepedagogique_id',
+        'parent_id',
+        'portefeuille_id'
     ]; 
+    
+    public function getPortefeuille()
+    {
+        return $this->belongsTo(Portefeuilles::class, 'portefeuille_id');
+    }
+    public function getParent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
     
     public function getGp()
     {
