@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Pays;
 use App\Models\Poles;
 use App\Models\Cycles;
@@ -67,9 +68,11 @@ class AdminEtudiantController extends Controller
         $etablissements = Etablissements::where("statut_id", 1)->get();
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get();
-        $typesponsors = Typesponsors::where("statut_id", 1)->get();
+        $parents = Personnes::join("users","users.id","=","personnes.compte_id")
+        ->where("users.profil_id",3)
+        ->get(["personnes.id","personnes.nom","personnes.prenoms"]);        $typesponsors = Typesponsors::where("statut_id", 1)->get();
 
-        return view('backend.administrations.etudiants.edit', compact("genres", "profils","etablissements","poles","cycles","typesponsors", "etudiant"));
+        return view('backend.administrations.etudiants.edit', compact("genres", "profils","etablissements","poles","cycles","typesponsors", "etudiant", "parents"));
     }
 
     public function releve($id)
@@ -100,5 +103,18 @@ class AdminEtudiantController extends Controller
     {
         dd('ok');
         return redirect()->back();
+    }
+
+    public function delete($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $etudiant = Etudiants::where('id', $id)->get()->first();
+        try {
+            $etudiant->delete();
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', "Suppression Impossible");
+        }
+
+        return redirect()->route('admin.etudiants')->with('success', 'Suppression Effectuée');
     }
 }

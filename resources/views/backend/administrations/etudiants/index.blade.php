@@ -24,27 +24,32 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des étudiants enregistrés</h5>
-                        <div class="container">
-                            <div class="treeview">
-                                <ul>
-                                    @foreach ($poles as $pole)
-                                        <li class="node">{{ $pole->libelle }}
-                                            <ul>
-                                                @foreach ($pole->groupePedagogiques as $gp)
-                                                    <li class="node groupe" data-id="{{ $gp->id }}">
-                                                        {{ $gp->libelle_classe . ' ' . $gp->libelle_secondaire }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            <div class="student-list">
-                                <!-- Ici, vous afficherez la liste des étudiants du groupe pédagogique sélectionné -->
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+
+                                <div class="container">
+                                    <div class="treeview">
+                                        <ul>
+                                            @foreach ($poles as $pole)
+                                                <li class="node">{{ $pole->libelle }}
+                                                    <ul>
+                                                        @foreach ($pole->groupePedagogiques as $gp)
+                                                            <li class="node groupe" data-id="{{ $gp->id }}">
+                                                                {{ $gp->libelle_classe . ' ' . $gp->libelle_secondaire }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    
+                                </div>
                             </div>
                         </div>
-
+                        <div class="student-list">
+                                        <!-- Ici, vous afficherez la liste des étudiants du groupe pédagogique sélectionné -->
+                                    </div>
 
                     </div>
                 </div>

@@ -69,7 +69,8 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        <form action="{{ route('etudiant.dossierExpress-store') }}" method="post"  enctype="multipart/form-data">
+                                        <form action="{{ route('etudiant.dossierExpress-store') }}" method="post"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="form-row">
                                                 <div class="col-md-4 mb-2">
@@ -174,12 +175,14 @@
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Nationalité <i
                                                             class="text-danger">*</i></label>
-                                                            <select name="nationalite" id="nationalite" class="form-control" required>
-                                                                <option value=""></option>
-                                                                @foreach ($pays as $item)
-                                                                    <option value="{{$item->nationalite}}">{{$item->nationalite}}</option>
-                                                                @endforeach
-                                                            </select>
+                                                    <select name="nationalite" id="nationalite" class="form-control"
+                                                        required>
+                                                        <option value=""></option>
+                                                        @foreach ($pays as $item)
+                                                            <option value="{{ $item->nationalite }}">
+                                                                {{ $item->nationalite }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Type sponsor <i
@@ -196,9 +199,9 @@
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Mot de passe <i
                                                             class="text-danger">*</i></label>
-                                                    <input type="password" class="form-control" 
-                                                        id="password-input" required aria-describedby="inputGroupPrepend"
-                                                        required name="password" minlength="2" maxlength="150" />
+                                                    <input type="password" class="form-control" id="password-input"
+                                                        required aria-describedby="inputGroupPrepend" required
+                                                        name="password" minlength="2" maxlength="150" />
                                                 </div>
 
                                                 <div class="col-md-6 mb-2">
@@ -245,50 +248,51 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                                <div class="form-row">
-                                                    <hr>
-                                                    Voulez-vous ajouter un parent ?
-                                                    <hr class="mt-2">
-                                                    <div class="col-md-12">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input check_parent" type="radio"
-                                                                name="ajout_parent" id="choix_one" value="1">
-                                                            <label class="form-check-label" for="">Non</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input check_parent" type="radio"
-                                                                name="ajout_parent" id="choix_two" value="2">
-                                                            <label class="form-check-label" for="">Non le parent
-                                                                existe déjà</label>
-                                                        </div>
-                                                        {{--<div class="form-check form-check-inline">
+                                            <div class="form-row">
+                                                <hr>
+                                                Voulez-vous ajouter un parent ?
+                                                <hr class="mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input check_parent" type="radio"
+                                                            name="ajout_parent" id="choix_one" value="1">
+                                                        <label class="form-check-label" for="">Non</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input check_parent" type="radio"
+                                                            name="ajout_parent" id="choix_two" value="2">
+                                                        <label class="form-check-label" for="">Non le parent
+                                                            existe déjà</label>
+                                                    </div>
+                                                    {{-- <div class="form-check form-check-inline">
                                                             <input class="form-check-input check_parent" type="radio"
                                                                 name="ajout_parent" id="choix_tree" value="3">
                                                             <label class="form-check-label" for="">Oui je veux
                                                                 ajouter</label>
-                                                        </div>--}}
-                                                    </div>
+                                                        </div> --}}
                                                 </div>
+                                            </div>
 
 
-                                                <div class="form-row mt-2  d-none" id="step_one_add_parent">
-                                                   <div class="bg-light" >
+                                            <div class="form-row mt-2  d-none" id="step_one_add_parent">
+                                                <div class="bg-light">
                                                     <div class="col-md-12 text-primary p-3">Ajouter un parent</div>
                                                     <div class="row">
                                                         <div class="col-md-4 mb-2">
-                                                            <label for="form-label">Nom <i class="text-danger">*</i></label>
+                                                            <label for="form-label">Nom <i
+                                                                    class="text-danger">*</i></label>
                                                             <input type="text" class="form-control" id="nom_parent"
-                                                                value="{{ old('nom_parent') }}" 
-                                                                aria-describedby="inputGroupPrepend" 
-                                                                name="nom_parent" minlength="2" maxlength="150" />
+                                                                value="{{ old('nom_parent') }}"
+                                                                aria-describedby="inputGroupPrepend" name="nom_parent"
+                                                                minlength="2" maxlength="150" />
                                                             <div class="invalid-feedback">Champ obligatoire.</div>
                                                             <div class="valid-feedback"></div>
                                                         </div>
                                                         <div class="col-md-4 mb-2">
                                                             <label for="form-label">Prénoms <i
                                                                     class="text-danger">*</i></label>
-                                                            <input type="text" class="form-control" id="prenoms_parent"
-                                                                 aria-describedby="inputGroupPrepend" 
+                                                            <input type="text" class="form-control"
+                                                                id="prenoms_parent" aria-describedby="inputGroupPrepend"
                                                                 name="prenoms_parent" minlength="2" maxlength="150"
                                                                 value="{{ old('prenoms_parent') }}" />
                                                             <div class="invalid-feedback">Champ obligatoire.</div>
@@ -296,362 +300,381 @@
                                                         <div class="col-md-4 mb-2">
                                                             <label for="form-label">Téléphone <i
                                                                     class="text-danger">*</i></label>
-                                                            <input type="number" class="form-control" id="telephone_parent"
-                                                                 aria-describedby="inputGroupPrepend" 
+                                                            <input type="number" class="form-control"
+                                                                id="telephone_parent" aria-describedby="inputGroupPrepend"
                                                                 name="telephone_parent" min="0"
                                                                 value="{{ old('telephone_parent') }}" />
                                                             <div class="invalid-feedback">Champ obligatoire.</div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
-                                                            <label for="form-label">Email <i class="text-danger">*</i></label>
+                                                            <label for="form-label">Email <i
+                                                                    class="text-danger">*</i></label>
                                                             <input type="email" class="form-control" id="email_parent"
-                                                                 aria-describedby="inputGroupPrepend" 
-                                                                name="email_parent" minlength="2" maxlength="150"
+                                                                aria-describedby="inputGroupPrepend" name="email_parent"
+                                                                minlength="2" maxlength="150"
                                                                 value="{{ old('email_parent') }}" />
                                                             <div class="invalid-feedback">Champ obligatoire.</div>
                                                         </div>
-    
+
                                                         <div class="col-md-6 mb-2">
-                                                            <label for="form-label">Genre <i class="text-danger">*</i></label>
+                                                            <label for="form-label">Genre <i
+                                                                    class="text-danger">*</i></label>
                                                             <select class="browser-default custom-select"
                                                                 name="genre_parent_id" id="genre_parent_id">
-                                                                <option value="" selected>Choisissez votre genre</option>
+                                                                <option value="" selected>Choisissez votre genre
+                                                                </option>
                                                                 @foreach ($genres as $item)
-                                                                    <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->libelle }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
-    
-                                                    </div>
-                                                   </div>
-                                                </div>
 
-                                                <div class="form-row mt-2 d-none" id="setp_one_choix_parent">
-                                                    <div class="bg-light">
-                                                        <div class="row">
-                                                            <div class="col-md-12 text-primary p-3">Choisissez un parent</div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="col-md-12 mb-2">
-                                                                <label for="form-label">Choix parent <i class="text-danger">*</i></label>
-                                                                <select class="browser-default custom-select"
-                                                                    name="choix_parent_id" id="choix_parent_id">
-                                                                    <option value="" selected>Choisissez un parent
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row mt-2 d-none" id="setp_one_choix_parent">
+                                                <div class="bg-light">
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-primary p-3">Choisissez un parent</div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-2">
+                                                            <label for="form-label">Choix parent <i
+                                                                    class="text-danger">*</i></label>
+                                                            <select class="browser-default custom-select"
+                                                                name="choix_parent_id" id="choix_parent_id">
+                                                                <option value="" selected>Choisissez un parent
+                                                                </option>
+                                                                @foreach ($parents as $data)
+                                                                    <option value="{{ $data->id }}">
+                                                                        {{ $data->nom }} {{ $data->prenoms }}
                                                                     </option>
-                                                                    @foreach ($parents as $data)
-                                                                        <option value="{{ $data->id }}">
-                                                                            {{ $data->nom }} {{ $data->prenoms }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <div class="valid-feedback"></div>
-                                                            </div>
+                                                                @endforeach
+                                                            </select>
+                                                            <div class="valid-feedback"></div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
-                                            <div class="row">
-                                                <div class="form-group col-md-6 mb-3">
-                                                    <label for="inputText" class="col-form-label">montant à payer<i class="text-danger"></i></label> 
-                                                      <input type="text" class="form-control" value="98000" name="montant_a_payer" id="montant_a_payer" >
-                                                 </div>
-                                                 <div class="form-group col-md-6 mb-3">
-                                                     <label for="inputText" class="col-form-label">montant payé<i class="text-danger">*</i></label> 
-                                                       <input type="number" class="form-control" value="0" name="montant_payer" id="montant_payer" required>
-                                                  </div>
-                                            </div>
-
-
-                            <div class="row"> 
-                                <div class="form-group col-md-6 mb-3">
-                                    <label for="inputText" class="col-form-label">Mode de paiement <i
-                                            class="text-danger"></i></label>
-                                    <select class="form-select" name="mode_paiement" id="mode_paiement" required>
-                                        <option value="" selected>Choisissez une option</option>
-                                        <option value="Manuel">Manuel</option>
-                                        <option value="Virement">Virement</option>
-                                        <option value="MoMo">MoMo</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="inputText" class="col-form-label">Preuve (image)<i
-                                            class="text-danger"></i></label>
-                                    <input type="file" class="form-control" name="preuve" id="preuve">
-                                </div>
-                            </div>
-
-                                            <div class="row mb-3">
-                                                <div class="col-md-6"> 
-                                                  <label class="col-form-label"></label>
-                                                  <div class=""> 
-                                                    <input type="submit" value="Procéder au paiement" id="paiement" class="btn btn-primary" name="paiement">
-                                                  </div> 
-                                                </div>
-                                                <div class="col-md-6"> 
-                                                  <label class="col-form-label"></label>
-                                                  <div class=""> 
-                                                    <input type="submit" class="btn btn-warning" value="Valider sans payer" id="no_paiement" name="no_paiement"/>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                        </form><!-- End General Form Elements -->
                                     </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="inputText" class="col-form-label">montant à payer<i
+                                                    class="text-danger"></i></label>
+                                            <input type="text" class="form-control" value="98000"
+                                                name="montant_a_payer" id="montant_a_payer">
+                                        </div>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="inputText" class="col-form-label">montant payé<i
+                                                    class="text-danger">*</i></label>
+                                            <input type="number" class="form-control" value="0"
+                                                name="montant_payer" id="montant_payer" required>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="inputText" class="col-form-label">Mode de paiement <i
+                                                    class="text-danger"></i></label>
+                                            <select class="form-select" name="mode_paiement" id="mode_paiement" required>
+                                                <option value="" selected>Choisissez une option</option>
+                                                <option value="Manuel">Manuel</option>
+                                                <option value="Virement">Virement</option>
+                                                <option value="MoMo">MoMo</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-4 mb-3">
+                                            <label for="inputText" class="col-form-label">Preuve (image)<i
+                                                    class="text-danger"></i></label>
+                                            <input type="file" class="form-control" name="preuve" id="preuve">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="col-form-label"></label>
+                                            <div class="">
+                                                <input type="submit" value="Procéder au paiement" id="paiement"
+                                                    class="btn btn-primary" name="paiement">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="col-form-label"></label>
+                                            <div class="">
+                                                <input type="submit" class="btn btn-warning" value="Valider sans payer"
+                                                    id="no_paiement" name="no_paiement" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form><!-- End General Form Elements -->
                                 </div>
                             </div>
                         </div>
-                        <!-- end onglet one -->
                     </div>
+                    <!-- end onglet one -->
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Création dossier étudiant sans inscription
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Création dossier étudiant sans inscription
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
 
-                        <!-- ************** onglet two ************** -->
- 
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Enregistrement étudiant</h5>
-                                        <!-- General Form Elements -->
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <strong>Error!</strong>
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
+                    <!-- ************** onglet two ************** -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Enregistrement étudiant</h5>
+                                    <!-- General Form Elements -->
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <strong>Error!</strong>
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <form action="{{ route('etudiant.dossierExpress-sansInscription') }}" method="post"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-2">
+                                                <label for="form-label">Etudiant <i class="text-danger">*</i></label>
+                                                <select class="browser-default custom-select" name="etudiant_id"
+                                                    id="etudiant_id" required>
+                                                    <option value="" selected>Choisissez un étudiant</option>
+                                                    @foreach ($etudiants as $etudiant)
+                                                        <option value="{{ $etudiant->id }}">{{ $etudiant->nom }}
+                                                            {{ $etudiant->prenoms }}
+                                                        </option>
                                                     @endforeach
-                                                </ul>
+                                                </select>
                                             </div>
-                                        @endif
-                                        <form action="{{ route('etudiant.dossierExpress-sansInscription') }}" method="post"  enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="form-row">    
-                                                <div class="col-md-4 mb-2">
-                                                    <label for="form-label">Etudiant <i class="text-danger">*</i></label>
-                                                    <select class="browser-default custom-select" name="etudiant_id"
-                                                        id="etudiant_id" required>
-                                                        <option value="" selected>Choisissez un étudiant</option>
-                                                        @foreach ($etudiants as $etudiant)
-                                                            <option value="{{ $etudiant->id }}">{{ $etudiant->nom }} {{ $etudiant->prenoms }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div> 
-                                                <div class="col-md-4 mb-2">
-                                                    <label for="form-label">Groupe péda. <i
-                                                            class="text-danger">*</i></label>
-                                                    <select class="form-select custom-select" name="gp_id"
-                                                        id="gp_id_two" required>
-                                                        <option value="" selected>Choisissez une option</option>
-                                                        @foreach ($gp as $item)
-                                                            <option value="{{ $item->id }}">
-                                                                {{ $item->getPole->libelle }}
-                                                                {{ $item->getFiliere->libelle }}
-                                                                {{ $item->libelle_classe }}
-                                                                {{ $item->libelle_secondaire }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                            <div class="col-md-4 mb-2">
+                                                <label for="form-label">Groupe péda. <i class="text-danger">*</i></label>
+                                                <select class="form-select custom-select" name="gp_id" id="gp_id_two"
+                                                    required>
+                                                    <option value="" selected>Choisissez une option</option>
+                                                    @foreach ($gp as $item)
+                                                        <option value="{{ $item->id }}">
+                                                            {{ $item->getPole->libelle }}
+                                                            {{ $item->getFiliere->libelle }}
+                                                            {{ $item->libelle_classe }}
+                                                            {{ $item->libelle_secondaire }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4 mb-2">
+                                                <label for="form-label">Année académique<i
+                                                        class="text-danger">*</i></label>
+                                                <select class="form-select custom-select" name="annee" id="annee_two"
+                                                    required>
+                                                    <optgroup label="Valeur par défaut">
+                                                        <option selected value="{{ date('Y') }}">
+                                                            {{ date('Y') }}</option>
+                                                    </optgroup>
+                                                    <optgroup label="Liste disponible">
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025">2025</option>
+                                                        <option value="2026">2026</option>
+                                                        <option value="2027">2027</option>
+                                                        <option value="2028">2028</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                            <hr>
+                                            Voulez-vous ajouter un parent ?
+                                            <hr class="mt-2">
+                                            <div class="col-md-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input check_parent_two" type="radio"
+                                                        name="ajout_parent" id="choix_one_two" value="1">
+                                                    <label class="form-check-label" for="">Non</label>
                                                 </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label for="form-label">Année académique<i
-                                                            class="text-danger">*</i></label>
-                                                    <select class="form-select custom-select" name="annee"
-                                                        id="annee_two" required>
-                                                        <optgroup label="Valeur par défaut">
-                                                            <option selected value="{{ date('Y') }}">
-                                                                {{ date('Y') }}</option>
-                                                        </optgroup>
-                                                        <optgroup label="Liste disponible">
-                                                            <option value="2023">2023</option>
-                                                            <option value="2024">2024</option>
-                                                            <option value="2025">2025</option>
-                                                            <option value="2026">2026</option>
-                                                            <option value="2027">2027</option>
-                                                            <option value="2028">2028</option>
-                                                        </optgroup>
-                                                    </select>
-                                                </div> 
-
-                                            </div> 
-                                                <div class="form-row">
-                                                    <hr>
-                                                    Voulez-vous ajouter un parent ?
-                                                    <hr class="mt-2">
-                                                    <div class="col-md-12">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input check_parent_two" type="radio"
-                                                                name="ajout_parent" id="choix_one_two" value="1">
-                                                            <label class="form-check-label" for="">Non</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input check_parent_two" type="radio"
-                                                                name="ajout_parent" id="choix_two_two" value="2">
-                                                            <label class="form-check-label" for="">Non le parent
-                                                                existe déjà</label>
-                                                        </div>
-                                                        {{--<div class="form-check form-check-inline">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input check_parent_two" type="radio"
+                                                        name="ajout_parent" id="choix_two_two" value="2">
+                                                    <label class="form-check-label" for="">Non le parent
+                                                        existe déjà</label>
+                                                </div>
+                                                {{-- <div class="form-check form-check-inline">
                                                             <input class="form-check-input check_parent_two" type="radio"
                                                                 name="ajout_parent" id="choix_tree_two" value="3">
                                                             <label class="form-check-label" for="">Oui je veux
                                                                 ajouter</label>
-                                                        </div>--}}
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-row mt-2  d-none" id="step_two_add_parent">
-                                                   <div class="bg-light" >
-                                                    <div class="col-md-12 text-primary p-3">Ajouter un parent</div>
-                                                    <div class="row">
-                                                        <div class="col-md-4 mb-2">
-                                                            <label for="form-label">Nom <i class="text-danger">*</i></label>
-                                                            <input type="text" class="form-control" id="nom_parent_two"
-                                                                value="{{ old('nom_parent') }}" 
-                                                                aria-describedby="inputGroupPrepend" 
-                                                                name="nom_parent" minlength="2" maxlength="150" />
-                                                            <div class="invalid-feedback">Champ obligatoire.</div>
-                                                            <div class="valid-feedback"></div>
-                                                        </div>
-                                                        <div class="col-md-4 mb-2">
-                                                            <label for="form-label">Prénoms <i
-                                                                    class="text-danger">*</i></label>
-                                                            <input type="text" class="form-control" id="prenoms_parent_two"
-                                                                 aria-describedby="inputGroupPrepend" 
-                                                                name="prenoms_parent" minlength="2" maxlength="150"
-                                                                value="{{ old('prenoms_parent') }}" />
-                                                            <div class="invalid-feedback">Champ obligatoire.</div>
-                                                        </div>
-                                                        <div class="col-md-4 mb-2">
-                                                            <label for="form-label">Téléphone <i
-                                                                    class="text-danger">*</i></label>
-                                                            <input type="number" class="form-control" id="telephone_parent_two"
-                                                                 aria-describedby="inputGroupPrepend" 
-                                                                name="telephone_parent" min="0"
-                                                                value="{{ old('telephone_parent') }}" />
-                                                            <div class="invalid-feedback">Champ obligatoire.</div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-2">
-                                                            <label for="form-label">Email <i class="text-danger">*</i></label>
-                                                            <input type="email" class="form-control" id="email_parent_two"
-                                                                 aria-describedby="inputGroupPrepend" 
-                                                                name="email_parent" minlength="2" maxlength="150"
-                                                                value="{{ old('email_parent') }}" />
-                                                            <div class="invalid-feedback">Champ obligatoire.</div>
-                                                        </div>
-    
-                                                        <div class="col-md-6 mb-2">
-                                                            <label for="form-label">Genre <i class="text-danger">*</i></label>
-                                                            <select class="browser-default custom-select"
-                                                                name="genre_parent_id" id="genre_parent_id_two">
-                                                                <option value="" selected>Choisissez votre genre</option>
-                                                                @foreach ($genres as $item)
-                                                                    <option value="{{ $item->id }}">{{ $item->libelle }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-    
-                                                    </div>
-                                                   </div>
-                                                </div>
-
-                                                <div class="form-row mt-2 d-none" id="setp_two_choix_parent">
-                                                    <div class="bg-light">
-                                                        <div class="row">
-                                                            <div class="col-md-12 text-primary p-3">Choisissez un parent</div>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="col-md-12 mb-2">
-                                                                <label for="form-label">Choix parent <i class="text-danger">*</i></label>
-                                                                <select class="browser-default custom-select"
-                                                                    name="choix_parent_id" id="choix_parent_id_two">
-                                                                    <option value="" selected>Choisissez un parent
-                                                                    </option>
-                                                                    @foreach ($parents as $data)
-                                                                        <option value="{{ $data->id }}">
-                                                                            {{ $data->nom }} {{ $data->prenoms }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <div class="valid-feedback"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                                        </div> --}}
                                             </div>
+                                        </div>
 
-                                            <div class="row">
-                                                <div class="form-group col-md-6 mb-3">
-                                                    <label for="inputText" class="col-form-label">montant à payer<i class="text-danger"></i></label> 
-                                                      <input type="text" class="form-control" value="98000" name="montant_a_payer" id="montant_a_payer_two" >
-                                                 </div>
-                                                 <div class="form-group col-md-6 mb-3">
-                                                     <label for="inputText" class="col-form-label">montant payé<i class="text-danger">*</i></label> 
-                                                       <input type="number" class="form-control" value="0" name="montant_payer" id="montant_payer_two" required>
-                                                  </div>
+
+                                        <div class="form-row mt-2  d-none" id="step_two_add_parent">
+                                            <div class="bg-light">
+                                                <div class="col-md-12 text-primary p-3">Ajouter un parent</div>
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="form-label">Nom <i class="text-danger">*</i></label>
+                                                        <input type="text" class="form-control" id="nom_parent_two"
+                                                            value="{{ old('nom_parent') }}"
+                                                            aria-describedby="inputGroupPrepend" name="nom_parent"
+                                                            minlength="2" maxlength="150" />
+                                                        <div class="invalid-feedback">Champ obligatoire.</div>
+                                                        <div class="valid-feedback"></div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="form-label">Prénoms <i
+                                                                class="text-danger">*</i></label>
+                                                        <input type="text" class="form-control"
+                                                            id="prenoms_parent_two" aria-describedby="inputGroupPrepend"
+                                                            name="prenoms_parent" minlength="2" maxlength="150"
+                                                            value="{{ old('prenoms_parent') }}" />
+                                                        <div class="invalid-feedback">Champ obligatoire.</div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label for="form-label">Téléphone <i
+                                                                class="text-danger">*</i></label>
+                                                        <input type="number" class="form-control"
+                                                            id="telephone_parent_two" aria-describedby="inputGroupPrepend"
+                                                            name="telephone_parent" min="0"
+                                                            value="{{ old('telephone_parent') }}" />
+                                                        <div class="invalid-feedback">Champ obligatoire.</div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-2">
+                                                        <label for="form-label">Email <i class="text-danger">*</i></label>
+                                                        <input type="email" class="form-control" id="email_parent_two"
+                                                            aria-describedby="inputGroupPrepend" name="email_parent"
+                                                            minlength="2" maxlength="150"
+                                                            value="{{ old('email_parent') }}" />
+                                                        <div class="invalid-feedback">Champ obligatoire.</div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mb-2">
+                                                        <label for="form-label">Genre <i class="text-danger">*</i></label>
+                                                        <select class="browser-default custom-select"
+                                                            name="genre_parent_id" id="genre_parent_id_two">
+                                                            <option value="" selected>Choisissez votre genre</option>
+                                                            @foreach ($genres as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
+                                                </div>
                                             </div>
+                                        </div>
 
+                                        <div class="form-row mt-2 d-none" id="setp_two_choix_parent">
+                                            <div class="bg-light">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-primary p-3">Choisissez un parent</div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <label for="form-label">Choix parent <i
+                                                                class="text-danger">*</i></label>
+                                                        <select class="browser-default custom-select"
+                                                            name="choix_parent_id" id="choix_parent_id_two">
+                                                            <option value="" selected>Choisissez un parent
+                                                            </option>
+                                                            @foreach ($parents as $data)
+                                                                <option value="{{ $data->id }}">
+                                                                    {{ $data->nom }} {{ $data->prenoms }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="valid-feedback"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            <div class="row"> 
-                                <div class="form-group col-md-6 mb-3">
-                                    <label for="inputText" class="col-form-label">Mode de paiement <i
-                                            class="text-danger"></i></label>
-                                    <select class="form-select" name="mode_paiement" id="mode_paiement" required>
-                                        <option value="" selected>Choisissez une option</option>
-                                        <option value="Manuel">Manuel</option>
-                                        <option value="Virement">Virement</option>
-                                        <option value="MoMo">MoMo</option>
-                                    </select>
                                 </div>
 
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="inputText" class="col-form-label">Preuve (image)<i
-                                            class="text-danger"></i></label>
-                                    <input type="file" class="form-control" name="preuve" id="preuve">
-                                </div>
-                            </div>
-
-                                            <div class="row mb-3">
-                                                <div class="col-md-6"> 
-                                                  <label class="col-form-label"></label>
-                                                  <div class=""> 
-                                                    <input type="submit" value="Procéder au paiement" id="paiement_two" class="btn btn-primary" name="paiement">
-                                                  </div> 
-                                                </div>
-                                                <div class="col-md-6"> 
-                                                  <label class="col-form-label"></label>
-                                                  <div class=""> 
-                                                    <input type="submit" class="btn btn-warning" value="Valider sans payer" id="no_paiement_two" name="no_paiement"/>
-                                                  </div>
-                                                </div>
-                                              </div>
-
- 
-                                        </form><!-- End General Form Elements -->
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="inputText" class="col-form-label">montant à payer<i
+                                                class="text-danger"></i></label>
+                                        <input type="text" class="form-control" value="98000" name="montant_a_payer"
+                                            id="montant_a_payer_two">
+                                    </div>
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="inputText" class="col-form-label">montant payé<i
+                                                class="text-danger">*</i></label>
+                                        <input type="number" class="form-control" value="0" name="montant_payer"
+                                            id="montant_payer_two" required>
                                     </div>
                                 </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label for="inputText" class="col-form-label">Mode de paiement <i
+                                                class="text-danger"></i></label>
+                                        <select class="form-select" name="mode_paiement" id="mode_paiement" required>
+                                            <option value="" selected>Choisissez une option</option>
+                                            <option value="Manuel">Manuel</option>
+                                            <option value="Virement">Virement</option>
+                                            <option value="MoMo">MoMo</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label for="inputText" class="col-form-label">Preuve (image)<i
+                                                class="text-danger"></i></label>
+                                        <input type="file" class="form-control" name="preuve" id="preuve">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="col-form-label"></label>
+                                        <div class="">
+                                            <input type="submit" value="Procéder au paiement" id="paiement_two"
+                                                class="btn btn-primary" name="paiement">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-form-label"></label>
+                                        <div class="">
+                                            <input type="submit" class="btn btn-warning" value="Valider sans payer"
+                                                id="no_paiement_two" name="no_paiement" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                </form><!-- End General Form Elements -->
                             </div>
                         </div>
-                        <!--************ end onglet two *******************-->
                     </div>
                 </div>
+                <!--************ end onglet two *******************-->
             </div>
+        </div>
+        </div>
         </div>
     </section>
 
@@ -668,47 +691,47 @@
             // active menu 
             $("#parametres").removeClass('collapsed');
 
-            
-$('#paiement').attr("disabled", true);
 
-$('#montant_payer').change(function () {
-var montant = parseInt($(this).val());
-var montant_a_payer = parseInt($("#montant_a_payer").val());
+            $('#paiement').attr("disabled", true);
 
-if (montant > 0 && montant_a_payer > 0) {
-  $('#paiement').attr("disabled", false);
-  // vérifier si le montant à payer est supérieur au montant à payer
-  if (montant > montant_a_payer) {
-    alert("Le montant payé ne peut pas être supérieur au montant à payer");
-    $('#paiement').attr("disabled", true);
-  }
+            $('#montant_payer').change(function() {
+                var montant = parseInt($(this).val());
+                var montant_a_payer = parseInt($("#montant_a_payer").val());
 
-} else {
-  $('#paiement').attr("disabled", true);
-}
-});
+                if (montant > 0 && montant_a_payer > 0) {
+                    $('#paiement').attr("disabled", false);
+                    // vérifier si le montant à payer est supérieur au montant à payer
+                    if (montant > montant_a_payer) {
+                        alert("Le montant payé ne peut pas être supérieur au montant à payer");
+                        $('#paiement').attr("disabled", true);
+                    }
 
-// step two
+                } else {
+                    $('#paiement').attr("disabled", true);
+                }
+            });
+
+            // step two
 
 
-$('#paiement_two').attr("disabled", true);
+            $('#paiement_two').attr("disabled", true);
 
-$('#montant_payer_two').change(function () {
-var montant = parseInt($(this).val());
-var montant_a_payer = parseInt($("#montant_a_payer_two").val());
+            $('#montant_payer_two').change(function() {
+                var montant = parseInt($(this).val());
+                var montant_a_payer = parseInt($("#montant_a_payer_two").val());
 
-if (montant > 0 && montant_a_payer > 0) {
-  $('#paiement_two').attr("disabled", false);
-  // vérifier si le montant à payer est supérieur au montant à payer
-  if (montant > montant_a_payer) {
-    alert("Le montant payé ne peut pas être supérieur au montant à payer");
-    $('#paiement_two').attr("disabled", true);
-  }
+                if (montant > 0 && montant_a_payer > 0) {
+                    $('#paiement_two').attr("disabled", false);
+                    // vérifier si le montant à payer est supérieur au montant à payer
+                    if (montant > montant_a_payer) {
+                        alert("Le montant payé ne peut pas être supérieur au montant à payer");
+                        $('#paiement_two').attr("disabled", true);
+                    }
 
-} else {
-  $('#paiement_two').attr("disabled", true);
-}
-});
+                } else {
+                    $('#paiement_two').attr("disabled", true);
+                }
+            });
 
 
             // update choix parent step one
@@ -736,10 +759,9 @@ if (montant > 0 && montant_a_payer > 0) {
                     $('#email_parent').val("");
                 }
                 if (choix == 2) { // select parent
-                    if ($('#setp_one_choix_parent').hasClass("d-none")) { 
+                    if ($('#setp_one_choix_parent').hasClass("d-none")) {
                         $('#setp_one_choix_parent').removeClass("d-none");
-                    } else { 
-                    }
+                    } else {}
                     if ($('#step_one_add_parent').hasClass("d-none")) {
                         //$('#step_one_add_parent').removeClass("d-none");
                     } else {
@@ -764,7 +786,7 @@ if (montant > 0 && montant_a_payer > 0) {
                 }
             });
 
-            /************** step two ******************/ 
+            /************** step two ******************/
 
             // update choix parent step
             $('.check_parent_two').on('change', function() {
@@ -791,10 +813,9 @@ if (montant > 0 && montant_a_payer > 0) {
                     $('#email_parent_two').val("");
                 }
                 if (choix == 2) { // select parent
-                    if ($('#setp_two_choix_parent').hasClass("d-none")) { 
+                    if ($('#setp_two_choix_parent').hasClass("d-none")) {
                         $('#setp_two_choix_parent').removeClass("d-none");
-                    } else { 
-                    }
+                    } else {}
                     if ($('#step_two_add_parent').hasClass("d-none")) {
                         //$('#step_two_add_parent').removeClass("d-none");
                     } else {

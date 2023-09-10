@@ -53,6 +53,13 @@
                                         <i class=" dropdown-item-icon" data-feather="edit"></i>Modifier Détails
                                     </button>
                                 </form>
+                                <form action="{{ route('admin.etudiant.delete', \Crypt::encrypt($etudiant->id)) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="  dropdown-item d-flex align-items-center" href="#!">
+                                        <i class=" dropdown-item-icon" data-feather="printer"></i>Supprimer
+                                    </button>
+                                </form>
 
 
                                 <div class="dropdown-divider"></div>

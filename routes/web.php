@@ -267,6 +267,7 @@ Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant']
 //liste etudiant 
 Route::get('admin/etudiants', [AdminEtudiantController::class, 'index'])->name('admin.etudiants')->middleware('auth');
 Route::get('admin/etudiant/edit/{id}', [AdminEtudiantController::class, 'edit'])->name('admin.etudiant.edit')->middleware('auth');
+Route::delete('admin/etudiant/delete/{id}', [AdminEtudiantController::class, 'delete'])->name('admin.etudiant.delete');
 Route::get('admin/etudiant/releve/{id}', [AdminEtudiantController::class, 'releve'])->name('admin.etudiant.releve');
 Route::get('admin/etudiant/mail/{id}', [AdminEtudiantController::class,'sendMail'])->name('admin.etudiant.mail');
 Route::put('admin/etudiant/update/{id}', [AdminEtudiantController::class, 'update'])->name('admin.etudiant.update');
