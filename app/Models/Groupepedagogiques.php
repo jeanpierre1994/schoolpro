@@ -29,7 +29,13 @@ class Groupepedagogiques extends Model
         'updated_by', // FK
         'created_at',
         'updated_at', 
+        'grilletarifaire_id'
     ]; 
+    
+    public function getGrilletarifaire()
+    {
+        return $this->belongsTo(Grilletarifaires::class, 'grilletarifaire_id');
+    } 
     
     public function getSite()
     {

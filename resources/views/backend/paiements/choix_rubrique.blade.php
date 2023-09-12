@@ -19,21 +19,54 @@
 
 @section('contenu')
     <section class="section">
-        <div class="row"> 
-            <div class="col-lg-8">
+
+        <div class="row">  
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Liste des échéanciers</h5>
+                        <div class="card-title" style="margin: 0px;">
+                            
+                <div class="row"> 
+
+                        <div class="col-md-3">
+                            <pre>Solde portefeuille : <span class="badge rounded-pill text-bg-primary"> <i class="fa fa-credit-card" aria-hidden="true"></i> {{ number_format($dossier->getPortefeuille->montant, 0, ',', '.') }} F CFA</span> </pre>
+                        </div>
+                        <div class="col-md-3">
+                            <pre>Apprenant : <b>{{ $dossier->getPersonne->nom }} {{ $dossier->getPersonne->prenoms }}</b> </pre>
+                        </div>
+                        <div class="col-md-3">
+                            <pre>Groupe péda.: <b>{{ $dossier->getGp->libelle_classe }} {{ $dossier->getGp->libelle_secondaire }}</b></pre>
+                        </div>
+                        <div class="col-md-3">
+                            <pre>Parent : {{ $dossier->parent_id ? $dossier->getParent->getParentInfo($dossier->parent_id)->nom.' '.$dossier->getParent->getParentInfo($dossier->parent_id)->prenoms : '' }} </pre>
+                        </div>  
+                                       
+                </div> <hr>
+
+                <button type="submit" id="valider" class="btn btn-success float-right">Recharger portefeuille</button>
+            </div>
+        </div>
+    </div> 
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Paiements échéanciers</h5>
+                        
                         <!-- Bordered Table -->
                         <div class="table-responsive">
+                            <div class=" float-right mb-3">
+
+                                <button type="submit" id="valider" class="btn btn-primary">Valider l'échéancier</button>
+                            </div>
                             <table class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Dossier</th>
-                                        <th scope="col">Famille Rubrique</th>
-                                        <th scope="col">Rubrique</th>
-                                        <th scope="col">Montant</th>
+                                        <th scope="col">Famille / Rubrique</th> 
+                                        <th scope="col">Montant rubrique</th>
+                                        <th scope="col">Remise</th>
+                                        <th scope="col">Montant négocié</th>
+                                        <th scope="col">Montant réglé</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -48,11 +81,13 @@
                                         <tr>
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
                                             <td>{{ $item->dossier_id ? $item->getDossier->code : '' }}</td>
-                                            <td>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->familleRubrique->libelle : '' }}
-                                            </td>
-                                            <td>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->libelle : '' }}
-                                            </td>
+                                            <td>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->familleRubrique->libelle : '' }}  <br>
+                                                <b>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->libelle : '' }}</b>
+                                            </td> 
                                             <td>{{ number_format($item->montant_rubrique, 0, ',', '.') }}</td>
+                                            <td><input type="number" width="50px" name="montant_payer[]" min="0"></td>
+                                            <td><input readonly type="number" width="50px" name="montant_payer[]" min="0"></td>
+                                            <td><input type="number" width="50px" name="montant_payer[]" min="0"></td>
                                             <td class="text-center">
                                                 <div class="d-flex justify-content-evenly">
                                                     <a href="#" class="page-constructionv" data-bs-toggle="modal"
@@ -123,17 +158,9 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            {{--<div class="col-lg-4">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="card-title" style="margin: 0px;">
-                            <pre>Solde portefeuille : <span class="badge rounded-pill text-bg-primary"> <i class="fa fa-credit-card" aria-hidden="true"></i> {{ number_format($dossier->getPortefeuille->montant, 0, ',', '.') }} F CFA</span> </pre>
-                            <pre>Apprenant : <b>{{ $dossier->getPersonne->nom }} {{ $dossier->getPersonne->prenoms }}</b> </pre>
-                            <pre>Groupe péda.: <b>{{ $dossier->getGp->libelle_classe }} {{ $dossier->getGp->libelle_secondaire }}</b></pre>
-                            <pre>Parent : {{ $dossier->parent_id ? $dossier->getParent->getParentInfo($dossier->parent_id)->nom.' '.$dossier->getParent->getParentInfo($dossier->parent_id)->prenoms : '' }} </pre>
-                          
-                            <hr>
-                        </div>
+                    <div class="card-body"> 
                         <!-- Bordered Table -->
                         <div class="table-responsivex">
                             <div class="rowx">
@@ -192,7 +219,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div>--}}
         </div>
     </section>
 

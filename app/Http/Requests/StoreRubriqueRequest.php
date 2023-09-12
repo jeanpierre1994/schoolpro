@@ -26,6 +26,8 @@ class StoreRubriqueRequest extends FormRequest
         return [
             'libelle' => 'required|min:2',
             'libelle_secondaire' => 'min:2',
+            'echeance' => 'required',
+            'montant' => 'required',
             'famille_rubrique_id' => 'required|exists:famille_rubriques,id'
         ];
     }

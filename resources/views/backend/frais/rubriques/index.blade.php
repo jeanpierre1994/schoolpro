@@ -38,6 +38,8 @@
                                         <th>Code</th>
                                         <th>Libelle</th>
                                         <th>Libelle Secondaire</th>
+                                        <th>Montant</th>
+                                        <th>Echéance</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -61,6 +63,12 @@
                                             </td>
                                             <td>
                                                 {{ $rubrique->libelle_secondaire }}
+                                            </td>
+                                            <td>
+                                                {{ $rubrique->montant }}
+                                            </td>
+                                            <td>
+                                                {{ $rubrique->echeance }}
                                             </td>
                                             <td>
 

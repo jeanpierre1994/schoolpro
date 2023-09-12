@@ -6,6 +6,7 @@ use App\Models\Cycles;
 use App\Models\Etablissements;
 use App\Models\Etudiants;
 use App\Models\Examens;
+use App\Models\Grilletarifaires;
 use App\Models\Groupepedagogiques;
 use App\Models\Matiereconfig;
 use App\Models\Matiereprofesseurs;
@@ -40,8 +41,9 @@ class GroupepedagogiquesController extends Controller
         $etablissements = Etablissements::where("statut_id", 1)->get();
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get();  
+        $grilles = Grilletarifaires::all();
  
-        return view("backend.groupepedagogiques.create", compact("poles","cycles","etablissements"));
+        return view("backend.groupepedagogiques.create", compact("grilles", "poles","cycles","etablissements"));
     }
 
     /**
@@ -61,6 +63,7 @@ class GroupepedagogiquesController extends Controller
             'niveau_id'=> 'required',   
             'libelle_classe'=> 'required', 
             'libelle_secondaire'=> 'required', 
+            'grilletarifaire_id' => 'required'
         ]);
 
         // vérifier si le données existe déjà
@@ -86,6 +89,7 @@ class GroupepedagogiquesController extends Controller
         $gp->setAttribute('filiere_id', trim($request->filiere_id)); 
         $gp->setAttribute('cycle_id', trim($request->cycle_id));
         $gp->setAttribute('niveau_id', trim($request->niveau_id));  
+        $gp->setAttribute('grilletarifaire_id', trim($request->grilletarifaire_id));  
         $gp->setAttribute('created_by', $user->id); 
         $gp->setAttribute('updated_by', $user->id); 
         $gp->save();
@@ -116,7 +120,8 @@ class GroupepedagogiquesController extends Controller
         $etablissements = Etablissements::where("statut_id", 1)->get();
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get(); 
-        return view("backend.groupepedagogiques.edit", compact("poles","cycles","etablissements","gp"));
+        $grilles = Grilletarifaires::all();
+        return view("backend.groupepedagogiques.edit", compact("grilles", "poles","cycles","etablissements","gp"));
     }
 
     /**
@@ -137,6 +142,7 @@ class GroupepedagogiquesController extends Controller
             'niveau_id'=> 'required',   
             'libelle_classe'=> 'required', 
             'libelle_secondaire'=> 'required', 
+            'grilletarifaire_id'=> 'required', 
         ]);
 
         // vérifier si le données existe déjà
@@ -163,6 +169,7 @@ class GroupepedagogiquesController extends Controller
         $groupepedagogique->setAttribute('cycle_id', trim($request->cycle_id));
         $groupepedagogique->setAttribute('niveau_id', trim($request->niveau_id));   
         $groupepedagogique->setAttribute('updated_by', $user->id); 
+        $groupepedagogique->setAttribute('grilletarifaire_id', $request->grilletarifaire_id); 
         $groupepedagogique->update();
 
         return redirect()->route("groupepedagogiques.index") ->with('success', 'Modification effectuée avec succès');

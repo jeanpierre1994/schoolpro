@@ -84,8 +84,14 @@ class RubriquesController extends Controller
      */
     public function destroy(Rubriques $rubrique)
     {
-        $rubrique->delete();
+        try {
+            $rubrique->delete();
+            return redirect()->route('rubriques.index')->with('success', 'Opération bien effectuée');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with("error", "Vous ne pouvez pas supprimer cet élément à cause du contrôle d'intégrité.");
+        }
+       
 
-        return redirect()->route('rubriques.index')->with('success', 'Rubriques deleted successfully');;
-    }
+     }
 }

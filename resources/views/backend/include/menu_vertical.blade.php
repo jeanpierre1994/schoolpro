@@ -108,7 +108,7 @@
       </a>
     </li> 
         <li>
-      <a href="{{route('ligne_tarifaires.index')}}" id="import-personnes" style="text-decoration: none;">
+      <a href="{{route('admin.liste_tarif')}}" id="import-personnes" style="text-decoration: none;">
         <i class="bi bi-circle"></i><span>Détails des G.T.</span>
       </a>
     </li> 

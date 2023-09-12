@@ -40,6 +40,7 @@
                         @endif
                         <form action="{{ route('ligne_tarifaires.update', $ligneTarifaire->id) }}" method="post">
                             @csrf
+                            @method("put")
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Rubrique</label>
                                 <div class="col-sm-10">

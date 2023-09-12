@@ -130,6 +130,9 @@ Route::get('/ClearCache', function () {
 })->name('vider_cache');
 
 
+Route::any('admin/ligne_tarifaires/index', [LignetarifsController::class, 'liste'])->name('admin.liste_tarif')->middleware("auth");
+Route::post('admin/ligne_tarifaires/supprimer', [LignetarifsController::class, 'supprimer'])->name('liste_tarif.supprimer')->middleware("auth");
+
 Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('statuts', StatutsController::class);
     Route::resource('profils', ProfilController::class);
@@ -341,7 +344,7 @@ Route::get('admin/parent/compte', [ParentsController::class, 'compte'])->name('p
 Route::get('admin/etudiant/compte', [EtudiantController::class, 'compte'])->name('etudiant.compte')->middleware("auth");
 
 Route::get('admin/dossier/{id}/choix_rubrique', [PaiementController::class, 'choixRubrique'])->name('paiements.choix_rubrique')->middleware("auth");
-Route::get('admin/retirer/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirer-rubrique')->middleware("auth");
+Route::delete('admin/retirer/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirer-rubrique')->middleware("auth");
 // 
 Route::post('admin/recharge/portefeuille', [PaiementController::class, 'rechargePortefeuille'])->name('paiements.rechargePortefeuille')->middleware("auth");
 

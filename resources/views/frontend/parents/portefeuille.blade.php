@@ -136,7 +136,7 @@
                             <div class="form-group col-md-6">
                                 <label for="label">Montant à recharger <i class="text-danger">*</i></label>
                                 <input type="number" min="0" name="montant" id="montant"
-                                class="form-control" value="20" required>
+                                class="form-control" value="" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="label">Mode de paiement <i class="text-danger">*</i></label>

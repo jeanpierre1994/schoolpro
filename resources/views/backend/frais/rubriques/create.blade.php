@@ -41,24 +41,9 @@
                         <form action="{{ route('rubriques.store') }}" method="POST">
                             @csrf
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Libellé <i
-                                        class="text-danger">*</i></label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="libelle"
-                                        id="libelle" minlength="3" maxlength="50">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Libellé Secondaire <i
-                                        class="text-danger">*</i></label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="libelle_secondaire" id="libelle"
-                                        minlength="3" maxlength="50">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Famille Rubrique</label>
-                                <div class="col-sm-10">
+                                <div class="col-md-6">
+                                    <label class="col-sm-12 col-form-label">Famille Rubrique</label>
+                                <div class="col-sm-12">
                                     <select class="form-select" name="famille_rubrique_id" id="gp_id" required>
                                         <option selected value="">Sélectionnez une option</option>
                                         @foreach ($familleRubriques as $familleRubrique)
@@ -67,7 +52,59 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Libellé <i
+                                        class="text-danger">*</i></label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" required name="libelle"
+                                        id="libelle" minlength="3" maxlength="50">
+                                </div>
+                                </div>
                             </div>
+                            <div class="row mb-3">
+                                
+                                <div class="col-md-4">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Libellé Secondaire <i
+                                            class="text-danger">*</i></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" required name="libelle_secondaire" id="libelle"
+                                            minlength="3" maxlength="50">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Montant <i
+                                            class="text-danger">*</i></label>
+                                    <div class="col-sm-12">
+                                        <input type="number" class="form-control" required name="montant" id="montant"
+                                            min="0">
+                                    </div>
+                                </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="inputText" class="col-sm-12 col-form-label">Echéance <i
+                                        class="text-danger">*</i></label>
+                                <div class="col-sm-12"> 
+                                        <select class="form-select form-select-lg" name="echeance" id="echeance" required>
+                                            <option selected></option>
+                                            <option value="Janvier">Janvier</option>
+                                            <option value="Février">Février</option>
+                                            <option value="Mars">Mars</option>
+                                            <option value="Avril">Avril</option>
+                                            <option value="Mai">Mai</option>
+                                            <option value="Juin">Juin</option>
+                                            <option value="Juillet">Juillet</option>
+                                            <option value="Août">Août</option>
+                                            <option value="Septembre">Septembre</option>
+                                            <option value="Octobre">Octobre</option>
+                                            <option value="Novembre">Novembre</option>
+                                            <option value="Décembre">Décembre</option>
+                                        </select> 
+                                </div>
+                            </div>
+                            </div>
+                            
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Validation</label>
                                 <div class="col-sm-10">

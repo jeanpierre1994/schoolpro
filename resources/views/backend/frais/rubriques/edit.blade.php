@@ -42,24 +42,9 @@
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Libellé <i
-                                        class="text-danger">*</i></label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="libelle"
-                                      value="{{ old('libelle', $rubrique->libelle) }}"  id="libelle" minlength="3" maxlength="50">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Libellé Secondaire <i
-                                        class="text-danger">*</i></label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" required name="libelle_secondaire" id="libelle"
-                                       value="{{ old('libelle', $rubrique->libelle_secondaire) }}" minlength="3" maxlength="50">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Famille Rubrique</label>
-                                <div class="col-sm-10">
+                                <div class="col-md-6">
+                                    <label class="col-sm-12 col-form-label">Famille Rubrique</label>
+                                <div class="col-sm-12">
                                     <select class="form-select" name="famille_rubrique_id" id="gp_id" required>
                                         <option selected value="">Sélectionnez une option</option>
                                         @foreach ($familleRubriques as $familleRubrique)
@@ -67,6 +52,60 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Libellé <i
+                                            class="text-danger">*</i></label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" required name="libelle"
+                                          value="{{ old('libelle', $rubrique->libelle) }}"  id="libelle" minlength="3" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Libellé Secondaire <i
+                                        class="text-danger">*</i></label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" required name="libelle_secondaire" id="libelle"
+                                       value="{{ old('libelle', $rubrique->libelle_secondaire) }}" minlength="3" maxlength="50">
+                                </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Montant <i
+                                        class="text-danger">*</i></label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" required name="montant" id="montant"
+                                       value="{{ old('montant', $rubrique->montant) }}" min="0">
+                                </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="inputText" class="col-sm-12 col-form-label">Echéance <i
+                                            class="text-danger">*</i></label>
+                                    <div class="col-sm-12"> 
+                                            <select class="form-select form-select-lg" name="echeance" id="echeance" required>
+                                                <optgroup label="Valeur par défaut">
+                                                    <option value="{{$rubrique->echeance}}">{{$rubrique->echeance}}</option>
+                                                </optgroup>
+                                                <optgroup label="Liste disponible">
+                                                    <option value="Janvier">Janvier</option>
+                                                    <option value="Février">Février</option>
+                                                    <option value="Mars">Mars</option>
+                                                    <option value="Avril">Avril</option>
+                                                    <option value="Mai">Mai</option>
+                                                    <option value="Juin">Juin</option>
+                                                    <option value="Juillet">Juillet</option>
+                                                    <option value="Août">Août</option>
+                                                    <option value="Septembre">Septembre</option>
+                                                    <option value="Octobre">Octobre</option>
+                                                    <option value="Novembre">Novembre</option>
+                                                    <option value="Décembre">Décembre</option>
+                                                </optgroup>
+                                                
+                                            </select> 
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">

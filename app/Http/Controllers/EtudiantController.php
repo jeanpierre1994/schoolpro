@@ -313,6 +313,28 @@ class EtudiantController extends Controller
             'nationalite'  => 'required',
         ]);
 
+         // check email
+         if (isset($_POST["email_parent"]) && $_POST["email_parent"] != "") {
+            # code...
+            $checkEmail = User::where("email",$request->email_parent)->exists();
+            if ($checkEmail) {
+                # code...
+                return redirect()->back()->with("error","L'adresse e-mail du parent existe déjà");
+            }
+            
+        }
+
+         // check email
+         if (isset($_POST["email"]) && $_POST["email"] != "") {
+            # code...
+            $checkEmail = User::where("email",$request->email)->exists();
+            if ($checkEmail) {
+                # code...
+                return redirect()->back()->with("error","L'adresse e-mail de l'apprenant existe déjà");
+            }
+            
+        }
+
         $gp = Groupepedagogiques::find($request->gp_id);
 
         // vérifier si l'étudiant existe déjà 
@@ -752,6 +774,17 @@ class EtudiantController extends Controller
             'gp_id'  => 'required',
             'annee'  => 'required',
         ]);
+
+        // check email
+        if (isset($_POST["email_parent"]) && $_POST["email_parent"] != "") {
+            # code...
+            $checkEmail = User::where("email",$request->email_parent)->exists();
+            if ($checkEmail) {
+                # code...
+                return redirect()->back()->with("error","L'adresse e-mail du parent existe déjà");
+            }
+            
+        }
 
         // vérifier si l'étudiant existe déjà 
         $personne = Personnes::where("id", $request->etudiant_id)->first();

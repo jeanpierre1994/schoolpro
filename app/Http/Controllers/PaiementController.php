@@ -18,7 +18,7 @@ class PaiementController extends Controller
     public function choixRubrique(Request $request, $id)
     {
         $dossier = Dossiers::find($id);
-        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->get();
+        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->where("active",true)->get();
         return view('backend.paiements.choix_rubrique', compact('dossier', 'echeanciers'));
     }
 

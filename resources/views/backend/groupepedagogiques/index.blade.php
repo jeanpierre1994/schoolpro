@@ -41,6 +41,7 @@
                                         <th scope="col">Filière</th>
                                         <th scope="col">Libelle</th>
                                         <th scope="col">Libelle 2</th>
+                                        <th scope="col">Grille tarif.</th>
                                         <th scope="col">Description</th> 
                                         <th scope="col">Date modification</th>
                                         <th scope="col">Modifié par</th>
@@ -57,6 +58,7 @@
                                         <th scope="col">Filière</th>
                                         <th scope="col">Libelle</th>
                                         <th scope="col">Libelle 2</th>
+                                        <th scope="col">Grille tarif.</th>
                                         <th scope="col">Description</th> 
                                         <th scope="col">Date modification</th>
                                         <th scope="col">Modifié par</th>
@@ -82,6 +84,7 @@
                                             <td>{{$item->getFiliere->libelle}}</td>
                                             <td>{{ $item->libelle_classe }}</td>
                                             <td>{{ $item->libelle_secondaire }}</td>
+                                            <td>{{$item->grilletarifaire_id ? $item->getGrilletarifaire->libelle : ''}}</td>
                                             <td>{{ $item->description_classe }}</td> 
                                             <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
                                             <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>

@@ -22,12 +22,28 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Détails des Grilles Tarifaires
-                            <a href="{{ route('ligne_tarifaires.create') }}" data-mdb-toggle="tooltip"
-                                data-mdb-placement="right" title="Ajouter" class="btn btn-primary btn-floating btn-sm">
-                                Ajouter
-                            </a>
-                        </h5>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <h5 class="card-title">Détails des Grilles Tarifaires
+                                    <a href="{{ route('ligne_tarifaires.create') }}" data-mdb-toggle="tooltip"
+                                        data-mdb-placement="right" title="Ajouter" class="btn btn-primary btn-floating btn-sm">
+                                        Ajouter
+                                    </a>
+                                </h5>
+                            </div>
+                            <div class="col-md-4">  
+                                    <form action="{{route('admin.liste_tarif')}}" method="post">
+                                        @csrf
+                                        <select class="form-select form-select-lg" name="grille_tarifaire" id="grille_tarifaire">
+                                            <option selected>--- Grille traifaire ---</option>
+                                            @foreach ($grilleTarifaires as $item)
+                                                <option value="{{$item->id}}">{{$item->libelle}} / {{$item->libelle_secondaire}}</option>
+                                            @endforeach
+                                        </select> 
+                                        <button type="submit" class="d-none" id="valider">Valider</button>
+                                    </form>
+                            </div>
+                        </div>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered data-tables">
@@ -48,7 +64,7 @@
                                     @foreach ($ligneTarifaires as $ligneTarifaire)
                                         <tr>
                                             <td class="scol text-center">
-                                                <b>{{ $ligneTarifaire->id }}</b>
+                                                <b>{{ $i++ }}</b>
                                             </td>
                                             <td class="scol text-center">
                                                 <b>{{ $ligneTarifaire->code }}</b>
@@ -105,10 +121,10 @@
                                                             <div class="modal-footer">
 
                                                                 <form
-                                                                    action="{{ route('ligne_tarifaires.destroy', $ligneTarifaire->id) }}"
-                                                                    method="post">
-                                                                    @method('DELETE')
+                                                                    action="{{ route('liste_tarif.supprimer') }}"
+                                                                    method="post"> 
                                                                     @csrf
+                                                                    <input type="hidden" name="id" value="{{$ligneTarifaire->id}}">
                                                                     <button type="submit" class="btn btn-danger btn-md"
                                                                         id="" value="">OUI
                                                                     </button>
@@ -146,6 +162,14 @@
             $("ul li a").removeClass('active');
             // active menu
             $("#parametres").removeClass('collapsed');
+
+            $('#grille_tarifaire').on('change', function() {  
+            var grille_id = parseInt($(this).val()); 
+
+            if (grille_id != null) {
+                $("#valider").trigger("click");
+            }
+ });
 
             //Pour gérer l'activation et la désactivation d'un élément
             // desactivation
