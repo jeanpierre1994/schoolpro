@@ -31,7 +31,10 @@ class LignetarifsController extends Controller
      */
     public function liste(Request $request)
     {
-        $getGrille = Grilletarifaires::all();
+        $getGrille = Grilletarifaires::all(); 
+        $checData = Lignetarifs::count();
+        if ($checData == 0) {
+            # code...
         foreach ($getGrille as $key => $value) {
             # code...
             $listeRubrique = Rubriques::all();
@@ -57,6 +60,7 @@ class LignetarifsController extends Controller
                 }
             }
 
+        }
         }
         if (isset($_POST["grille_tarifaire"])) {
             # code...
