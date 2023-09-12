@@ -32,9 +32,15 @@ class LignetarifsController extends Controller
     public function liste(Request $request)
     {
         $getGrille = Grilletarifaires::all(); 
-        $checData = Lignetarifs::count();
-        if ($checData == 0) {
+         
+        if (isset($_POST["grille_tarifaire"])) {
             # code...
+            $grille_id = $_POST["grille_tarifaire"];
+            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id",$grille_id)->get();
+            $grilleTarifaires = Grilletarifaires::orderBy("libelle","asc")->get();
+            if ($ligneTarifaires->count() == 0) {
+                # code...
+                 # code...
         foreach ($getGrille as $key => $value) {
             # code...
             $listeRubrique = Rubriques::all();
@@ -61,12 +67,7 @@ class LignetarifsController extends Controller
             }
 
         }
-        }
-        if (isset($_POST["grille_tarifaire"])) {
-            # code...
-            $grille_id = $_POST["grille_tarifaire"];
-            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id",$grille_id)->get();
-            $grilleTarifaires = Grilletarifaires::orderBy("libelle","asc")->get();
+            }
             return view('backend.frais.ligneTarifaires.index', compact('ligneTarifaires','grilleTarifaires')); 
         } else {
             # code...
