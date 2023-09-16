@@ -36,6 +36,7 @@ use App\Http\Controllers\LignetarifsController;
 use App\Http\Controllers\ProfesseursController;
 use App\Http\Controllers\TypesponsorsController;
 use App\Http\Controllers\AdminEtudiantController;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\EmailVerifiedController;
 use App\Http\Controllers\MatiereconfigController;
 use App\Http\Controllers\EtablissementsController;
@@ -344,7 +345,7 @@ Route::get('admin/parent/compte', [ParentsController::class, 'compte'])->name('p
 Route::get('admin/etudiant/compte', [EtudiantController::class, 'compte'])->name('etudiant.compte')->middleware("auth");
 
 Route::get('admin/dossier/{id}/choix_rubrique', [PaiementController::class, 'choixRubrique'])->name('paiements.choix_rubrique')->middleware("auth");
-Route::delete('admin/retirer/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirer-rubrique')->middleware("auth");
+Route::get('admin/retirer/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirer-rubrique')->middleware("auth");
 // 
 Route::post('admin/recharge/portefeuille', [PaiementController::class, 'rechargePortefeuille'])->name('paiements.rechargePortefeuille')->middleware("auth");
 
@@ -359,6 +360,14 @@ Route::get('admin/recharge/portefeuille/etudiant/{id}/{reference}/kkiapay', [Por
 Route::post('admin/recharge/portefeuille/parent', [ParentsController::class, 'rechargerPortefeuilleParent'])->name('recharge.portefeuille-parent')->middleware("auth");
 Route::post('admin/recharge/portefeuille/etudiant', [EtudiantsController::class, 'rechargerPortefeuilleEtudiant'])->name('recharge.portefeuille-etudiant')->middleware("auth");
 
+// ajax recharge
+Route::post('admin/recharge/portefeuille/ajax', [AjaxController::class, 'crediterPortefeuille'])->name('crediter-portefeuille')->middleware("auth");
+// 
+Route::post('admin/recharge/portefeuille/kkiapay', [AjaxController::class, 'paiementKkiapayStore'])->name('update-kkiapay-transaction')->middleware("auth");
+// 
+Route::post('admin/ventilation/echeancier', [AjaxController::class, 'ventilationEcheancier'])->name('ventilation_echeancier')->middleware("auth");
+//
+Route::get('admin/impression/{reference}/recu', [PdfController::class, 'recuPaiement'])->name('impression-recu')->middleware("auth");
 
 
 

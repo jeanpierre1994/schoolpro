@@ -8,6 +8,8 @@ use App\Models\Matieres;
 use App\Models\Etudiants;
 use App\Models\Personnes;
 use App\Models\Examenprog;
+use App\Models\historiquepaiementecheanciers;
+use App\Models\Paiements;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -56,5 +58,15 @@ class PdfController extends Controller
         $personne = Personnes::where('id', $etudiant->getDossier->personne_id)->get()->first() ;
         $pdf = Pdf::loadView('frontend.bulletins.pdf', compact('notesSectionFrench', 'notesSectionEng', 'etudiant', 'examen', 'personne'));
         return $pdf->stream();
+    }
+
+    public function recuPaiement(Request $request, $reference){
+        $paiement = Paiements::where("reference",$reference)->first();
+        $details = historiquepaiementecheanciers::where("paiement_id",$paiement->id)->where("montant_payer",">",0)->get();
+        $oneDetail = historiquepaiementecheanciers::where("paiement_id",$paiement->id)->where("montant_payer",">",0)->first();
+        $etudiant = Etudiants::where("dossier_id",$oneDetail->getEcheancier->dossier_id)->first();
+        $pdf = Pdf::loadView('backend.pdf.recu', compact('paiement', 'details', 'etudiant', 'oneDetail'));
+        return $pdf->stream();
+        // dd("Interface reçu de paiement $reference");
     }
 }
