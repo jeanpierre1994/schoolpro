@@ -364,7 +364,7 @@
             @endif
 
             <!-- end  -->
-            @if (auth()->user()->profil_id != 2 || auth()->user()->profil_id != 3)
+            @if (auth()->user()->profil_id != 2 && auth()->user()->profil_id != 3)
                 <div class="row">
                     <div class="col-12">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center  p-3">
@@ -500,7 +500,7 @@
                     </div>
                 @endif
 
-                @if (auth()->user()->profil_id != 6 || auth()->user()->profil_id != 7 || auth()->user()->profil_id != 8)
+                @if (auth()->user()->profil_id != 6 && auth()->user()->profil_id != 7 && auth()->user()->profil_id != 8)
                     <div class="col-xxl-4 col-md-4">
                         <div class="card info-card sales-card">
                             <a href="" style="text-decoration: none;">
@@ -521,7 +521,7 @@
                     </div>
                 @endif
                 <!-- end  -->
-                @if (auth()->user()->profil_id != 8 || auth()->user()->profil_id != 6)
+                @if (auth()->user()->profil_id != 8 && auth()->user()->profil_id != 6)
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex flex-nowrap justify-content-between align-items-center  p-3">
