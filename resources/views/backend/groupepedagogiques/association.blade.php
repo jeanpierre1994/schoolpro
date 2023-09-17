@@ -19,7 +19,7 @@
 
 @section('contenu')
     <section style="background-color: #eee;">
-        <div class="container py-1">
+        <div class="containerx py-1">
 
             <div class="row">
                 <div class="col-lg-12">
@@ -120,6 +120,7 @@
                                             @php
                                                 $i = 1;
                                                 $have_prof = false;
+                                                $sec=0;
                                             @endphp
                                             @foreach ($matieres as $item)
                                                 <tr>
@@ -398,8 +399,7 @@
             $("ul li a").removeClass('active');
             // active menu 
             $("#parametres").removeClass('collapsed');
-
-
+ 
             // show modal
             $(".show-modal").on("click", function() {
                 $('#modalMatiere').modal('show')

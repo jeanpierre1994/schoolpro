@@ -183,11 +183,35 @@ class GroupepedagogiquesController extends Controller
      */
     public function association(Request $request)
     {
+        $user = Auth()->user();  
         $gp = Groupepedagogiques::find($request->id);
         $matieres = Matieres::where("groupepedagogique_id",$gp->id)->get();
         $listeMatieres = Matiereconfig::orderBy("libelle","asc")->get();  
         $sections = Sections::where("statut_id", 1)->get();  
         $profil_professeur = Profil::where("libelle", "PROFESSEUR")->first();
+        // généré l'association des matières au groupe pédagogique 
+        if ($matieres->count() == 0) {
+            # code...
+            $listeM = Matiereconfig::all();
+            foreach ($listeM as $data) {
+                # code...
+                $matiere = new Matieres();    
+                $matiere->setAttribute('matiereconfig_id', $data->id);
+                $matiere->setAttribute('libelle', $data->libelle); 
+                $matiere->setAttribute('section_id', 1);
+                $matiere->setAttribute('sigle', "N/A"); 
+                $matiere->setAttribute('groupepedagogique_id', $gp->id); 
+                $matiere->setAttribute('note_max', 20);
+                $matiere->setAttribute('moyenne', 20);  
+                $matiere->setAttribute('coef', 1);    
+                $matiere->setAttribute('statut_id', 1); 
+                $matiere->setAttribute('created_by', $user->id); 
+                $matiere->setAttribute('updated_by', $user->id); 
+                $matiere->save();
+            }  
+            
+        }
+        
         if ($profil_professeur) {
             # code...
             $professeurs = Personnes::join("users", "users.id", "=", "personnes.compte_id")

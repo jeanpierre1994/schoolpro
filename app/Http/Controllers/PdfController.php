@@ -59,7 +59,9 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('frontend.bulletins.pdf', compact('notesSectionFrench', 'notesSectionEng', 'etudiant', 'examen', 'personne'));
         return $pdf->stream();
     }
-
+    public  function infoImpressionRecu(Request $request, $reference){
+        return view("backend.pdf.telechargement-recu",compact("reference"));
+    }
     public function recuPaiement(Request $request, $reference){
         $paiement = Paiements::where("reference",$reference)->first();
         $details = historiquepaiementecheanciers::where("paiement_id",$paiement->id)->where("montant_payer",">",0)->get();

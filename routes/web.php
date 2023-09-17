@@ -366,9 +366,10 @@ Route::post('admin/recharge/portefeuille/ajax', [AjaxController::class, 'credite
 Route::post('admin/recharge/portefeuille/kkiapay', [AjaxController::class, 'paiementKkiapayStore'])->name('update-kkiapay-transaction')->middleware("auth");
 // 
 Route::post('admin/ventilation/echeancier', [AjaxController::class, 'ventilationEcheancier'])->name('ventilation_echeancier')->middleware("auth");
+
+Route::get('admin/{reference}/telechargement/recu', [PdfController::class, 'infoImpressionRecu'])->name('info.impression-recu')->middleware("auth");
 //
 Route::get('admin/impression/{reference}/recu', [PdfController::class, 'recuPaiement'])->name('impression-recu')->middleware("auth");
-
 
 
 

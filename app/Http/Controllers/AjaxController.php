@@ -337,7 +337,10 @@ class AjaxController extends Controller
                 // enregistrement détails paiement
                // if ($montant_regle[$key] > 0) {
                     # code...
-                    $echeancier = Echeanciers::find($echeancier_id);
+
+                    if (isset($montant_regle[$key]) && !empty($montant_regle[$key])) {
+                        # code...
+                        $echeancier = Echeanciers::find($echeancier_id);
                 $detail = new historiquepaiementecheanciers();
                 $detail->setAttribute("paiement_id",$paiement->id);
                 $detail->setAttribute("echeancier_id",$echeancier->id);
@@ -353,6 +356,8 @@ class AjaxController extends Controller
                 $echeancier->setAttribute("remise",$remise[$key]);
                 $echeancier->setAttribute("montant_restant",$montant_negocier[$key]-$montant_regle[$key]);
                 $echeancier->update();
+                    }
+                    
                // }
                 
             }
@@ -424,9 +429,10 @@ class AjaxController extends Controller
             $dossier->setAttribute('statuttraitement_id', trim($statut_traitement->id));
             $dossier->setAttribute("date_traitement",date("Y-m-d"));
             $dossier->setAttribute("validateur_id",$user->id);
-            $dossier->update();
+            $dossier->update(); 
 
-
-            return redirect()->route("impression-recu",$paiement->reference);
+            return redirect()->route("info.impression-recu",$paiement->reference);
     }
+
+   
 }
