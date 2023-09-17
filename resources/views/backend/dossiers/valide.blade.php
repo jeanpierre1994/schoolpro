@@ -39,7 +39,8 @@
                                         <th>Niveau</th>
                                         <th>Année</th>
                                         <th>Sponsor</th>
-                                        <th>Statut</th> 
+                                        <th>Statut</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,30 +54,36 @@
                                             </td>
                                             <td>
                                                 @if ($item->getDossier->photo)
-                                                    <img src="{{ asset('storage/photos/' . $item->getDossier->photo) }}" alt=""
-                                                        style="width: 45px; height: 45px" class="rounded-circle" />
+                                                    <img src="{{ asset('storage/photos/' . $item->getDossier->photo) }}"
+                                                        alt="" style="width: 45px; height: 45px"
+                                                        class="rounded-circle" />
                                                 @else
                                                     <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
                                                         style="width: 45px; height: 45px" class="rounded-circle" />
                                                 @endif
                                             </td>
                                             <td>
-                                                {{ $item->getDossier->getPersonne->nom }} {{ $item->getDossier->getPersonne->prenoms }}
+                                                {{ $item->getDossier->getPersonne->nom }}
+                                                {{ $item->getDossier->getPersonne->prenoms }}
                                             </td>
                                             <td>
-                                                <p class="fw-normal mb-1">{{ $item->getDossier->getSite->getEtablissement->sigle }}</p>
-                                                <p class="text-muted mb-0">Site : {{ $item->getDossier->getSite->sigle }}</p>
+                                                <p class="fw-normal mb-1">
+                                                    {{ $item->getDossier->getSite->getEtablissement->sigle }}</p>
+                                                <p class="text-muted mb-0">Site : {{ $item->getDossier->getSite->sigle }}
+                                                </p>
                                             </td>
                                             <td>
                                                 {{ $item->getDossier->getPole->libelle }}
                                             </td>
                                             <td>{{ $item->getDossier->getFiliere->libelle }}</td>
                                             <td>{{ $item->getDossier->getCycle->libelle }}</td>
-                                            <td>{{ $item->getGp->libelle_classe }} {{ $item->getGp->libelle_secondaire }}</td>
+                                            <td>{{ $item->getGp->libelle_classe }} {{ $item->getGp->libelle_secondaire }}
+                                            </td>
                                             <td>{{ $item->getDossier->getNiveau->libelle }}</td>
                                             <td>{{ $item->getDossier->annee }}</td>
                                             <td>
-                                                <p class="fw-normal mb-1">{{ $item->getDossier->getTypesponsor->libelle }}</p>
+                                                <p class="fw-normal mb-1">{{ $item->getDossier->getTypesponsor->libelle }}
+                                                </p>
                                                 <p class="text-muted mb-0">{{ $item->getDossier->sponsor }}</p>
                                             </td>
                                             <td>
@@ -87,7 +94,16 @@
                                                     <span
                                                         class="badge badge-success rounded-pill d-inline">{{ $item->getDossier->getStatuttraitement->libelle }}</span>
                                                 @endif
-                                            </td> 
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-evenly">
+                                                    <a href="" class="page-constructionv" >
+                                                        <button type="button" title="Historique des paiements"
+                                                            class="btn btn-sm btn-primary"><i class="bi  bi-clock"
+                                                                style="color: white" aria-hidden="true"></i></button>
+                                                    </a>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

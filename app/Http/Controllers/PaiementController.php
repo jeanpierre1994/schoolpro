@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dossiers;
-use App\Models\Echeanciers;
-use App\Models\Etudiants;
-use App\Models\Historiqueportefeuilles;
-use App\Models\Paiements;
-use App\Models\Portefeuilles;
 use App\Models\User;
+use App\Models\Dossiers;
+use App\Models\Etudiants;
+use App\Models\Paiements;
+use App\Models\Echeanciers;
 use Illuminate\Http\Request;
+use App\Models\Portefeuilles;
 use Illuminate\Support\Facades\Date;
+use App\Models\Historiqueportefeuilles;
+use App\Models\historiquepaiementecheanciers;
 
 class PaiementController extends Controller
 {
@@ -561,5 +562,11 @@ class PaiementController extends Controller
         // return redirect()->route("dossiers.valide")->with("success", "Opération effectuée avec succès.");
 
 
+    }
+
+    public function index()
+    {
+        $paiements = historiquepaiementecheanciers::all();
+        return view('backend.paiements.index', compact('paiements'));
     }
 }

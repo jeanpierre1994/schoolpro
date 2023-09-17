@@ -360,7 +360,6 @@ Route::post('admin/recharge/portefeuille/parent', [ParentsController::class, 're
 Route::post('admin/recharge/portefeuille/etudiant', [EtudiantsController::class, 'rechargerPortefeuilleEtudiant'])->name('recharge.portefeuille-etudiant')->middleware("auth");
 
 
-
-
-
+// Détails sur les paiements
+Route::get('admin/paiements', [PaiementController::class, 'index'])->name('admin.paiements');
 
