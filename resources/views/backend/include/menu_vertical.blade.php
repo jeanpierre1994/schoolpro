@@ -685,12 +685,6 @@
                 </a>
                 <ul id="dossiers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="{{ route('inscription-form') }}" id="dossier-attente"
-                            style="text-decoration: none;">
-                            <i class="bi bi-circle"></i><span>Inscription en ligne</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ route('dossiers.en_attente') }}" id="dossier-attente"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>En attente</span>

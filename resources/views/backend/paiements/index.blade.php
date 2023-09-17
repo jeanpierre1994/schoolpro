@@ -53,7 +53,7 @@
                                                 <b>{{ $paiement->code }}</b>
                                             </td>
                                             <td>
-                                                <b>Nom Payeur</b>
+                                                <b>{{ $paiement->getEnregistrerPar->getUserCreated->name }}</b>
                                             </td>
                                             <td>
                                                 {{ $paiement->montant_paye }}
@@ -63,7 +63,8 @@
                                             </td>
                                             <td>
                                                 {{ $paiement->date_paiement }}
-                                            </td>                                            <td>
+                                            </td>
+                                            <td>
 
                                                 @if ($i)
                                                     <span class="badge badge-warning rounded-pill d-inline">Attente</span>
