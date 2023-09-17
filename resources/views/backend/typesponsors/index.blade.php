@@ -10,8 +10,9 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
-                        style="text-decoration: none;">Paramètres</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" style="text-decoration: none;">Dashboard</a>
+                </li>
+
                 <li class="breadcrumb-item active">Type Sponsor </li>
             </ol>
         </nav>
@@ -63,73 +64,76 @@
                                             <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
                                             <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>
                                             <td class="text-center">
-                                              <div class="d-flex justify-content-evenly">
-                                                @if ($item->getStatut->libelle == 'ACTIF')
-                                                    <a href="{{ route('admin.update-parametre', [$item->id, 'typesponsors', 'desactivation']) }}"
-                                                        class="confirmation-desactivation" title="désactivation"><button
-                                                            type="button" class="btn btn-sm btn-dark"><i
-                                                                class="bi bi-eye-slash" aria-hidden="true"></i></button></a>
-                                                @else
-                                                    <a href="{{ route('admin.update-parametre', [$item->id, 'typesponsors', 'activation']) }}"
-                                                        class="confirmation-activation" title="activation"><button
-                                                            type="button" class="btn btn-sm btn-success"><i
-                                                                class="bi bi-eye" aria-hidden="true"></i></button></a>
-                                                @endif
-                                                <a href="{{ route('typesponsors.edit', $item->id) }}" title="Modifier"><button
-                                                        type="button" class="btn btn-sm btn-warning"><i
-                                                            class="bi bi-pencil-square" style="color: white"
-                                                            aria-hidden="true"></i></button></a>
-                                                <a href="#" class="page-constructionv" data-bs-toggle="modal"
-                                                    data-bs-target="#myModal_{{ $item->id }}">
-                                                    <button type="button" title="Supprimer"
-                                                        class="btn btn-sm btn-danger"><i class="bi bi-trash"
-                                                            style="color: white" aria-hidden="true"></i></button>
-                                                </a>
+                                                <div class="d-flex justify-content-evenly">
+                                                    @if ($item->getStatut->libelle == 'ACTIF')
+                                                        <a href="{{ route('admin.update-parametre', [$item->id, 'typesponsors', 'desactivation']) }}"
+                                                            class="confirmation-desactivation" title="désactivation"><button
+                                                                type="button" class="btn btn-sm btn-dark"><i
+                                                                    class="bi bi-eye-slash"
+                                                                    aria-hidden="true"></i></button></a>
+                                                    @else
+                                                        <a href="{{ route('admin.update-parametre', [$item->id, 'typesponsors', 'activation']) }}"
+                                                            class="confirmation-activation" title="activation"><button
+                                                                type="button" class="btn btn-sm btn-success"><i
+                                                                    class="bi bi-eye" aria-hidden="true"></i></button></a>
+                                                    @endif
+                                                    <a href="{{ route('typesponsors.edit', $item->id) }}"
+                                                        title="Modifier"><button type="button"
+                                                            class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"
+                                                                style="color: white" aria-hidden="true"></i></button></a>
+                                                    <a href="#" class="page-constructionv" data-bs-toggle="modal"
+                                                        data-bs-target="#myModal_{{ $item->id }}">
+                                                        <button type="button" title="Supprimer"
+                                                            class="btn btn-sm btn-danger"><i class="bi bi-trash"
+                                                                style="color: white" aria-hidden="true"></i></button>
+                                                    </a>
 
-                                                <!-- The Modal -->
-                                                <div class="modal text-center" id="myModal_{{ $item->id }}">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered">
-                                                        <div class="modal-content text-center">
+                                                    <!-- The Modal -->
+                                                    <div class="modal text-center" id="myModal_{{ $item->id }}">
+                                                        <div class="modal-dialog modal-md modal-dialog-centered">
+                                                            <div class="modal-content text-center">
 
-                                                            <!-- Modal Header -->
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title text-center"
-                                                                    style="text-align: center;">Confirmer l'action <i
-                                                                        class="bi bi-trash text-danger"></i></h4>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal"></button>
-                                                            </div>
+                                                                <!-- Modal Header -->
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title text-center"
+                                                                        style="text-align: center;">Confirmer l'action <i
+                                                                            class="bi bi-trash text-danger"></i></h4>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"></button>
+                                                                </div>
 
-                                                            <!-- Modal body -->
-                                                            <div class="modal-body">
-                                                                <div class="row mt-2 mb-2">
-                                                                    <div
-                                                                        class="col-md-12 text-center font-weight-bold font-height-10">
-                                                                        Voulez-vous vraiment supprimer cet élément ?
+                                                                <!-- Modal body -->
+                                                                <div class="modal-body">
+                                                                    <div class="row mt-2 mb-2">
+                                                                        <div
+                                                                            class="col-md-12 text-center font-weight-bold font-height-10">
+                                                                            Voulez-vous vraiment supprimer cet élément ?
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+
+                                                                <!-- Modal footer -->
+                                                                <div class="modal-footer">
+
+                                                                    <form
+                                                                        action="{{ route('typesponsors.destroy', $item->id) }}"
+                                                                        method="post">
+                                                                        @method('DELETE')
+                                                                        @csrf
+                                                                        <button type="submit" class="btn btn-danger btn-md"
+                                                                            id="" value="">OUI
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btn btn-md btn-secondary"
+                                                                            data-bs-dismiss="modal">NON</button>
+                                                                    </form>
+                                                                </div>
+
                                                             </div>
-
-                                                            <!-- Modal footer -->
-                                                            <div class="modal-footer">
-
-                                                                <form action="{{ route('typesponsors.destroy', $item->id) }}"
-                                                                    method="post">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <button type="submit" class="btn btn-danger btn-md"
-                                                                        id="" value="">OUI
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-md btn-secondary"
-                                                                        data-bs-dismiss="modal">NON</button>
-                                                                </form>
-                                                            </div>
-
                                                         </div>
                                                     </div>
+                                                    <!-- End modal -->
                                                 </div>
-                                                <!-- End modal -->
-                                              </div>
                                             </td>
                                         </tr>
                                     @endforeach

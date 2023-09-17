@@ -60,11 +60,37 @@ class AdminController extends Controller
    
     public function dashboard()
     {
-        $dossierEnAttente = Dossiers::where('statuttraitement_id', 1)->count(); 
-        $dossierValide = Dossiers::where('statuttraitement_id', 2)->count(); 
-        $dossierRejete = Dossiers::where('statuttraitement_id', 3)->count();
+        $nbre_genre = Genres::all()->count();
+        $nbre_etablissement = Etablissements::all()->count();
+        $nbre_site = Sites::all()->count();
+        $nbre_profil = Profil::all()->count();
+        $nbre_statut = Statuts::all()->count();
+        $nbre_statutjuridique = Statutjuridiques::all()->count();
+        $nbre_niveau = Niveaux::all()->count();
+        $nbre_filiere = Filieres::all()->count();
+        $nbre_cycle = Cycles::all()->count();
+        $nbre_pole = Poles::all()->count();
+        $nbre_genre = Genres::all()->count();
+        $nbre_typesponsor = Typesponsors::all()->count();
+        $nbre_gp = Groupepedagogiques::all()->count();
+        $nbre_categorie = Categories::all()->count();
+        $nbre_section = Sections::all()->count();
+        $nbre_matiere = Matieres::all()->count();
+        $nbre_examentype = Examentypes::all()->count();
+        $nbre_examen = Examens::all()->count();
+        $nbre_matiere_prof = Matiereprofesseurs::all()->count();
+        $sessionCorrection = Sessioncorrections::all()->count();
+        $profil_professeur = Profil::where("libelle","PROFESSEUR")->first();
+
+        if ($profil_professeur) {
+            # code...
+            $nbre_professeur = User::where("profil_id",$profil_professeur->id)->count();
+        } else {
+            # code...
+            $nbre_professeur = 0;
+        } 
         if(Auth::check()){
-            return view('backend.dashboard.dashboard', compact('dossierRejete', 'dossierValide', 'dossierEnAttente'));
+            return view('backend.dashboard.dashboard', compact("nbre_categorie","nbre_gp","nbre_section", 'sessionCorrection','nbre_matiere_prof',"nbre_niveau","nbre_typesponsor","nbre_matiere", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","nbre_profil","nbre_site","nbre_etablissement","nbre_examentype","nbre_examen","nbre_professeur"));
         }
         Alert::toast("Vous n'êtes pas autorisé à accéder.",'error');
         return redirect()->route('login');
