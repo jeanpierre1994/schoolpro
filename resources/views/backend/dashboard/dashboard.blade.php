@@ -556,7 +556,7 @@
                         <div class="card info-card sales-card">
                             <a href="" style="text-decoration: none;">
                                 <div class="card-body">
-                                    <h5 class="card-title"> <span></span></h5>
+                                    <h5 class="card-title"> Résultat par classe<span></span></h5>
                                     <div class="d-flex align-items-center">
                                         <div
                                             class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -620,7 +620,6 @@
                             </div>
                         </div>
                     @endif
-
                 @endif
 
                 @if (auth()->user()->profil_id == 1 ||
@@ -715,12 +714,50 @@
                             </div>
                         </a>
                     </div>
-
                 @endif
+                
+                <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex flex-nowrap justify-content-between align-items-center  p-3">
+                                <span class="mb-0">Annonces</span>
+                                <hr class="flex-grow-1 ml-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card sales-card">
+                            <a href="" style="text-decoration: none;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Calendrier <span></span></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-heptagon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
 
+                    <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card sales-card">
+                            <a href="" style="text-decoration: none;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Evènements <span></span></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-heptagon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
 
                 <!-- end  -->
-                    @endif
+            @endif
         </div>
     </section>
 @endsection

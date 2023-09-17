@@ -89,8 +89,11 @@ class AdminController extends Controller
             # code...
             $nbre_professeur = 0;
         } 
+        $dossierEnAttente = Dossiers::where('statuttraitement_id', 1)->count(); 
+        $dossierValide = Dossiers::where('statuttraitement_id', 2)->count(); 
+        $dossierRejete = Dossiers::where('statuttraitement_id', 3)->count();
         if(Auth::check()){
-            return view('backend.dashboard.dashboard', compact("nbre_categorie","nbre_gp","nbre_section", 'sessionCorrection','nbre_matiere_prof',"nbre_niveau","nbre_typesponsor","nbre_matiere", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","nbre_profil","nbre_site","nbre_etablissement","nbre_examentype","nbre_examen","nbre_professeur"));
+            return view('backend.dashboard.dashboard', compact("nbre_categorie","nbre_gp","nbre_section", 'sessionCorrection','nbre_matiere_prof',"nbre_niveau","nbre_typesponsor","nbre_matiere", "nbre_genre", "nbre_filiere", "nbre_cycle", "nbre_pole", "nbre_statut", "nbre_genre","nbre_statutjuridique","dossierValide","nbre_profil","nbre_site","nbre_etablissement","nbre_examentype","nbre_examen","nbre_professeur", "dossierEnAttente"));
         }
         Alert::toast("Vous n'êtes pas autorisé à accéder.",'error');
         return redirect()->route('login');
