@@ -17,9 +17,10 @@
 
 @section('contenu')
     <section class="section dashboard">
-        <div class="row">
+        <div class="row grid-separator">
             <!-- Utilisateurs Card -->
             <!-- Roles Card -->
+
             <div class="col-xxl-4 col-md-4">
                 <div class="card info-card sales-card">
                     <a href="{{ route('statuts.index') }}" style="text-decoration: none;">

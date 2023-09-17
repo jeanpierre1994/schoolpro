@@ -9,7 +9,7 @@
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-        <li class="breadcrumb-item"><a href="{{route('admin.parametres')}}" style="text-decoration: none;">Paramètres</a></li>
+        <li class="breadcrumb-item"><a href="{{route('dashboard')}}" style="text-decoration: none;">Dashboard</a></li>
         <li class="breadcrumb-item active">Statuts </li>
       </ol>
     </nav>
