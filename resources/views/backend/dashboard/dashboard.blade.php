@@ -675,27 +675,52 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card sales-card">
-                            <a href="{{ route('inscription') }}" style="text-decoration: none;">
+                    <div class="col-xxl-4 col-md-3">
+                        <a href="#" style="text-decoration: none;">
+                            <div class="card info-card sales-card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Liste des inscriptions <span></span></h5>
+                                    <h5 class="card-title">Dossiers en attente <span></span></h5>
                                     <div class="d-flex align-items-center">
                                         <div
                                             class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-heptagon"></i>
+                                            <i class="ri-user-3-fill"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6>{{ $dossierEnAttente }}</h6>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- End Sales Card -->
+
+                    <!-- total Card -->
+                    <div class="col-xxl-4 col-md-3">
+                        <a href="#" style="text-decoration: none;">
+                            <div class="card info-card revenue-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Dossiers validé <span></span></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="ri-user-3-fill text-dark"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6>{{ $dossierValide }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
                     </div>
 
                 @endif
 
 
                 <!-- end  -->
-
+                    @endif
         </div>
     </section>
 @endsection
