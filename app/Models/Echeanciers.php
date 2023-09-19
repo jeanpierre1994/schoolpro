@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\historiquepaiementecheanciers;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Echeanciers extends Model
 {
@@ -53,5 +54,10 @@ class Echeanciers extends Model
     public function getUserUpdated()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function getPaiement()
+    {
+        return $this->hasMany(historiquepaiementecheanciers::class,'echeancier_id');
     }
 }

@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Etudiants;
+use App\Models\Paiements;
+use App\Models\Echeanciers;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\historiquepaiementecheanciers;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dossiers extends Model
 {
@@ -40,6 +45,11 @@ class Dossiers extends Model
         'parent_id',
         'portefeuille_id'
     ]; 
+
+    public function getPaiements() : HasMany
+    {
+        return $this->hasMany(historiquepaiementecheanciers::class, 'dossier_id');
+    }
     
     public function getPortefeuille()
     {
@@ -108,5 +118,15 @@ class Dossiers extends Model
     public function getUserUpdated()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function getEtudiant()
+    {
+        return $this->hasOne(Etudiants::class);
+    }
+
+    public function getEcheancier()
+    {
+        return $this->hasMany(Echeanciers::class, 'dossier_id');
     }
 }

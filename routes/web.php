@@ -377,4 +377,4 @@ Route::get('admin/impression/{reference}/recu', [PdfController::class, 'recuPaie
 
 // Détails sur les paiements
 Route::get('admin/paiements', [PaiementController::class, 'index'])->name('admin.paiements');
-
+Route::get('admin/paiements/{dossier:id}/list', [PaiementController::class, 'listePaiements'])->name('admin.paiements.list');

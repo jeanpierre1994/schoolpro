@@ -569,4 +569,13 @@ class PaiementController extends Controller
         $paiements = historiquepaiementecheanciers::all();
         return view('backend.paiements.index', compact('paiements'));
     }
+
+    public function listePaiements($etudiantId)
+    {
+        $etudiantId = \Crypt::decrypt($etudiantId);
+        $etudiant = Etudiants::find($etudiantId);
+
+        $dossier = Dossiers::where('id', $etudiant->dossier_id)->get()->first();
+        return view('backend.paiements.list', compact('dossier'));
+    }
 }

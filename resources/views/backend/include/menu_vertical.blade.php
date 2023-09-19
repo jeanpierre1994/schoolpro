@@ -498,7 +498,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.parametres') }}" id="dossier-valide"
+                        <a href="" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Variables</span>
                         </a>

@@ -97,7 +97,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex justify-content-evenly">
-                                                    <a href="" class="page-constructionv" >
+                                                    <a href="{{ route('admin.paiements.list', \Crypt::encrypt($item->id)) }}" class="page-constructionv" >
                                                         <button type="button" title="Historique des paiements"
                                                             class="btn btn-sm btn-primary"><i class="bi  bi-clock"
                                                                 style="color: white" aria-hidden="true"></i></button>
