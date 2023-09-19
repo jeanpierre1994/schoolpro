@@ -159,7 +159,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" id="dossier-valide" style="text-decoration: none;">
+                        <a href="{{ route('users.index') }}" id="dossier-valide" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Staff</span>
                         </a>
                     </li>
@@ -564,7 +564,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" id="dossier-valide" style="text-decoration: none;">
+                        <a href="{{ route('users.index') }}" id="dossier-valide" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Staff</span>
                         </a>
                     </li>

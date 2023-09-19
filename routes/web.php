@@ -47,6 +47,7 @@ use App\Http\Controllers\StatutjuridiquesController;
 use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
 use App\Http\Controllers\PortefeuillesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -159,6 +160,7 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('rubriques', RubriquesController::class);
     Route::resource('grille_tarifaires', GrilletarifairesController::class);
     Route::resource('ligne_tarifaires', LignetarifsController::class);
+    Route::resource('users', UserController::class);
     // ajax requête
  });
 

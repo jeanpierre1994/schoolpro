@@ -170,9 +170,24 @@ class CustomAuthController extends BaseController
             
             else{
                 # code...
-                Alert::toast("Nom d'utilisateur ou mot de passe invalide.",'error');
+                 # code...
+                 $update_user = User::find($user->id);
+                 if (!empty($user->first_connexion)) {
+                     # code... 
+                     $update_user->setAttribute("last_connexion",date("Y-m-d H:i:s"));
+                     $update_user->setAttribute("login_count",1);
+                     $update_user->update();
+                 } else {
+                     # code...
+                     $update_user->setAttribute("first_connexion",date("Y-m-d H:i:s"));
+                     $update_user->setAttribute("last_connexion",date("Y-m-d H:i:s"));
+                     $update_user->setAttribute("login_count",$user->login_count+1);
+                     $update_user->update();
+                 }
+                 return redirect()->route('dashboard'); 
+               // Alert::toast("Nom d'utilisateur ou mot de passe invalide.",'error');
 
-                return redirect()->route('authentification');
+             //   return redirect()->route('authentification');
             }
             
         }else{
