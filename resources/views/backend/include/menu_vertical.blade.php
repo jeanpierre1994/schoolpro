@@ -668,7 +668,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.paiements') }}" id="dossier-valide" style="text-decoration: none;">
+                        <a href="{{ route('dossiers.valide') }}" id="dossier-valide" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Liste des Paiements</span>
                         </a>
                     </li>
