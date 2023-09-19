@@ -42,40 +42,42 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Code</th>
+                                        <th scope="col">Référence</th>
                                         <th scope="col">Rubrique</th>
                                         <th scope="col">Montant Rubrique</th>
                                         <th scope="col">Montant Payé</th>
                                         <th scope="col">Restant</th>
-                                        <th scope="col">Réglé par</th>
+                                        <!--<th scope="col">Réglé par</th>-->
                                         <th scope="col">Date du paiement</th>
-                                        <th scope="col">Action</th>
+                                        <!--<th scope="col">Action</th>-->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($dossier->getEcheancier->getPaiement as $paiement)
+                                    @foreach ($echeanciers as $echeance)
+                                        @foreach (getHistoriquePaiement($echeance->id) as $item)
                                         <tr>
                                             <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td><b>{{ $paiement->code }}</b> </td>
-                                            <td><b>{{ $dossier->getEcheancier->getLignetarif->rubrique->libelle . ' ' . $paiement->getEcheancier->getLignetarif->rubrique->libelle_secondaire }}</b>
+                                            <td><b>{{ $item->getPaiement->reference }}</b> </td>
+                                            <td><b>{{ $item->getEcheancier->getLignetarif->grilleTarifaire->libelle }} <br> {{ $item->getEcheancier->getLignetarif->rubrique->libelle }}</b>
                                             </td>
                                             <td>
-                                                {{ $dossier->getEcheancier->montant_rubrique }}
+                                                {{ $item->getEcheancier->montant_rubrique }}
                                             </td>
                                             <td>
-                                                {{ $dossier->getEcheancier->montant_payer }}
+                                                {{ number_format($item->montant_payer, 0, ',', '.') }}
                                             </td>
-                                            <td>
-                                                {{ $dossier->getEcheancier->montant_restant }}
+                                            <td> 
+                                                {{ number_format($item->getEcheancier->montant_restant, 0, ',', '.') }}
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 {{ $dossier->created_by }}
-                                            </td>
+                                            </td>--}}
+
                                             <td>
-                                                {{ $paiement->date_paiement }}
+                                                {{ \Carbon\Carbon::parse($item->date_paiement)->format('d-m-Y') }}
                                             </td>
                                             <div class="d-flex justify-content-evenly">
                                                 <!--<a href="#" title="Modifier"><button type="button"
@@ -90,6 +92,8 @@
                                             </td>
 
                                         </tr>
+                                        @endforeach
+                                        
                                     @endforeach
 
                                 </tbody>

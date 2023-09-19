@@ -2,6 +2,7 @@
 
 use App\Models\Etablissements;
 use App\Models\Examenprog;
+use App\Models\historiquepaiementecheanciers;
 use App\Models\Matiereprofesseurs;
 use App\Models\Matieres;
 use App\Models\Personnes;
@@ -110,5 +111,15 @@ if (!function_exists('getClasse')) {
     }
 
 }
+
+if (!function_exists('getHistoriquePaiement')) {
+    # code...
+    function getHistoriquePaiement($echeancier_id){ 
+       return $details = historiquepaiementecheanciers::where("echeancier_id",$echeancier_id)->where("montant_payer",">",0)->get();    
+    }
+
+}
+
+// 
 
 

@@ -576,6 +576,8 @@ class PaiementController extends Controller
         $etudiant = Etudiants::find($etudiantId);
 
         $dossier = Dossiers::where('id', $etudiant->dossier_id)->get()->first();
-        return view('backend.paiements.list', compact('dossier'));
+        $echeanciers = Echeanciers::where("dossier_id",$etudiant->dossier_id)->get();
+
+        return view('backend.paiements.list', compact('dossier',"echeanciers"));
     }
 }
