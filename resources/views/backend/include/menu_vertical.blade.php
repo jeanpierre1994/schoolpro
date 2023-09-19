@@ -668,8 +668,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('inscription') }}" id="dossier-valide" style="text-decoration: none;">
-                            <i class="bi bi-circle"></i><span>Liste des inscriptions</span>
+                        <a href="{{ route('admin.paiements') }}" id="dossier-valide" style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Liste des Paiements</span>
                         </a>
                     </li>
                 </ul>
