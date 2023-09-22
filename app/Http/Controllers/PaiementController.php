@@ -580,4 +580,20 @@ class PaiementController extends Controller
 
         return view('backend.paiements.list', compact('dossier',"echeanciers"));
     }
+
+    public function historiquePaiements(Request $request)
+    {  
+        $echeanciers = Echeanciers::orderBy("id","desc")->get();
+
+        return view('backend.paiements.historiques', compact("echeanciers"));
+    }
+
+    public function historiquePaiementsPortefeuilles(Request $request)
+    {  
+        $portefeuilles = Historiqueportefeuilles::where("type","CREDIT")->orderBy("id","desc")->get();
+        $montant_total = Historiqueportefeuilles::sum("new_montant");
+      
+
+        return view('backend.paiements.historiques-portefeuilles', compact("portefeuilles","montant_total"));
+    }
 }

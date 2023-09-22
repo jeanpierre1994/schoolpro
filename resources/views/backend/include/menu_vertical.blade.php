@@ -838,6 +838,69 @@
             </ul>
         </li>
         <!-- End Annonce Nav -->
+
+            <!-- Frais & Finances -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#frais-nav" data-bs-toggle="collapse" href="#">
+                    <i class="ri-newspaper-fill"></i><span>Frais </span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="frais-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('famille_rubriques.index') }}" id="import-personnes"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Famille de Rubriques</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('rubriques.index') }}" id="import-personnes"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Rubriques</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('grille_tarifaires.index') }}" id="import-personnes"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Grilles Tarifaire</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.liste_tarif') }}" id="import-personnes"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Détails des G.T.</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('admin.paiements') }}" id="import-personnes"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Etat des Paiements</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- End Frais & Finances -->
+
+          <!-- paiements -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#paiement-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-newspaper-fill"></i><span>Paiements</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="paiement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('admin.comptable.paiements-dossier')}}" id="histo-dossiers" style="text-decoration: none;">
+                        <i class="bi bi-circle"></i><span>Dossiers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('admin.comptable.paiements-portefeuille')}}" id="histo-portefeuilles" style="text-decoration: none;">
+                        <i class="bi bi-circle"></i><span>Portefeuilles</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- End paiements Nav -->
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('signout') }}" style="text-decoration: none;">
                 <i class="ri-logout-box-r-line"></i>
