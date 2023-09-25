@@ -56,6 +56,7 @@ class DossierImport implements ToModel, WithHeadingRow
         $personne = Personnes::create([
             //
             'matricule' => $row['register_num'],
+            'compte_id' => $user->id,
             'nom' => $row['last_name'],
             'prenoms' => $row['first_name'],
             'genre' => ($row['gender'] == 'male') ? 1 : 2,
@@ -96,7 +97,7 @@ class DossierImport implements ToModel, WithHeadingRow
             'commentaire' => 5,
             'statutvalidation_id' => NULL
         ]);*/
-        $personne->getCompte()->associate($user);
+        //$personne->getCompte()->associate($user);
         $dossier->getPersonne()->associate($personne);
         $dossier->save();
         
