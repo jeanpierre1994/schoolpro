@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Dossiers;
 use App\Models\Etudiants;
 use App\Models\Personnes;
+use App\Actions\GenereCode;
 use Database\Factories\UserFactory;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -76,7 +77,7 @@ class DossierImport implements ToModel, WithHeadingRow
      $dossier = new Dossiers([
             //
 
-            //'code' => $row['register_num'],
+            'code' => (new GenereCode)->handle(Dossiers::class, 'DS'),
             'site_id' => 1,
             'pole_id' => 1, // FK
             'filiere_id' => 1,
