@@ -18,7 +18,7 @@ class PersonnesImport implements ToModel, WithHeadingRow
     {
         $user = new User([
             'name'=> $row['last_name'] . ''. $row['first_name'],
-            'email' => strtolower($row['first_name'].'@mail.com'),
+            'email' => strtolower($row['register_num'].'@mail.com'),
             'password' => strtolower($row['first_name'].$row['last_name'])
         ]);
         return new Personnes([
