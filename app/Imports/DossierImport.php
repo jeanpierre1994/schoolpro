@@ -28,7 +28,8 @@ class DossierImport implements ToModel, WithHeadingRow
             ],[
             'email' => strtolower($row['famille'] . '@brif.com'),
             'password' => Hash::make('Inscription@2023') ,
-            'profil_id' => 3
+            'profil_id' => 3,
+            'enable' => 1,
         ]);
 
         $familePersonne = Personnes::firstOrCreate([
@@ -43,14 +44,16 @@ class DossierImport implements ToModel, WithHeadingRow
             'tel' => 00000000,
             'email' => strtolower($row['famille'] . '@brif.com'),
             'famille' => 0,
-            'created_by' => 1
+            'created_by' => 1,
+            'photo' => 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp'
         ]);
 
         $user = User::create([
             'name' => $row['last_name'] . ' ' . $row['first_name'],
             'email' => strtolower($row['register_num'] . '@brif.com'),
             'password' => Hash::make('Inscription@2023'),
-            'profil_id' => 2
+            'profil_id' => 2,
+            'enable' => 1,
         ]);
 
         $personne = Personnes::create([
@@ -67,6 +70,7 @@ class DossierImport implements ToModel, WithHeadingRow
             'ddn' => date('Y-m-d', strtotime(str_replace('/', '-', $row['date_of_birth']))),
             'adresse' => $row['ville'],
             'nationalite' => $row['pays'],
+            'photo' => 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp'
 
         ]);
      $dossier = new Dossiers([
@@ -85,7 +89,8 @@ class DossierImport implements ToModel, WithHeadingRow
             'statuttraitement_id' => 1,
             'date_traitement' => 2023,
             'validateur_id' => 1,
-            'created_by' => 1, // FK
+            'parent_id' => $famille->id,
+            'created_by' => $famille->id, // FK
             'updated_by' => 1, // FK
         ]);
 
