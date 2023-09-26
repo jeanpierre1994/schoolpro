@@ -190,11 +190,20 @@ class DossierImport implements ToModel, WithHeadingRow
         elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
             $niveau = 3;
         }
+        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+            $niveau = 20;
+        }
         elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
             $niveau = 2;
         }
+        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+            $niveau = 21;
+        }
         elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 11' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
             $niveau = 1;
+        }
+        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 12' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+            $niveau = 22;
         }
         else{
             $niveau = 2;
@@ -252,11 +261,20 @@ class DossierImport implements ToModel, WithHeadingRow
         elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
             $gp = 3;
         }
+        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+            $gp = 18;
+        }
         elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
             $gp = 2;
         }
+        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+            $gp = 19;
+        }
         elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 11' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
             $gp = 1;
+        }
+        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 12' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+            $gp = 20;
         }
         else{
             $gp = 2;
