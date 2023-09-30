@@ -77,7 +77,7 @@ class DossierImport implements ToModel, WithHeadingRow
      $dossier = new Dossiers([
             //
 
-            'code' => (new GenereCode)->handle(Dossiers::class, 'DS'),
+            'code' => $row['register_num'],
             'site_id' => 1,
             'pole_id' => $this->getPole($row), // FK
             'filiere_id' => $this->getFiliere($row), // FK
@@ -107,16 +107,16 @@ class DossierImport implements ToModel, WithHeadingRow
             'statutvalidation_id' => NULL
         ]);
         //$personne->getCompte()->associate($user);
-
+        $etudiant->save();
         return $etudiant;
     }
 
     public function getPole($row)
     {
         $pole = 1;
-        if ($row['CLASSE 2023-2024 ENGLISH'] == 'Creche' || $row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 1' || $row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 2') {
+        if ($row['english'] == 'Creche' || $row['english'] == 'NURSERY 1' || $row['english'] == 'NURSERY 2') {
             $pole = 1;
-        }elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 1' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 2' || $row['CLASSE 2023-2024 ENGLISH']== 'YEAR 3' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 4' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 5' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 6')
+        }elseif($row['english'] == 'YEAR 1' || $row['english'] == 'YEAR 2' || $row['english']== 'YEAR 3' || $row['english'] == 'YEAR 4' || $row['english'] == 'YEAR 5' || $row['english'] == 'YEAR 6')
         {
             $pole = 2;
         }
@@ -129,9 +129,9 @@ class DossierImport implements ToModel, WithHeadingRow
     public function getFiliere($row)
     {
         $filiere = 4;
-        if ($row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 1' || $row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 2') {
+        if ($row['english'] == 'NURSERY 1' || $row['english'] == 'NURSERY 2') {
             $filiere = 4;
-        }elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 1' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 2' || $row['CLASSE 2023-2024 ENGLISH']== 'YEAR 3' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 4' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 5' || $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 6')
+        }elseif($row['english'] == 'YEAR 1' || $row['english'] == 'YEAR 2' || $row['english']== 'YEAR 3' || $row['english'] == 'YEAR 4' || $row['english'] == 'YEAR 5' || $row['english'] == 'YEAR 6')
         {
             $filiere = 3;
         }else{
@@ -143,66 +143,66 @@ class DossierImport implements ToModel, WithHeadingRow
     public function getNiveau($row)
     {
         $niveau = 16;
-        if ($row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 1' ) {
+        if ($row['english'] == 'NURSERY 1' ) {
             $niveau = 15;
-        }elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 2')
+        }elseif( $row['english'] == 'NURSERY 2')
         {
             $niveau = 14;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 1' )
+        elseif($row['english'] == 'YEAR 1' )
         {
             $niveau = 13;
-        }elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 2' )
+        }elseif( $row['english'] == 'YEAR 2' )
         {
             $niveau = 12;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH']== 'YEAR 3' )
+        elseif( $row['english']== 'YEAR 3' )
         {
             $niveau = 11;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 4' )
+        elseif( $row['english'] == 'YEAR 4' )
         {
             $niveau = 10;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 5' )
+        elseif( $row['english'] == 'YEAR 5' )
         {
             $niveau = 9;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 6')
+        elseif( $row['english'] == 'YEAR 6')
         {
             $niveau = 8;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'Creche'){
+        elseif($row['english'] == 'Creche'){
             $niveau = 16;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 7' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 7' && $row['francais'] == 'Cambridge'){
             $niveau = 7;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 7' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 7' && $row['francais'] != 'Cambridge'){
             $niveau = 6;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 8' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 8' && $row['francais'] == 'Cambridge'){
             $niveau = 5;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 8' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 8' && $row['francais'] != 'Cambridge'){
             $niveau = 4;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 9' && $row['francais'] != 'Cambridge'){
             $niveau = 3;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 9' && $row['francais'] == 'Cambridge'){
             $niveau = 20;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 10' && $row['francais'] != 'Cambridge'){
             $niveau = 2;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 10' && $row['francais'] == 'Cambridge'){
             $niveau = 21;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 11' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 11' && $row['francais'] == 'Cambridge'){
             $niveau = 1;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 12' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 12' && $row['francais'] == 'Cambridge'){
             $niveau = 22;
         }
         else{
@@ -214,72 +214,82 @@ class DossierImport implements ToModel, WithHeadingRow
     public function getGp($row)
     {
         $gp = 16;
-        if ($row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 1' ) {
+        if ($row['english'] == 'NURSERY 1' ) {
             $gp = 16;
-        }elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'NURSERY 2')
+        }elseif( $row['english'] == 'NURSERY 2')
         {
             $gp = 15;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 1' )
+        elseif($row['english'] == 'YEAR 1' )
         {
             $gp = 14;
-        }elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 2' )
+        }elseif( $row['english'] == 'YEAR 2' )
         {
             $gp = 13;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH']== 'YEAR 3' )
+        elseif( $row['english']== 'YEAR 3' )
         {
             $gp = 12;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 4' )
+        elseif( $row['english'] == 'YEAR 4' )
         {
             $gp = 10;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 5' )
+        elseif( $row['english'] == 'YEAR 5' )
         {
             $gp = 9;
         }
-        elseif( $row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 6')
+        elseif( $row['english'] == 'YEAR 6')
         {
             $gp = 8;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'Creche'){
+        elseif($row['english'] == 'Creche'){
             $gp = 17;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 7' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 7' && $row['francais'] == 'Cambridge'){
             $gp = 7;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 7' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 7' && $row['francais'] != 'Cambridge'){
             $gp = 6;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 8' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 8' && $row['francais'] == 'Cambridge'){
             $gp = 5;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 8' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 8' && $row['francais'] != 'Cambridge'){
             $gp = 4;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 9' && $row['francais'] != 'Cambridge'){
             $gp = 3;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 9' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 9' && $row['francais'] == 'Cambridge'){
             $gp = 18;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] != 'Cambridge'){
+        elseif($row['english'] == 'YEAR 10' && $row['francais'] != 'Cambridge'){
             $gp = 2;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 10' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 10' && $row['francais'] == 'Cambridge'){
             $gp = 19;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 11' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 11' && $row['francais'] == 'Cambridge'){
             $gp = 1;
         }
-        elseif($row['CLASSE 2023-2024 ENGLISH'] == 'YEAR 12' && $row['CLASSE 2023-2024 FRANÇAIS'] == 'Cambridge'){
+        elseif($row['english'] == 'YEAR 12' && $row['francais'] == 'Cambridge'){
             $gp = 20;
         }
         else{
             $gp = 2;
         }
         return $gp;
+    }
+
+    public function getCycle($row)
+    {
+        $cycle = 1;
+        if($row['english'] == 'YEAR 11' || $row['english'] == 'YEAR 12')
+        {
+            $cycle = 2;
+        }
+        return $cycle;
     }
 
 
