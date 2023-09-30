@@ -6,11 +6,14 @@ use App\Models\Dossiers;
 use App\Models\Echeanciers;
 use App\Models\Etudiants;
 use App\Models\Groupepedagogiques;
+use App\Models\historiquepaiementecheanciers;
+use App\Models\Historiqueportefeuilles;
 use App\Models\Lignetarifs;
 use App\Models\Paiements;
 use App\Models\Personnes;
 use App\Models\Portefeuilles;
 use App\Models\Statuttraitements;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class DossiersController extends Controller
@@ -86,8 +89,8 @@ class DossiersController extends Controller
         $gp = Groupepedagogiques::find($request->groupepedagogique_id);
         if ($gp->grilletarifaire_id) {
             # code...
-        }else{
-            return redirect()->back()->with("error","La grille tarifaire n'est pas encore configuré pour ce groupe pédagogique.");
+        } else {
+            return redirect()->back()->with("error", "La grille tarifaire n'est pas encore configuré pour ce groupe pédagogique.");
         }
 
         if ($request->statuttraitement_id == 2) {
@@ -176,8 +179,8 @@ class DossiersController extends Controller
             return redirect()->route("dossiers.en_attente")->with("success", "Traitement effectué avec succès.");
         }
 
-         // vérifier si le compte parent existe
-         if ($dossier->parent_id) {
+        // vérifier si le compte parent existe
+        if ($dossier->parent_id) {
             # code...
             $get_parent = Personnes::where("compte_id", $dossier->parent_id)->first();
             // vérifier si le parent dispose déjà de portefeuille
@@ -219,31 +222,32 @@ class DossiersController extends Controller
             }
         }
 
-         // vérifier si un la génération des échéances est faite : 
-            $checkGeneration = Echeanciers::where("dossier_id", $dossier->id)->exists();
-            if (!$checkGeneration) {
-                # code... génération de l'échéance
-                // vérifier si le groupe pédagogique possède déjà une grille tarifaire
-                if ($gp->grilletarifaire_id != null && $gp->grilletarifaire_id != 0) {
+        // vérifier si un la génération des échéances est faite : 
+        $checkGeneration = Echeanciers::where("dossier_id", $dossier->id)->exists();
+        if (!$checkGeneration) {
+            # code... génération de l'échéance
+            // vérifier si le groupe pédagogique possède déjà une grille tarifaire
+            if ($gp->grilletarifaire_id != null && $gp->grilletarifaire_id != 0) {
+                # code...
+                $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $gp->grilletarifaire_id)->get();
+                foreach ($ligne_tarif as $value) {
                     # code...
-                    $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $gp->grilletarifaire_id)->get();
-                    foreach ($ligne_tarif as $value) {
-                        # code...
-                        $echeancier = new Echeanciers();
-                        $echeancier->setAttribute("dossier_id", $dossier->id);
-                        $echeancier->setAttribute("lignetarif_id", $value->id);
-                        $echeancier->setAttribute("montant_rubrique", $value->montant);
-                        $echeancier->setAttribute("montant_restant", $value->montant);
-                        $echeancier->setAttribute("statutpaiement_id", 1); // en attente
-                        $echeancier->setAttribute("created_by", $user->id);
-                        $echeancier->setAttribute("updated_by", $user->id);
-                        $echeancier->save();
-                    }
-    
-                    // afficher l'interface permettant de choisir les rubriques de paiement
-                    return redirect()->route("paiements.choix_rubrique", $dossier->id);
+                    $echeancier = new Echeanciers();
+                    $echeancier->setAttribute("dossier_id", $dossier->id);
+                    $echeancier->setAttribute("lignetarif_id", $value->id);
+                    $echeancier->setAttribute("montant_rubrique", $value->montant);
+                    $echeancier->setAttribute("montant_payer", $value->montant);
+                    $echeancier->setAttribute("montant_restant", $value->montant);
+                    $echeancier->setAttribute("statutpaiement_id", 1); // en attente
+                    $echeancier->setAttribute("created_by", $user->id);
+                    $echeancier->setAttribute("updated_by", $user->id);
+                    $echeancier->save();
                 }
+
+                // afficher l'interface permettant de choisir les rubriques de paiement
+                return redirect()->route("paiements.choix_rubrique", $dossier->id);
             }
+        }
 
 
         // choix rubrique : 
@@ -367,4 +371,229 @@ class DossiersController extends Controller
     {
         //
     }
+
+    // choix des rubriques
+    public function ajouterPaiement(Request $request, $id)
+    {
+        $dossier = Dossiers::find($id);
+        if ($dossier->groupepedagogique_id) {
+        } else {
+            $etudiant = Etudiants::where("dossier_id",$dossier->id)->first();
+            $dossier->setAttribute("groupepedagogique_id",$etudiant->groupepedagogique_id)->update();;
+            //$dossier
+        }
+        $checkEcheancier = Echeanciers::where("dossier_id", $dossier->id)->exists();
+       
+        if ($checkEcheancier) {
+            # code...
+
+        } else {
+ 
+            # code...
+             # code...
+             $user = auth()->user();
+             $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $dossier->getGp->grilletarifaire_id)->get();
+            
+             foreach ($ligne_tarif as $value) {
+                 # code...
+                 $echeancier = new Echeanciers();
+                 $echeancier->setAttribute("dossier_id", $dossier->id);
+                 $echeancier->setAttribute("lignetarif_id", $value->id);
+                 $echeancier->setAttribute("montant_rubrique", $value->montant);
+                 $echeancier->setAttribute("montant_payer", $value->montant);
+                 $echeancier->setAttribute("montant_restant", $value->montant);
+                 $echeancier->setAttribute("statutpaiement_id", 1); // en attente
+                 $echeancier->setAttribute("created_by", $user->id);
+                 $echeancier->setAttribute("updated_by", $user->id);
+                 $echeancier->save();
+             }
+
+        }
+        
+        
+        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->where("active", true)->get();
+       
+        if ($dossier->portefeuille_id) {
+        } else {
+            // vérifier si le compte parent existe
+            if ($dossier->parent_id) {
+                # code...
+                $get_parent = Personnes::where("compte_id", $dossier->parent_id)->first();
+                // vérifier si le parent dispose déjà de portefeuille
+                $check_portefeuille = Portefeuilles::where("personne_id", $get_parent->id)->first();
+                if ($check_portefeuille) {
+                    # code...
+
+                    $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                    $dossier->update();
+                } else {
+                    # code... new portefeuille
+                    $portefeuille = new Portefeuilles();
+                    $portefeuille->setAttribute("montant", 0);
+                    $portefeuille->setAttribute("personne_id", $get_parent->id);
+                    $portefeuille->setAttribute("statut_id", 1);
+                    $portefeuille->setAttribute("created_by", $dossier->parent_id);
+                    $portefeuille->setAttribute("updated_by", $dossier->parent_id);
+                    $portefeuille->save();
+                    $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                    $dossier->update();
+                }
+            } else {
+                # code... prendre le portefeuille de l'étudiant même
+                $personne = Personnes::find($dossier->personne_id);
+                $check_portefeuille = Portefeuilles::where("personne_id", $personne->id)->first();
+                if ($check_portefeuille) {
+                    # code...
+                    $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                    $dossier->update();
+                } else {
+                    # code... new portefeuille
+                    $portefeuille = new Portefeuilles();
+                    $portefeuille->setAttribute("montant", 0);
+                    $portefeuille->setAttribute("personne_id", $personne->id);
+                    $portefeuille->setAttribute("statut_id", 1);
+                    $portefeuille->setAttribute("created_by", $personne->compte_id);
+                    $portefeuille->setAttribute("updated_by", $personne->compte_id);
+                    $portefeuille->save();
+                    $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                    $dossier->update();
+                }
+            }
+        }
+
+        return view('backend.paiements.reglement', compact('dossier', 'echeanciers'));
+    }
+
+    public function reglementEcheancier(Request $request)
+    {
+        $user = auth()->user();
+        $this->validate($request, [
+            'get_montant_total_restant' => 'required',
+            'get_montant_total_regler' => 'required',
+            'dossier_id' => 'required',
+            'montant_portefeuille' => 'required', 
+            'montant_restant' => 'required',
+            'montant_regle' => 'required',
+            'echeancier_id' => 'required'
+        ]);
+        $dossier = Dossiers::find($request->dossier_id);
+ 
+        // enregistrement historique paiement echeancier
+        $data = $request->echeancier_id;
+        $montant_restant = $request->montant_restant;
+        $montant_regle = $request->montant_regle;         
+ 
+        // enregistrement du paiement
+        // création paiement 
+            // enregistrer le paiement avec statut en attente
+            // générer le numero de reference facture
+            // procédure d'incrémentation du numéro inventaire
+            $annee_actuelle = date('Y');
+            $type_reference = "FACT";
+            $indicatif = "SCH";
+            $id_1 = "";
+            // récupérer le dernier enregistrement
+            $last_numero_paiement = Paiements::orderBy('id', 'desc')->first();
+
+            if ($last_numero_paiement == NULL) {
+                $last_id = "";
+            } else {
+                $last_id = $last_numero_paiement->reference;
+            }
+
+            if (!empty($last_id)) {
+                $id_1 = explode('-', $last_id);
+                //vérifier si nous somme dans une nouvelle année pour réinitialiser le compteur
+                $get_date = $id_1[1];
+                if ($annee_actuelle > $get_date) {
+                    # code...
+                    $numero = '0000000';
+                } else {
+                    # code...
+                    $numero = $id_1[3];
+                }
+            } else {
+                $id_1 = '000000';
+                $numero = '000000';
+            }
+
+            $numero_fact = $numero + 1;
+
+            $numero_fact_formatted = str_pad($numero_fact, 6, "0", STR_PAD_LEFT);
+            $reference_paiement = $indicatif . '-' . $annee_actuelle . '-' . $type_reference . '-' . $numero_fact_formatted;
+
+            $preuve_path = null; 
+
+            // enregistrement du paiement
+            $paiement = new Paiements();
+            $paiement->setAttribute('reference', $reference_paiement);
+            $paiement->setAttribute('montant_a_payer', $request->get_montant_total_regler);
+            $paiement->setAttribute('montant_paye', $request->get_montant_total_regler);
+            $paiement->setAttribute('statut_traitement', "VALIDE"); // à revoir 
+            if (isset($_POST["mode_paiement"])) {
+                # code...
+                $paiement->setAttribute('mod_paiement', $request->modepaiement);
+            }
+            $paiement->setAttribute('preuve', $preuve_path);
+            $paiement->setAttribute('enregistrer_par', $user->id);
+            $paiement->save();
+
+            // debit portefeuille
+
+            // enregistrement historique paiement 
+            $historique = new Historiqueportefeuilles();
+            $historique->setAttribute("old_montant", $dossier->getPortefeuille->montant);
+            $historique->setAttribute("new_montant", $request->get_montant_total_regler);
+            $historique->setAttribute("type", "DEBIT"); // CREDIT ou DEBIT
+            $historique->setAttribute("portefeuille_id", $dossier->getPortefeuille->id);
+            $historique->setAttribute("created_by", $user->id);
+            $historique->save();
+
+            // update portefeuille
+            $portefeuille = Portefeuilles::find($dossier->getPortefeuille->id);
+            $new_montant = $portefeuille->montant - $request->get_montant_total_regler;
+            $portefeuille->setAttribute("montant", $new_montant);
+            $portefeuille->setAttribute("updated_at", Date("Y-m-d H:i:s"));
+            $portefeuille->update(); 
+
+            foreach ($data as $key =>  $echeancier_id) {
+                # code...
+                // enregistrement détails paiement
+               // if ($montant_regle[$key] > 0) {
+                    # code...
+
+                    if (isset($montant_regle[$key]) && !empty($montant_regle[$key])) {
+                        # code...
+                $echeancier = Echeanciers::find($echeancier_id);
+                $detail = new historiquepaiementecheanciers();
+                $detail->setAttribute("paiement_id",$paiement->id);
+                $detail->setAttribute("echeancier_id",$echeancier->id);
+                $detail->setAttribute("montant_payer",$montant_regle[$key]);
+                $detail->setAttribute("montant_restant",$montant_restant[$key]-$montant_regle[$key]);
+                $detail->setAttribute("date_paiement",date("Y-m-d"));
+                $detail->setAttribute("created_by",$user->id);
+                $detail->setAttribute("updated_by",$user->id);
+                $detail->save();
+     
+                // update echeancier
+                //$echeancier->setAttribute("montant_payer",$montant_negocier[$key]);
+                //$echeancier->setAttribute("remise",$remise[$key]);
+                $echeancier->setAttribute("montant_restant",$montant_restant[$key]-$montant_regle[$key]);
+                $echeancier->update();
+                    }
+                    
+               // }
+                
+            }
+ 
+            // valider dossier
+            $statut_traitement = Statuttraitements::where("libelle", "VALIDE")->first();
+            $dossier->setAttribute('statuttraitement_id', trim($statut_traitement->id));
+            $dossier->setAttribute("date_traitement",date("Y-m-d"));
+            $dossier->setAttribute("validateur_id",$user->id);
+            $dossier->update();  
+            $request->session()->put("redirect_uri", route("dossiers.valide"));
+            return redirect()->route("info.impression-recu",$paiement->reference);
+    }
+
 }

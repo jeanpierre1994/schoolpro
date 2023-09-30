@@ -52,9 +52,11 @@
 <!-- Script summernote -->
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
      
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {  
   
+        $('.search-select').select2(); 
     $('.data-tables').DataTable({ 
         initComplete: function () {
             // Apply the search
@@ -99,15 +101,14 @@
              },
              dom: '<"float-left"l><"float-right"f>Brti<"float-right"p>',
              lengthMenu: [
-              [10, 50, 100, 250, 300, -1],
-              ['10', '50', '100', '250', '300', 'Tout afficher'],
+              [50, 100, 250, 300, -1],
+              ['50', '100', '250', '300', 'Tout afficher'],
             ],
              stateSave : true, 
              order : [[ 0, "asc" ]], 
                 processing: true,
                 serverSide: false
     });
-
     });
 </script>
 </body>

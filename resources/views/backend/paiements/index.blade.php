@@ -53,7 +53,7 @@
                                                 <b>{{ $paiement->code }}</b>
                                             </td>
                                             <td>
-                                                <b>{{ $paiement->getEnregistrerPar->getUserCreated->name }}</b>
+                                                <b>{{ $paiement->enregistrer_par ? $paiement->getEnregistrerPar->getUserCreated->name : '' }}</b>
                                             </td>
                                             <td>
                                                 {{ $paiement->montant_paye }}
@@ -72,6 +72,8 @@
                                                     <span class="badge badge-success rounded-pill d-inline"></span>
                                                 @endif
                                             </td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         @php
                                             $i++;

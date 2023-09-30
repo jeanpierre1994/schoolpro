@@ -29,13 +29,13 @@ class AdminEtudiantController extends Controller
     {
         // redirection sur le formulaire d'inscription 
         $genres = Genres::where("statut_id", 1)->get();
-        $profils = Profil::where("statut_id", "=", 1)->where("id", "=", 2)->orWhere("id", "=", 3)->get();
+        $profils = Profil::where("id", "=", 2)->get();
         $etablissements = Etablissements::where("statut_id", 1)->get();
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get();
         $typesponsors = Typesponsors::where("statut_id", 1)->get();
         $gp = Groupepedagogiques::all();
-        $pays = Pays::all();
+        $pays = Pays::where("nationalite","!=","")->orderBy("nationalite","asc")->get();
 
         $parents = Personnes::join("users","users.id","=","personnes.compte_id")
         ->where("users.profil_id",3)
@@ -98,7 +98,7 @@ class AdminEtudiantController extends Controller
 
     public function update(Etudiants $etudiant)
     {
-        dd('ok');
+       // dd('ok');
         return redirect()->back();
     }
 }

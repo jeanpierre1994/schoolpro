@@ -368,15 +368,18 @@ Route::post('admin/recharge/portefeuille/ajax', [AjaxController::class, 'credite
 Route::post('admin/recharge/portefeuille/kkiapay', [AjaxController::class, 'paiementKkiapayStore'])->name('update-kkiapay-transaction')->middleware("auth");
 // 
 Route::post('admin/ventilation/echeancier', [AjaxController::class, 'ventilationEcheancier'])->name('ventilation_echeancier')->middleware("auth");
-
+//
+Route::post('admin/reglement/echeancier', [DossiersController::class, 'reglementEcheancier'])->name('reglement_echeancier')->middleware("auth");
+//
 Route::get('admin/{reference}/telechargement/recu', [PdfController::class, 'infoImpressionRecu'])->name('info.impression-recu')->middleware("auth");
 //
 Route::get('admin/impression/{reference}/recu', [PdfController::class, 'recuPaiement'])->name('impression-recu')->middleware("auth");
-
-
-
+ 
 // Détails sur les paiements
 Route::get('admin/paiements', [PaiementController::class, 'index'])->name('admin.paiements');
 Route::get('admin/paiements/{dossier:id}/list', [PaiementController::class, 'listePaiements'])->name('admin.paiements.list');
 Route::get('comptable/paiements/dossier/list', [PaiementController::class, 'historiquePaiements'])->name('admin.comptable.paiements-dossier');
 Route::get('comptable/paiements/portefeuilles', [PaiementController::class, 'historiquePaiementsPortefeuilles'])->name('admin.comptable.paiements-portefeuille');
+
+// règlement des paiements
+Route::get('admin/regelement/{id}/paiements', [DossiersController::class, 'ajouterPaiement'])->name('admin.reglement-paiement');

@@ -60,7 +60,8 @@ class PdfController extends Controller
         return $pdf->stream();
     }
     public  function infoImpressionRecu(Request $request, $reference){
-        return view("backend.pdf.telechargement-recu",compact("reference"));
+       $uri =  $request->session()->get("redirect_uri");
+        return view("backend.pdf.telechargement-recu",compact("reference","uri"));
     }
     public function recuPaiement(Request $request, $reference){
         $paiement = Paiements::where("reference",$reference)->first();

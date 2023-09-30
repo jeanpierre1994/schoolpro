@@ -1,17 +1,18 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Choix Rubrique Paiement || {{ env('APP_NAME') }}
+    Règlement Paiement || {{ env('APP_NAME') }}
 @endsection
 
 
 @section('fil-arial')
     <div class="pagetitle">
-        <h1>Choix Rubrique Paiement</h1>
+        <h1>Règlement Paiement</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item active">Choix Rubrique Paiement </li>
+                <li class="breadcrumb-item active"><a href="{{ route('dossiers.valide') }}">Dossiers validés</a> </li>
+                <li class="breadcrumb-item active">Règelement Paiement </li>
             </ol>
         </nav>
     </div>
@@ -53,27 +54,28 @@
                     <div class="card-body">
                         <h5 class="card-title">Paiements échéanciers</h5>
                         @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <strong>Error!</strong>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endif
-                        <form action="{{ route('ventilation_echeancier') }}" method="post">
+                        <form action="{{ route('reglement_echeancier') }}" method="post">
                             @csrf
                             @method('post')
                             <!-- Bordered Table -->
                             <div class="table-responsive">
                                 <div class=" float-right mb-3">
-                                    Total montant négocié : <b id="total_montant_negocie">0 FCFA</b> &nbsp;&nbsp; Total
+                                    Total montant négocié : <b id="total_montant_restant">0 FCFA</b> &nbsp;&nbsp; Total
                                     montant réglé : <b id="total_montant_regle">0F CFA</b> &nbsp;
-                                    <input type="hidden" name="get_montant_total_negocier" id="get_montant_total_negocier">
+                                    <input type="hidden" name="get_montant_total_restant" id="get_montant_total_restant">
                                     <input type="hidden" name="get_montant_total_regler" id="get_montant_total_regler">
 
-                                    <input type="hidden" id="dossier_id" name="dossier_id" value="{{ $dossier->id }}" required>
+                                    <input type="hidden" id="dossier_id" name="dossier_id" value="{{ $dossier->id }}"
+                                        required>
                                     <input type="hidden" id="montant_portefeuille" name="montant_portefeuille"
                                         value="{{ $dossier->getPortefeuille->montant }}" required>
                                     <button type="submit" id="valider_echeancier" class="btn btn-primary">Valider
@@ -85,11 +87,10 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Dossier</th>
                                             <th scope="col">Famille / Rubrique</th>
-                                            <th scope="col">Montant rubrique</th>
-                                            <th scope="col">Remise</th>
                                             <th scope="col">Montant négocié</th>
+                                            <th scope="col">Total payé</th>
+                                            <th scope="col">Montant restant</th>
                                             <th scope="col">Montant réglé</th>
-                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,11 +99,12 @@
                                             $net_a_payer = 0;
                                         @endphp
                                         @foreach ($echeanciers as $item)
-                                        <div class="d-none">
-                                            <input type="text" name="echeancier_id[]" value="{{$item->id}}" required>
-                                        </div>
+                                            <div class="d-none">
+                                                <input type="text" name="echeancier_id[]" value="{{ $item->id }}"
+                                                    required>
+                                            </div>
                                             @php
-                                                $net_a_payer = $net_a_payer + $item->montant_rubrique;
+                                                $net_a_payer = $net_a_payer + $item->montant_payer;
                                             @endphp
 
                                             <tr>
@@ -112,71 +114,20 @@
                                                     <br>
                                                     <b>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->libelle : '' }}</b>
                                                 </td>
-                                                <td>{{ number_format($item->montant_rubrique, 0, ',', '.') }}</td>
-                                                <td><input class="remise" value="0" type="number" width="50px"
-                                                        name="remise[]" data-remise="remise_{{ $item->id }}"
-                                                        id="remise_{{ $item->id }}" min="0"></td>
-                                                <td><input class="montant_negocier" value="{{ $item->montant_rubrique }}"
-                                                        data-montantnegocier="montant_negocier_{{ $item->id }}"
-                                                        id="montant_negocier_{{ $item->id }}" readonly type="number"
-                                                        width="50px" name="montant_negocier[]" min="0"></td>
-                                                <td><input class="montant_regle" value="{{ $item->montant_rubrique }}"
+                                                <td>{{ number_format($item->montant_payer, 0, ',', '.') }}</td>
+                                                <td><input class="total_payer" readonly
+                                                        value="{{ $item->montant_payer - $item->montant_restant }}"
+                                                        type="number" width="50px" name="total_payer[]"
+                                                        data-totalpayer="total_payer_{{ $item->id }}"
+                                                        id="total_payer_{{ $item->id }}" min="0"></td>
+                                                <td><input class="montant_restant" value="{{ $item->montant_restant }}"
+                                                        data-montantrestant="montant_restant_{{ $item->id }}"
+                                                        id="montant_restant_{{ $item->id }}" readonly type="number"
+                                                        width="50px" name="montant_restant[]" min="0"></td>
+                                                <td><input class="montant_regle" value="{{ $item->montant_restant }}"
                                                         data-montantregle="montant_regle_{{ $item->id }}"
                                                         id="montant_regle_{{ $item->id }}" type="number"
                                                         width="50px" name="montant_regle[]" min="0"></td>
-                                                <td class="text-center">
-                                                    <div class="d-flex justify-content-evenly">
-                                                        <a href="#" class="page-constructionv" data-bs-toggle="modal"
-                                                            data-bs-target="#myModal_{{ $item->id }}">
-                                                            <button type="button" title="Retirer"
-                                                                class="btn btn-sm btn-danger"><i class="bi bi-trash"
-                                                                    style="color: white" aria-hidden="true"></i></button>
-                                                        </a>
-
-                                                        <!-- The Modal -->
-                                                        <div class="modal text-center" id="myModal_{{ $item->id }}">
-                                                            <div class="modal-dialog modal-md modal-dialog-centered">
-                                                                <div class="modal-content text-center">
-
-                                                                    <!-- Modal Header -->
-                                                                    <div class="modal-header">
-                                                                        <h4 class="modal-title text-center"
-                                                                            style="text-align: center;">Confirmer l'action
-                                                                            <i class="bi bi-trash text-danger"></i></h4>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"></button>
-                                                                    </div>
-
-                                                                    <!-- Modal body -->
-                                                                    <div class="modal-body">
-                                                                        <div class="row mt-2 mb-2">
-                                                                            <div
-                                                                                class="col-md-12 text-center font-weight-bold font-height-10">
-                                                                                Voulez-vous vraiment retirer cet élément ?
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <!-- Modal footer -->
-                                                                    <div class="modal-footer">
- 
-                                                                            <a href="{{ route('paiement.retirer-rubrique', $item->id) }}">
-                                                                                <button type="submit"
-                                                                                class="btn btn-danger btn-md"
-                                                                                id="" value="">OUI
-                                                                            </button>
-                                                                            </a>
-                                                                            <button type="button"
-                                                                                class="btn btn-md btn-secondary"
-                                                                                data-bs-dismiss="modal">NON</button> 
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End modal -->
-                                                    </div>
-                                                </td>
                                             </tr>
                                         @endforeach
 
@@ -189,73 +140,7 @@
 
                 </div>
             </div>
-        </div>
-
-        {{-- <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body"> 
-                        <!-- Bordered Table -->
-                        <div class="table-responsivex">
-                            <div class="rowx">
-                                <form id="form" action="{{route('paiements.rechargePortefeuille')}}" method="post" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" value="{{ $dossier->id }}" name="dossier_id">
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="form-group col-md-12">
-                                                <label for="label">Net à payer <i class="text-danger"></i></label>
-                                                <input type="number" readonly min="0" name="note_max" id="note_max"
-                                                    class="form-control" value="{{ number_format($net_a_payer, 0, ',', '.') }}">
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label for="label">Montant à recharger <i
-                                                        class="text-danger">*</i></label>
-                                                <input type="number" min="0" name="montant" id="montant"
-                                                    class="form-control" value="" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="label">Mode de paiement <i class="text-danger">*</i></label>
-                                                <select class="form-select" name="modepaiement" id="modepaiement" required>
-                                                    <option selected value="">Sélectionnez une option</option>
-                                                    <option value="MoMo">MoMo</option>
-                                                    <option value="Virement">Virement</option>
-                                                    <option value="Chèque">Chèque</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="label">Preuve de paiement<i class="text-danger"></i></label>
-                                                <input type="file" min="0" name="preuve" id="preuve"
-                                                    class="form-control" value="">
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label for="label">Référence de paiement <i
-                                                        class="text-danger"></i></label>
-                                                <input type="text" min="0" name="reference" id="reference"
-                                                    class="form-control" placeholder="AZ2817281" value="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a href="{{ route("dashboard") }}">
-                                            <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Retour</button>
-                                        </a> 
-                                            <button type="submit" id="valider" class="btn btn-primary">Procéder au
-                                                paiement</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                        <!-- End Bordered Table -->
-
-
-                    </div>
-                </div>
-            </div> --}}
-
-
-        <!-- modal -->
+        </div> 
 
         <div class="modal fade" id="modalCrediter" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="modale" aria-hidden="true">
@@ -323,45 +208,19 @@
         $(document).ready(function() {
             // désactiver le bouton valider l'échéancier
             $("#valider_echeancier").prop('disabled', true);
-            getTotalMontantNegocie();
-            getTotalMontantRegle();
-
-            // changement de remise
-            $(".remise").on('change', function() {
-                var montant_remise = parseInt($(this).val())
-                var id_rubrique = $(this).attr("data-remise").split('_')[1]
-                var montant_negocier = $("#montant_negocier_" + id_rubrique).val()
-
-                if (montant_remise < montant_negocier) {
-                    montant_negocier = montant_negocier - montant_remise;
-                    $("#montant_negocier_" + id_rubrique).val(montant_negocier)
-                    $("#montant_regle_" + id_rubrique).val(montant_negocier)
-                } else {
-                    swal({
-                        title: "Attention!!!",
-                        text: "Le montant de la remise ne doit pas être supérieur au motant de la négocié.",
-                        buttons: true,
-                        closeOnClickOutside: false,
-                        timer: 3000,
-                        icon: "error"
-                    });
-                    $(this).val(0)
-                }
-                checkMontantRegle("{{ $dossier->getPortefeuille->montant }}")
-                getTotalMontantNegocie();
-                getTotalMontantRegle();
-            })
+            getTotalMontantRestant();
+            getTotalMontantRegle(); 
 
             // changement montant réglé
             $(".montant_regle").on('change', function() {
                 var montant_regle = parseInt($(this).val())
                 var id_rubrique = parseInt($(this).attr("data-montantregle").split('_')[2])
-                var montant_negocier = parseInt($("#montant_negocier_" + id_rubrique).val())
-                
-                if (montant_regle > montant_negocier) {
+                var montant_restant = parseInt($("#montant_restant_" + id_rubrique).val())
+
+                if (montant_regle > montant_restant) {
                     swal({
                         title: "Attention!!!",
-                        text: "Le montant réglé ne peut pas être supérieur au montant négocié.",
+                        text: "Le montant réglé ne peut pas être supérieur au montant restant.",
                         buttons: true,
                         closeOnClickOutside: false,
                         timer: 3000,
@@ -372,7 +231,6 @@
                 checkMontantRegle("{{ $dossier->getPortefeuille->montant }}")
                 getTotalMontantRegle();
             })
-
 
             checkMontantRegle("{{ $dossier->getPortefeuille->montant }}")
 
@@ -387,26 +245,20 @@
                     }
                 }
 
-                if (somme > parseInt(montant_portefeuille)) {
-                    /*swal({
-                        title: "Attention!!!",
-                        text: "Le portefeuille ne peut pas couvrir la somme des montants à régler.",
-                        buttons: true,
-                        closeOnClickOutside: false,
-                        timer: 3000,
-                        icon: "error"
-                    });*/
+                if (somme > parseInt(montant_portefeuille)) { 
                     $("#valider_echeancier").prop('disabled', true);
+                    //alert("sup")
                     return false;
                 } else {
                     $("#valider_echeancier").prop('disabled', false);
+                    //alert("inf")
                     return true;
                 }
             }
 
-            // return montant négocié 
-            function getTotalMontantNegocie(montant_portefeuille) {
-                var all_montant = document.querySelectorAll(".montant_negocier")
+            // return montant restant 
+            function getTotalMontantRestant(montant_portefeuille) {
+                var all_montant = document.querySelectorAll(".montant_restant")
                 var somme = 0
                 for (let index = 0; index < all_montant.length; index++) {
                     var inputValue = parseFloat(all_montant[index]
@@ -415,8 +267,8 @@
                         somme += inputValue; // Ajoutez la valeur à la somme si c'est un nombre valide
                     }
                 }
-                $("#total_montant_negocie").text(formatNumber(somme) + " F CFA");
-                $("#get_montant_total_negocier").val(somme)
+                $("#total_montant_restant").text(formatNumber(somme) + " F CFA");
+                $("#get_montant_total_restant").val(somme)
                 return true;
             }
             // return montant réglé
@@ -434,6 +286,7 @@
                 $("#get_montant_total_regler").val(somme)
                 return true;
             }
+
             // show modal
             $(".show-modal").on("click", function() {
                 $('#modalCrediter').modal('show')
@@ -510,15 +363,6 @@
             addSuccessListener(response => {
                 //console.log(response)
                 savePaiementKkiapay(response.transactionId, response.data)
-                /*swal({
-                                  title:"Merci de ne pas quitter cette page.", 
-                                  text:"traitement des données...",
-                                  icon: "https://www.boasnotas.com/img/loading2.gif",
-                                  buttons: false,      
-                                  closeOnClickOutside: false,
-                                  //timer: 3000,
-                                  //icon: "success"
-                    });*/
 
             });
             // validation recharge portefeuille
@@ -562,16 +406,19 @@
                         $("#preuve").val("")
                         $("#reference").val("")
                         $('#modalCrediter').modal('hide')
-                        $("#update_portefeuille").text(formatNumber(response.montant_portefeuille) + " F CFA");
+                        $("#update_portefeuille").text(formatNumber(response
+                            .montant_portefeuille) + " F CFA");
                         $("#montant_portefeuille").val(response.montant_portefeuille)
-                        $("#solde").val(response.montant_portefeuille)
+                        $("#solde").val(response.montant_portefeuille);
                         checkMontantRegle(response.montant_portefeuille)
                         if (response.kkiapay) {
                             //console.log(response)
+
                             var status_sandbox = "true";
                             var key = '{{ env('KKIAPAY_SANDBOX_PUBLIC_KEY') }}';
                             // afficher le formulaire de kkiapay pour le paiement
-                            showKkiapay(response.montant_portefeuille, response.reference,response.nom_client, status_sandbox, key)
+                            showKkiapay(response.montant_portefeuille, response.reference,
+                                response.nom_client, status_sandbox, key)
 
                         } else {
                             swal({

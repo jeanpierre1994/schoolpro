@@ -742,6 +742,7 @@ class EtudiantController extends Controller
                     $echeancier->setAttribute("dossier_id", $dossier->id);
                     $echeancier->setAttribute("lignetarif_id", $value->id);
                     $echeancier->setAttribute("montant_rubrique", $value->montant);
+                    $echeancier->setAttribute("montant_payer", $value->montant);
                     $echeancier->setAttribute("montant_restant", $value->montant);
                     $echeancier->setAttribute("statutpaiement_id", 1); // en attente
                     $echeancier->setAttribute("created_by", $user->id);
@@ -1108,6 +1109,7 @@ class EtudiantController extends Controller
                         $echeancier->setAttribute("lignetarif_id", $value->id);
                         $echeancier->setAttribute("montant_rubrique", $value->montant);
                         $echeancier->setAttribute("montant_restant", $value->montant);
+                        $echeancier->setAttribute("montant_payer", $value->montant);
                         $echeancier->setAttribute("statutpaiement_id", 1); // en attente
                         $echeancier->setAttribute("created_by", $user->id);
                         $echeancier->setAttribute("updated_by", $user->id);

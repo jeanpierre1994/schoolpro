@@ -430,9 +430,8 @@ class AjaxController extends Controller
             $dossier->setAttribute("date_traitement",date("Y-m-d"));
             $dossier->setAttribute("validateur_id",$user->id);
             $dossier->update(); 
-
+            $request->session()->put("redirect_uri", route("admin.add-etudiant"));
             return redirect()->route("info.impression-recu",$paiement->reference);
     }
-
-   
+ 
 }

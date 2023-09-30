@@ -28,7 +28,7 @@
                             Ventilation des paiements effectuée avec succès.
                             <div class="row justify-content-center align-items-center g-2">
                                  <div class="col-md-5 mx-auto mt-10" style="margin-top: 20px">
-                                    <a href="{{route("dashboard")}}" class="btn btn-outline-dark">Retour à l'accueil</a> &nbsp; &nbsp; <a href="{{route("impression-recu",$reference)}}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success"><i class="fa fa-file"></i> Télécharger le reçu</a>
+                                    <a href="{{$uri}}" class="btn btn-outline-dark">Retour à l'accueil</a> &nbsp; &nbsp; <a href="{{route("impression-recu",$reference)}}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success"><i class="fa fa-file"></i> Télécharger le reçu</a>
                                  </div>
                             </div>
                         </div>
