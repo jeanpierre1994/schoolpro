@@ -35,13 +35,62 @@
                                     <form action="{{route('admin.liste_tarif')}}" method="post">
                                         @csrf
                                         <select class="form-select form-select-lg" name="grille_tarifaire" id="grille_tarifaire">
-                                            <option selected>--- Grille traifaire ---</option>
+                                          <optgroup label="Valeur par défaut">
+                                            @isset($grille)
+                                           <option selected value="{{$grille->id}}">{{$grille->libelle}} / {{$grille->libelle_secondaire}}</option>
+                                           @else
+                                           <option selected>--- Grille traifaire ---</option>
+                                           @endisset   
+
+                                          </optgroup>
+                                          <optgroup label="Liste disponible">                        
                                             @foreach ($grilleTarifaires as $item)
                                                 <option value="{{$item->id}}">{{$item->libelle}} / {{$item->libelle_secondaire}}</option>
                                             @endforeach
+
+                                          </optgroup>                  
                                         </select> 
                                         <button type="submit" class="d-none" id="valider">Valider</button>
                                     </form>
+
+                                    @isset($grille_vide)
+                                        @if ($grille_vide == true)
+                                            <div class="row mt-4 card p-3">
+                                                <form action="{{route('admin.liste_tarif')}}" method="post" class="well">
+                                                    @csrf
+                                                    <div class="col-md-12 alert-danger text-center mb-2">
+                                                        Cette grille tarifaire est vide. Voulez-vous généré les différents rubriques ?
+                                                    </div>
+                                                    <input type="hidden" value="{{$grille_id}}" name="grille_tarifaire">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="form-check-inline ">
+                                                                  <input class="form-check-input" type="radio" name="choix" value="1" checked>
+                                                                  <label class="form-check-label" for="">
+                                                                    OUI
+                                                                  </label>
+                                                                </div>
+                                                                <div class="form-check-inline d-flex-inline">
+                                                                  <input class="form-check-input" type="radio" name="choix" value="0">
+                                                                  <label class="form-check-label" for="">
+                                                                   NON
+                                                                  </label>
+                                                                </div>
+                                                                <div class="form-check-inline d-flex-inline">
+                                                                    <button type="submit" class="btn btn-primary btn-sm d-flex-inline" id="valider_choix">Valider</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                            
+                                                            </div> 
+                                                        </div>
+                                                    </div> 
+                                                    
+                                                </form>
+                                            </div> 
+                                        @endif
+                                    @endisset
                             </div>
                         </div>
                         <!-- Bordered Table -->
@@ -124,6 +173,7 @@
                                                                     action="{{ route('liste_tarif.supprimer') }}"
                                                                     method="post"> 
                                                                     @csrf
+                                                                    <input type="hidden" name="grille_id" value="{{$grille->id}}">
                                                                     <input type="hidden" name="id" value="{{$ligneTarifaire->id}}">
                                                                     <button type="submit" class="btn btn-danger btn-md"
                                                                         id="" value="">OUI

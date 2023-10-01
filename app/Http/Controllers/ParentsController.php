@@ -337,8 +337,6 @@ class ParentsController extends Controller
         //################################### end générer le code  ###################
 
 
-
-
         $dossier = new Dossiers();   
         $dossier->setAttribute('code', trim($code_dossier));
         $dossier->setAttribute('personne_id', trim($request->etudiant_id));

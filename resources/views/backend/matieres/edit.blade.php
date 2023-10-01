@@ -77,7 +77,7 @@
                 <div>
                   <select class="form-select" name="matiereconfig_id" id="matiereconfig_id" required>
                     <optgroup label="Valeur par défaut">
-                      <option selected value="{{$matiere->matiereconfig_id ? $matiere->getCategorie->id : ''}}">{{$matiere->matiereconfig_id ? $matiere->getCategorie->libelle : ''}}</option>
+                      <option selected value="{{$matiere->categorie_id ? $matiere->getCategorie->id : ''}}">{{$matiere->categorie_id ? $matiere->getCategorie->libelle : ''}}</option>
                     </optgroup>
                     <optgroup label="Liste disponible">
                       @foreach ($matiereconfigs as $item)

@@ -102,7 +102,7 @@
                                                             class="btn btn-sm btn-primary"><i class="bi  bi-clock"
                                                                 style="color: white" aria-hidden="true"></i></button>
                                                     </a>
-                                                    <a href="{{route('admin.reglement-paiement',$item->getDossier->id)}}" class="btn btn-sm btn-success">
+                                                    <a title="Ajouter un paiement" href="{{route('admin.reglement-paiement',$item->getDossier->id)}}" class="btn btn-sm btn-success">
                                                         <i class="bi bi-credit-card" style="color: white" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
