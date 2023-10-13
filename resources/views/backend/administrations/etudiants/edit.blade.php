@@ -54,6 +54,8 @@
                         @endif
                         <form action="{{ route('admin.etudiant.update', $etudiant->id) }}" method="post">
                             @csrf
+                            @method("put")
+                            <input type="hidden" name="etudiant_id" value="{{$etudiant->id}}">
                             <div class="form-row">
                                 <div class="col-md-6 mb-2">
                                     <label for="form-label">Nom <i class="text-danger">*</i></label>
@@ -77,37 +79,69 @@
                                 <div class="col-md-6 mb-2">
                                     <label for="form-label">Téléphone <i class="text-danger">*</i></label>
                                     <input type="text" class="form-control" id="telephone" required
-                                        aria-describedby="inputGroupPrepend" required name="telephone" maxlength="20"
+                                        aria-describedby="inputGroupPrepend" name="telephone" maxlength="20"
                                         value="{{ old('telephone') ?? $etudiant->getDossier->getPersonne->tel }}" />
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label for="form-label">E-mail <i class="text-danger">*</i></label>
                                     <input type="text" class="form-control" id="email"
                                         value="{{ old('email') ?? $etudiant->getDossier->getPersonne->email }}" required
-                                        aria-describedby="inputGroupPrepend" required name="email" minlength="2"
+                                        aria-describedby="inputGroupPrepend" name="email" minlength="2"
                                         maxlength="150" />
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-6 mb-2">
-                                    <label for="form-label">Profil <i class="text-danger">*</i></label>
-                                    <select class="browser-default custom-select" name="profil_id" id="profil_id" required>
-                                        <option value="" selected>Choisissez votre type</option>
-                                        @foreach ($profils as $item)
+                                <div class="col-md-4 mb-2">
+                                    <label for="form-label">Date de Naissance <i class="text-danger"></i></label>
+                                    <input type="date" class="form-control" id="ddn"
+                                        value="{{ old('ddn') ?? $etudiant->getDossier->getPersonne->ddn }}"
+                                        aria-describedby="inputGroupPrepend" name="ddn" />
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <label for="form-label">Lieu de Naissance <i class="text-danger"></i></label>
+                                    <input type="text" class="form-control" id="lieu_naissance"
+                                        value="{{ old('lieu_naissance') ?? $etudiant->getDossier->getPersonne->lieunais }}"
+                                        aria-describedby="inputGroupPrepend" name="lieu_naissance" minlength="2"
+                                        maxlength="150" />
+                                </div>
+                                
+                                <div class="col-md-4 mb-2">
+                                    <label for="form-label">Genre <i class="text-danger">*</i></label>
+                                    <select class="browser-default custom-select search-select" name="genre_id" id="genre_id" required>
+                                        <option value="" selected>Choisissez votre genre</option>
+                                        @foreach ($genres as $item)
                                             <option value="{{ $item->id }}"
-                                                @if ($item->id == $etudiant->getDossier->getPersonne->getCompte->profil_id) selected @endif>{{ $item->libelle }}
+                                                @if ($item->id == $etudiant->getDossier->getPersonne->genre) selected @endif>{{ $item->libelle }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6 mb-2">
-                                    <label for="form-label">Genre <i class="text-danger">*</i></label>
-                                    <select class="browser-default custom-select" name="genre_id" id="genre_id" required>
-                                        <option value="" selected>Choisissez votre genre</option>
-                                        @foreach ($genres as $item)
-                                            <option value="{{ $item->id }}" @if ($item->id == $etudiant->getDossier->getPersonne->genre) selected @endif>{{ $item->libelle }}</option>
+                                <div class="col-md-4 mb-2">
+                                    <label for="form-label">Groupe Péda. <i class="text-danger">*</i></label>
+                                    <select class="browser-default custom-select search-select" name="gp_id" id="gp_id" required>
+                                        <option value="{{ $etudiant->getGp->id }}" selected>
+                                            {{ $etudiant->getGp->getPole->libelle }}
+                                            {{ $etudiant->getGp->getFiliere->libelle }}
+                                            {{ $etudiant->getGp->libelle_classe }}
+                                            {{ $etudiant->getGp->libelle_secondaire }}
+                                        </option>
+                                        @foreach ($gp as $item)
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->getPole->libelle }}
+                                                {{ $item->getFiliere->libelle }}
+                                                {{ $item->libelle_classe }}
+                                                {{ $item->libelle_secondaire }}
+                                            </option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check mt-4">
+                                      <input class="form-check-input" type="checkbox" value="confirmation" id="confirmation" name="confirmation">
+                                      <label class="form-check-label" for="">
+                                        Confirmer le changement du groupe pédagogique
+                                      </label>
+                                    </div> 
                                 </div>
                             </div>
                             <div class="col-12">
@@ -133,36 +167,9 @@
             // active menu 
             $("#parametres").removeClass('collapsed');
 
-            $('#etablissement_id').on('change', function() {
-
-                var etablissement_id = parseInt($('#etablissement_id').val());
-                if (etablissement_id != "") {
-                    $('#site_id').empty();
-                    $('#site_id').append(
-                        '<option value="" selected="selected">Choisissez une option</option>');
-                    $.ajax({
-                        url: "{{ route('ajax_requete') }}",
-                        data: {
-                            etablissement_id: etablissement_id,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function(data, status) {
-                            jQuery.each(data, function(key, value) {
-                                $('#site_id').append('<option value="' + value.id +
-                                    '">' + value.sigle + '</option>');
-                            });
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            //  alert('Veuillez renseigner tous les champs'); 
-                            console.log(xhr);
-                            console.log(textStatus);
-                            console.log(errorThrown);
-                        }
-                    });
-                }
-
+            $('#gp_id').on('change', function() {
+                $("#confirmation").prop("required",true); 
+                console.log("ok")
             });
 
         });

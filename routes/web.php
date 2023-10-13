@@ -347,8 +347,7 @@ Route::get('admin/parent/compte', [ParentsController::class, 'compte'])->name('p
 Route::get('admin/etudiant/compte', [EtudiantController::class, 'compte'])->name('etudiant.compte')->middleware("auth");
 
 Route::get('admin/dossier/{id}/choix_rubrique', [PaiementController::class, 'choixRubrique'])->name('paiements.choix_rubrique')->middleware("auth");
-Route::get('admin/retirer/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirer-rubrique')->middleware("auth");
-// 
+
 Route::post('admin/recharge/portefeuille', [PaiementController::class, 'rechargePortefeuille'])->name('paiements.rechargePortefeuille')->middleware("auth");
 
 Route::get('admin/recharge/portefeuille/{id}/{reference}/kkiapay', [PortefeuillesController::class, 'rechargePortefeuilleParent'])->name('recharge-portefeuille-parent.kkiapay')->middleware("auth");
@@ -383,3 +382,4 @@ Route::get('comptable/paiements/portefeuilles', [PaiementController::class, 'his
 
 // règlement des paiements
 Route::get('admin/regelement/{id}/paiements', [DossiersController::class, 'ajouterPaiement'])->name('admin.reglement-paiement');
+Route::get('suppression/echeancier/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirerRubrique')->middleware("auth");

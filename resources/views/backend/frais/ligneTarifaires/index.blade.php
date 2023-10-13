@@ -46,8 +46,7 @@
                                           <optgroup label="Liste disponible">                        
                                             @foreach ($grilleTarifaires as $item)
                                                 <option value="{{$item->id}}">{{$item->libelle}} / {{$item->libelle_secondaire}}</option>
-                                            @endforeach
-
+                                            @endforeach 
                                           </optgroup>                  
                                         </select> 
                                         <button type="submit" class="d-none" id="valider">Valider</button>
@@ -59,7 +58,7 @@
                                                 <form action="{{route('admin.liste_tarif')}}" method="post" class="well">
                                                     @csrf
                                                     <div class="col-md-12 alert-danger text-center mb-2">
-                                                        Cette grille tarifaire est vide. Voulez-vous généré les différents rubriques ?
+                                                        Cette grille tarifaire est vide. Voulez-vous générer les différents rubriques ?
                                                     </div>
                                                     <input type="hidden" value="{{$grille_id}}" name="grille_tarifaire">
                                                     <div class="col-md-12">
@@ -168,7 +167,6 @@
 
                                                             <!-- Modal footer -->
                                                             <div class="modal-footer">
-
                                                                 <form
                                                                     action="{{ route('liste_tarif.supprimer') }}"
                                                                     method="post"> 

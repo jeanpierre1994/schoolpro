@@ -14,21 +14,23 @@ use App\Models\Historiqueportefeuilles;
 use App\Models\historiquepaiementecheanciers;
 
 class PaiementController extends Controller
-{
+{ 
+
     // choix des rubriques
     public function choixRubrique(Request $request, $id)
     {
         $dossier = Dossiers::find($id);
-        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->where("active",true)->get();
+        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->where("active", true)->get();
         return view('backend.paiements.choix_rubrique', compact('dossier', 'echeanciers'));
     }
 
     // retrait rubrique
     public function retirerRubrique(Request $request, $id)
     {
+         
         $echeancier = Echeanciers::find($id);
         $echeancier->setAttribute("active", false);
-        $echeancier->update();
+        $echeancier->update(); 
         return redirect()->route("paiements.choix_rubrique", $echeancier->dossier_id)->with("success", "Opération effectuée avec succès");
     }
 

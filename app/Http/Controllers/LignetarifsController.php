@@ -107,7 +107,7 @@ class LignetarifsController extends Controller
 
         } else {
             # code...
-            $ligneTarifaires = Lignetarifs::where("id", 1)->get();
+            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id", 1)->get();
             $default = true;
             $grille = Grilletarifaires::find(1);
             $grilleTarifaires = Grilletarifaires::orderBy("libelle", "asc")->get();

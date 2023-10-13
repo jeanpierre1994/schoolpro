@@ -105,19 +105,20 @@
 
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Profil <i class="text-danger">*</i></label>
-                                                    <select class="browser-default custom-select search-select" name="profil_id"
-                                                        id="profil_id" required>
+                                                    <select class="browser-default custom-select search-select"
+                                                        name="profil_id" id="profil_id" required>
                                                         <option value="" selected>Choisissez votre type</option>
                                                         @foreach ($profils as $item)
-                                                            <option selected value="{{ $item->id }}">{{ $item->libelle }}
+                                                            <option selected value="{{ $item->id }}">
+                                                                {{ $item->libelle }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Genre <i class="text-danger">*</i></label>
-                                                    <select class="browser-default custom-select search-select" name="genre_id"
-                                                        id="genre_id" required>
+                                                    <select class="browser-default custom-select search-select"
+                                                        name="genre_id" id="genre_id" required>
                                                         <option value="" selected>Choisissez votre genre</option>
                                                         @foreach ($genres as $item)
                                                             <option value="{{ $item->id }}">{{ $item->libelle }}
@@ -175,19 +176,20 @@
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Nationalité <i
                                                             class="text-danger">*</i></label>
-                                                    <select name="nationalite" id="nationalite" class="form-select search-select"
-                                                        required>
+                                                    <select name="nationalite" id="nationalite"
+                                                        class="form-select search-select" required>
                                                         <option value=""></option>
                                                         @foreach ($pays as $item)
-                                                            <option value="{{ $item->nationalite }}">{{ $item->nationalite }}</option>
+                                                            <option value="{{ $item->nationalite }}">
+                                                                {{ $item->nationalite }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4 mb-2">
                                                     <label for="form-label">Type sponsor <i
                                                             class="text-danger">*</i></label>
-                                                    <select class="browser-default custom-select search-select" name="sponsor_id"
-                                                        id="sponsor_id" required>
+                                                    <select class="browser-default custom-select search-select"
+                                                        name="sponsor_id" id="sponsor_id" required>
                                                         <option value="" selected></option>
                                                         @foreach ($typesponsors as $item)
                                                             <option value="{{ $item->id }}">{{ $item->libelle }}
@@ -196,7 +198,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4 mb-2">
-                                                    <label for="form-label">Mot de passe <i class="text-danger">*</i></label>
+                                                    <label for="form-label">Mot de passe <i
+                                                            class="text-danger">*</i></label>
                                                     <input type="password" class="form-control" id="password-input"
                                                         required aria-describedby="inputGroupPrepend" required
                                                         name="password" minlength="2" maxlength="150" />
@@ -262,12 +265,12 @@
                                                         <label class="form-check-label" for="">Non le parent
                                                             existe déjà</label>
                                                     </div>
-                                                    {{-- <div class="form-check form-check-inline">
+                                                     <div class="form-check form-check-inline">
                                                             <input class="form-check-input check_parent" type="radio"
                                                                 name="ajout_parent" id="choix_tree" value="3">
-                                                            <label class="form-check-label" for="">Oui je veux
-                                                                ajouter</label>
-                                                        </div> --}}
+                                                            <label class="form-check-label" for="">
+                                                                Ajouter un parent</label>
+                                                        </div> 
                                                 </div>
                                             </div>
 
@@ -317,7 +320,7 @@
                                                         <div class="col-md-6 mb-2">
                                                             <label for="form-label">Genre <i
                                                                     class="text-danger">*</i></label>
-                                                            <select class="browser-default custom-select search-select"
+                                                            <select class="browser-default custom-select search-selectx"
                                                                 name="genre_parent_id" id="genre_parent_id">
                                                                 <option value="" selected>Choisissez votre genre
                                                                 </option>
@@ -449,8 +452,8 @@
                                         <div class="form-row">
                                             <div class="col-md-4 mb-2">
                                                 <label for="form-label">Etudiant <i class="text-danger">*</i></label>
-                                                <select class="browser-default custom-select search-select" name="etudiant_id"
-                                                    id="etudiant_id" required>
+                                                <select class="browser-default custom-select search-select"
+                                                    name="etudiant_id" id="etudiant_id" required>
                                                     <option value="" selected>Choisissez un étudiant</option>
                                                     @foreach ($etudiants as $etudiant)
                                                         <option value="{{ $etudiant->id }}">{{ $etudiant->nom }}
@@ -461,8 +464,8 @@
                                             </div>
                                             <div class="col-md-4 mb-2">
                                                 <label for="form-label">Groupe péda. <i class="text-danger">*</i></label>
-                                                <select class="form-select custom-select search-select" name="gp_id" id="gp_id_two"
-                                                    required>
+                                                <select class="form-select custom-select search-select" name="gp_id"
+                                                    id="gp_id_two" required>
                                                     <option value="" selected>Choisissez une option</option>
                                                     @foreach ($gp as $item)
                                                         <option value="{{ $item->id }}">
@@ -478,8 +481,8 @@
                                             <div class="col-md-4 mb-2">
                                                 <label for="form-label">Année académique<i
                                                         class="text-danger">*</i></label>
-                                                <select class="form-select custom-select search-select" name="annee" id="annee_two"
-                                                    required>
+                                                <select class="form-select custom-select search-select" name="annee"
+                                                    id="annee_two" required>
                                                     <optgroup label="Valeur par défaut">
                                                         <option selected value="{{ date('Y') }}">
                                                             {{ date('Y') }}</option>
@@ -636,7 +639,7 @@
                                 </div>
                             </div> --}}
 
-                                <div class="row mb-3"> 
+                                <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label class="col-form-label"></label>
                                         <div class="">&nbsp;&nbsp;
@@ -671,8 +674,7 @@
             $("ul li a").removeClass('active');
             // active menu 
             $("#parametres").removeClass('collapsed');
-
-
+ 
             $('#paiement').attr("disabled", true);
 
             $('#montant_payer').change(function() {
@@ -685,8 +687,7 @@
                     if (montant > montant_a_payer) {
                         alert("Le montant payé ne peut pas être supérieur au montant à payer");
                         $('#paiement').attr("disabled", true);
-                    }
-
+                    } 
                 } else {
                     $('#paiement').attr("disabled", true);
                 }

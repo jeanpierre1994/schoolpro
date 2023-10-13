@@ -160,8 +160,8 @@
                                                                     <!-- Modal footer -->
                                                                     <div class="modal-footer">
  
-                                                                            <a href="{{ route('paiement.retirer-rubrique', $item->id) }}">
-                                                                                <button type="submit"
+                                                                            <a href="{{ route('paiement.retirerRubrique', $item->id) }}">
+                                                                                <button type="button"
                                                                                 class="btn btn-danger btn-md"
                                                                                 id="" value="">OUI
                                                                             </button>

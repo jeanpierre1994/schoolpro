@@ -10,12 +10,14 @@ use App\Models\Profil;
 use App\Models\Examens;
 use App\Models\Parents;
 use App\Mail\ReleveNotes;
+use App\Models\Dossiers;
 use App\Models\Etudiants;
 use App\Models\Personnes;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
 use App\Models\Groupepedagogiques;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class AdminEtudiantController extends Controller
@@ -68,8 +70,8 @@ class AdminEtudiantController extends Controller
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get();
         $typesponsors = Typesponsors::where("statut_id", 1)->get();
-
-        return view('backend.administrations.etudiants.edit', compact("genres", "profils","etablissements","poles","cycles","typesponsors", "etudiant"));
+        $gp = Groupepedagogiques::all();
+        return view('backend.administrations.etudiants.edit', compact("genres", "profils","etablissements","poles","cycles","typesponsors", "etudiant","gp"));
     }
 
     public function releve($id)
@@ -96,9 +98,49 @@ class AdminEtudiantController extends Controller
         return redirect()->back()->with('success', 'Mail Envoyé avec succès');
     }
 
-    public function update(Etudiants $etudiant)
+    public function update(Request $request)
     {
-       // dd('ok');
-        return redirect()->back();
+        $this->validate($request, [
+            'nom' => 'required',
+            'prenoms' => 'required',
+            'gp_id' => 'required',
+            'genre_id' => 'required',
+            'etudiant_id' => 'required',
+        ]);
+
+        $user = auth()->user();
+        $user_id = $user->id;
+        $etudiant = Etudiants::find($request->etudiant_id);
+        // modification des informations de l'étudiant 
+        $dossier = Dossiers::find($etudiant->dossier_id);
+        $personne = Personnes::find($dossier->personne_id);
+        $compte_etudiant = User::find($personne->compte_id);
+        $gp = Groupepedagogiques::find($request->gp_id);
+
+        $etudiant->setAttribute("groupepedagogique_id",$request->gp_id);
+        $etudiant->save();
+
+        $dossier->setAttribute("groupepedagogique_id",$request->gp_id);
+        $dossier->setAttribute("pole_id",$gp->pole_id);
+        $dossier->setAttribute("filiere_id",$gp->filiere_id);
+        $dossier->setAttribute("cycle_id",$gp->cycle_id);
+        $dossier->setAttribute("niveau_id",$gp->niveau_id);
+        $dossier->save();
+
+        $personne->setAttribute("nom",$request->nom);
+        $personne->setAttribute("prenoms",$request->prenoms);
+        $personne->setAttribute("genre",$request->genre_id);
+        $personne->setAttribute("ddn",$request->ddn);
+        $personne->setAttribute("tel",$request->telephone);
+        $personne->setAttribute("lieunais",$request->lieu_naissance);
+        $personne->save();
+
+        $compte_etudiant->setAttribute("name",$request->nom.' '.$request->prenoms);
+        $compte_etudiant->setAttribute("email",$request->email);
+        $compte_etudiant->save();
+
+        return redirect()->route('admin.etudiants')
+            ->with('success', 'Modification effectuée avec succès');
+             
     }
 }
