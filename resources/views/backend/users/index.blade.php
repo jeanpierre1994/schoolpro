@@ -48,13 +48,56 @@
               <td class="text-center"><b>{{$i++}}</b></td>
               <td>{{$item->nom}}</td>
               <td>{{$item->prenoms}}</td>
-              <td>{{$item->libelle_genre}}</td>
-              <td>{{$item->libelle_profil}}</td>
+              <td>{{$item->getGenre->libelle}}</td>
+              <td>{{$item->getCompte->getProfil->libelle}}</td>
               <td>{{$item->tel}}</td>
               <td>{{$item->email}}</td>  
               <td>{{$item->updated_at->format("d-m-Y à H:i:s")}}</td> 
               <td class="text-center">
-                <a href="{{ route('users.edit', $item->id ) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
+                <a href="{{ route('users.edit', \Crypt::encrypt($item->id) ) }}" title="Modifier"><button type="button" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square" style="color: white" aria-hidden="true"></i></button></a>
+                <a href="#" class="page-constructionv" data-bs-toggle="modal" data-bs-target="#myModal_{{ $item->id }}">
+                  <button type="button" title="Supprimer" class="btn btn-sm btn-danger"><i class="bi bi-trash" style="color: white" aria-hidden="true"></i></button>
+                </a>
+
+                <!-- The Modal -->
+                <div class="modal text-center" id="myModal_{{ $item->id }}">
+                  <div class="modal-dialog modal-md modal-dialog-centered">
+                      <div class="modal-content text-center">
+
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                              <h4 class="modal-title text-center" style="text-align: center;">Confirmer l'action <i class="bi bi-trash text-danger"></i></h4>
+                              <button type="button" class="btn-close"
+                                  data-bs-dismiss="modal"></button>
+                          </div>
+
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                              <div class="row mt-2 mb-2">
+                                  <div class="col-md-12 text-center font-weight-bold font-height-10">
+                                      Voulez-vous vraiment supprimer cet élément ?
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+
+                                  <form action="{{ route('users.destroy',\Crypt::encrypt($item->id)) }}" method="post">
+                                    @method("DELETE")
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-md" id=""
+                                      value="">OUI
+                                      </button>
+                                      <button type="button" class="btn btn-md btn-secondary"
+                                  data-bs-dismiss="modal">NON</button>
+                                  </form>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+              <!-- End modal -->
             </td>
           </tr>
           @endforeach

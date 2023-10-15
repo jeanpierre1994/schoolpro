@@ -20,13 +20,14 @@ class UserController extends Controller
      */
     public function index()
     {         
-        $users =  Personnes::
+        /*$users =  Personnes::
             leftjoin("users", "users.id", "=", "personnes.compte_id")
             ->leftjoin("genres", "genres.id", "=", "personnes.genre")
             ->leftjoin("profils", "profils.id", "=", "users.profil_id") 
             ->where("users.profil_id","!=",2)->where("users.profil_id","!=",3)->where("users.profil_id","!=",4)
             ->select(["personnes.nom", "personnes.prenoms", "personnes.tel", "personnes.email", "personnes.updated_at", "genres.id as id_genre", "genres.libelle as libelle_genre", "personnes.id","profils.libelle as libelle_profil"])
-            ->get(); 
+            ->get(); */
+            $users = Personnes::all();
         return view("backend/users.index",compact("users"));
     }
 
@@ -38,7 +39,7 @@ class UserController extends Controller
     public function create()
     {
         $genres = Genres::where("statut_id", 1)->get();
-        $profils = Profil::where("id","!=",2)->where("id","!=",3)->where("id","!=",4)->get(); // statut actif
+        $profils = Profil::get(); // statut actif
         return view("backend/users.create", compact("profils","genres"));
     }
 
@@ -114,16 +115,18 @@ class UserController extends Controller
      */
     public function edit($id)
     { 
-        $user =   Personnes::join("users", "users.id", "=", "personnes.compte_id")
+        /*$user =   Personnes::join("users", "users.id", "=", "personnes.compte_id")
         ->join("genres", "genres.id", "=", "personnes.genre")
         ->leftjoin("profils", "profils.id", "=", "users.profil_id") 
         ->where("users.profil_id","!=",2)->where("users.profil_id","!=",3)->where("users.profil_id","!=",4)
         ->where("personnes.id", $id)  
         ->select(["personnes.nom", "personnes.prenoms", "personnes.tel", "personnes.email", "personnes.updated_at", "genres.id as id_genre", "genres.libelle as libelle_genre", "personnes.id","profils.id as profil_id" ,"profils.libelle as libelle_profil"])
-        ->first(); 
+        ->first();*/ 
+        $id = \Crypt::decrypt($id);
+        $user = Personnes::find($id);
  
         $genres = Genres::where("statut_id", 1)->get(); 
-        $profils = Profil::where("id","!=",2)->where("id","!=",3)->where("id","!=",4)->get(); // statut actif
+        $profils = Profil::get(); // statut actif
         return view("backend/users.edit", compact("user","profils","genres"));
     }
 
@@ -143,6 +146,8 @@ class UserController extends Controller
             'email' => 'required|max:100',
             'genre_id' => 'required',
             'profil_id' => 'required',
+            'current_password' => 'min:8',
+            'new_password' => 'min:8',
         ]);
         $personne = Personnes::find($id);
         $utilisateur = User::find($personne->compte_id);
@@ -156,8 +161,8 @@ class UserController extends Controller
 
         $input = $request->all();
         $utilisateur->setAttribute('email',  $input['email']);
-        if (!empty($input['password'])) {
-            $password = Hash::make($input['password']);
+        if (!empty($input['current_password']) && Hash::make($input['current_password']) == $utilisateur->password) {
+            $password = Hash::make($input['new_password'] ?? $input['current_password']);
             $utilisateur->setAttribute('password', $password);
         }
         $utilisateur->setAttribute('profil_id', $input['profil_id']);
@@ -186,6 +191,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+
+            $id = \Crypt::decrypt($id);
+            $personne = Personnes::find($id);
+            $user = User::find($personne->compte_id);
+            $personne->delete();
+            $user->delete();
+            return redirect()->back()->with('success', 'Utilisateur Supprimé');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', "Vous ne pouvez pas supprimer cet élément à cause du contrôle d'intégrité.");
+        }
+        
     }
 }
