@@ -37,7 +37,7 @@
                             <div class="col-md-4">
                                 <form method="get">
                                     <select name="profile" class="form-select" onchange="this.form.submit()">
-                                        <option value="all">Tous</option>
+                                        <option value="">Tous</option>
                                         @foreach ($profiles as $profile)
                                             <option value="{{ \Crypt::encrypt($profile->id) }}"
                                                 @if (Request::get('profile') || Request::get('profile') != ''  ) {{ \Crypt::decrypt(Request::get('profile'))  == $profile->id ? 'selected' : '' }} @endif>
