@@ -153,6 +153,24 @@
                     </div>
                 </div>
                 <!-- End Utilisateurs Card -->
+
+                                <div class="col-xxl-4 col-md-4">
+                    <div class="card info-card sales-card">
+                        <a href="{{ route('users.index') }}" style="text-decoration: none;">
+                            <div class="card-body">
+                                <h5 class="card-title">Utilisateurs <span></span></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-book-half"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ $nb_users ?? 0 }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             @endif
 
             @if (auth()->user()->profil_id == 5 || auth()->user()->profil_id == 1)

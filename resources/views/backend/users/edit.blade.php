@@ -71,7 +71,7 @@
                 <div> 
                     <select class="form-select" name="profil_id" id="profil_id" required>
                       <optgroup label="Valeur par défaut">
-                        <option value="{{ $user->profil_id ? $user->profil_id : ''}}">{{ $user->profil_id ? $user->libelle_profil : ''}}</option> 
+                        <option value="{{ $user->getCompte->getProfil->id ? $user->getCompte->getProfil->id : ''}}">{{ $user->getCompte->getProfil->libelle ? $user->getCompte->getProfil->libelle : ''}}</option> 
                       </optgroup>
                       <optgroup label="Liste disponible">
                         @foreach ($profils as $item)
@@ -86,7 +86,7 @@
                 <div> 
                     <select class="form-select" name="genre_id" id="genre_id" required>
                       <optgroup label="Valeur par défaut">
-                        <option value="{{ $user->id_genre ? $user->id_genre : ''}}">{{ $user->id_genre ? $user->libelle_genre : ''}}</option> 
+                        <option value="{{ $user->genre ? $user->genre : ''}}">{{ $user->genre ? $user->getGenre->libelle : ''}}</option> 
                       </optgroup>
                       <optgroup label="Liste disponible">
                         @foreach ($genres as $item)
@@ -97,9 +97,16 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label for="inputText" class=" col-form-label">Mot de passe <i class="text-danger"></i></label>
+                <label for="inputText" class=" col-form-label">Actuel Mot de passe <i class="text-danger"></i></label>
                 <div>
-                  <input type="password" maxlength="100" minlength="8" name="password" class="form-control" id="password" pattern="^(?=.{8,32}$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*">
+                  <input type="password" maxlength="100"  minlength="8" name="current_password" class="form-control" id="password" pattern="^(?=.{8,32}$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*">
+                </div>
+              </div> 
+
+              <div class="col-md-6">
+                <label for="inputText" class=" col-form-label">Nouveau Mot de passe <i class="text-danger"></i></label>
+                <div>
+                  <input type="password" maxlength="100"  minlength="8" name="new_password" class="form-control" id="password" pattern="^(?=.{8,32}$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*">
                 </div>
                 <div class="invalid-feedbackx">
                   Le mot de passe doit contenir : 
