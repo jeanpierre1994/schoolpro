@@ -42,6 +42,15 @@ class Personnes extends Model
         'parent_id',
     ]; 
     
+
+    public function scopeFilter($query, array $filters)
+    {
+
+        $query->when($filters['profile'] ?? false, function($query, $profileId){
+            $query->whereHas('getCompte', fn($query) => 
+            $query->where('profil_id', \Crypt::decrypt($profileId)));
+        });
+    }
     public function getSite()
     {
         return $this->belongsTo(Sites::class, 'site_id');

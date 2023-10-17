@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NotificationNewCompte;
-use App\Models\Genres;
-use App\Models\Personnes;
-use App\Models\Profil; 
 use App\Models\User;
+use App\Models\Genres;
+use App\Models\Profil;
+use App\Models\Personnes;
 use Illuminate\Http\Request;
+use App\Mail\NotificationNewCompte;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -27,8 +27,9 @@ class UserController extends Controller
             ->where("users.profil_id","!=",2)->where("users.profil_id","!=",3)->where("users.profil_id","!=",4)
             ->select(["personnes.nom", "personnes.prenoms", "personnes.tel", "personnes.email", "personnes.updated_at", "genres.id as id_genre", "genres.libelle as libelle_genre", "personnes.id","profils.libelle as libelle_profil"])
             ->get(); */
-            $users = Personnes::all();
-        return view("backend/users.index",compact("users"));
+            $users = Personnes::filter(request(['profile']))->orderBy('nom', 'ASC')->get();
+            $profiles = Profil::where('id', '!=', 1)->get();
+        return view("backend/users.index",compact("users", 'profiles'));
     }
 
     /**
