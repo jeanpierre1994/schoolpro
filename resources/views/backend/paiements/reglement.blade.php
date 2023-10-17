@@ -109,10 +109,10 @@
 
                                             <tr>
                                                 <td class="text-center"><b>{{ $i++ }}</b></td>
-                                                <td>{{ $item->dossier_id ? $item->getDossier->code : '' }}</td>
-                                                <td>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->familleRubrique->libelle : '' }}
+                                                <td>{{ $item->dossier_id ? $item->code : '' }}</td>
+                                                <td>{{ $item->lignetarif_id ? $item->famille : '' }}
                                                     <br>
-                                                    <b>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->libelle : '' }}</b>
+                                                    <b>{{ $item->lignetarif_id ? $item->rubrique : '' }}</b>
                                                 </td>
                                                 <td>{{ number_format($item->montant_payer, 0, ',', '.') }}</td>
                                                 <td><input class="total_payer" readonly

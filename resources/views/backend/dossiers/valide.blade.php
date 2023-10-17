@@ -53,46 +53,52 @@
                                                 <b>{{ $item->matricule }}</b>
                                             </td>
                                             <td>
-                                                @if ($item->getDossier->photo)
+                                                
+                                                    @if ($item->getDossier->photo)
                                                     <img src="{{ asset('storage/photos/' . $item->getDossier->photo) }}"
                                                         alt="" style="width: 45px; height: 45px"
                                                         class="rounded-circle" />
                                                 @else
-                                                    <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
-                                                        style="width: 45px; height: 45px" class="rounded-circle" />
-                                                @endif
+                                                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
+                                                style="width: 45px; height: 45px" class="rounded-circle" />
+                                                
+                                                  @endif
+                                                     
+                                                
+                                                   
+                                              
                                             </td>
                                             <td>
-                                                {{ $item->getDossier->getPersonne->nom }}
-                                                {{ $item->getDossier->getPersonne->prenoms }}
+                                                {{ $item->dossier_id ? $item->getDossier->getPersonne->nom : '' }}
+                                                {{ $item->dossier_id ? $item->getDossier->getPersonne->prenoms : '' }}
                                             </td>
                                             <td>
                                                 <p class="fw-normal mb-1">
-                                                    {{ $item->getDossier->getSite->getEtablissement->sigle }}</p>
-                                                <p class="text-muted mb-0">Site : {{ $item->getDossier->getSite->sigle }}
+                                                    {{ $item->dossier_id ? $item->getDossier->getSite->getEtablissement->sigle : '' }}</p>
+                                                <p class="text-muted mb-0">Site : {{ $item->dossier_id ? $item->getDossier->getSite->sigle : '' }}
                                                 </p>
                                             </td>
                                             <td>
-                                                {{ $item->getDossier->getPole->libelle }}
+                                                {{ $item->dossier_id ? $item->getDossier->getPole->libelle : '' }}
                                             </td>
-                                            <td>{{ $item->getDossier->getFiliere->libelle }}</td>
-                                            <td>{{ $item->getDossier->getCycle->libelle }}</td>
-                                            <td>{{ $item->getGp->libelle_classe }} {{ $item->getGp->libelle_secondaire }}
+                                            <td>{{ $item->dossier_id ? $item->getDossier->getFiliere->libelle : '' }}</td>
+                                            <td>{{ $item->dossier_id ? $item->getDossier->getCycle->libelle : '' }}</td>
+                                            <td>{{ $item->dossier_id ? $item->getGp->libelle_classe : '' }} {{ $item->dossier_id ? $item->getGp->libelle_secondaire : '' }}
                                             </td>
-                                            <td>{{ $item->getDossier->getNiveau->libelle }}</td>
-                                            <td>{{ $item->getDossier->annee }}</td>
+                                            <td>{{ $item->dossier_id ? $item->getDossier->getNiveau->libelle : '' }}</td>
+                                            <td>{{ $item->dossier_id ? $item->getDossier->annee : '' }}</td>
                                             <td>
-                                                <p class="fw-normal mb-1">{{ $item->getDossier->getTypesponsor->libelle }}
+                                                <p class="fw-normal mb-1">{{ $item->dossier_id ? $item->getDossier->getTypesponsor->libelle : '' }}
                                                 </p>
-                                                <p class="text-muted mb-0">{{ $item->getDossier->sponsor }}</p>
+                                                <p class="text-muted mb-0">{{ $item->dossier_id ? $item->getDossier->sponsor : '' }}</p>
                                             </td>
                                             <td>
-                                                @if ($item->getDossier->getStatuttraitement->libelle == 'EN ATTENTE')
+                                                @if ($item->dossier_id ? $item->getDossier->getStatuttraitement->libelle == 'EN ATTENTE' : '')
                                                     <span
-                                                        class="badge badge-warning rounded-pill d-inline">{{ $item->getDossier->getStatuttraitement->libelle }}</span>
+                                                        class="badge badge-warning rounded-pill d-inline">{{  $item->dossier_id ? $item->getDossier->getStatuttraitement->libelle : ''  }}</span>
                                                 @else
                                                     <span
-                                                        class="badge badge-success rounded-pill d-inline">{{ $item->getDossier->getStatuttraitement->libelle }}</span>
+                                                        class="badge badge-success rounded-pill d-inline">{{ $item->dossier_id ? $item->getDossier->getStatuttraitement->libelle : '' }}</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">

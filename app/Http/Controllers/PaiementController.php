@@ -20,17 +20,23 @@ class PaiementController extends Controller
     public function choixRubrique(Request $request, $id)
     {
         $dossier = Dossiers::find($id);
-        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->where("active", true)->get();
+        $echeanciers = Echeanciers::join("lignetarifs","lignetarifs.id","=","echeanciers.lignetarif_id")
+        ->join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+        ->join("dossiers","dossiers.id","=","echeanciers.dossier_id")
+        ->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")
+        ->where("dossier_id", $dossier->id)->where("active", true)
+        ->orderBy("famille_rubriques.libelle","ASC") 
+        ->get(["echeanciers.id","echeanciers.dossier_id","famille_rubriques.libelle as famille","rubriques.libelle as rubrique","echeanciers.montant_rubrique","echeanciers.lignetarif_id","dossiers.code"]); 
         return view('backend.paiements.choix_rubrique', compact('dossier', 'echeanciers'));
     }
 
     // retrait rubrique
     public function retirerRubrique(Request $request, $id)
-    {
-         
+    {   
         $echeancier = Echeanciers::find($id);
         $echeancier->setAttribute("active", false);
         $echeancier->update(); 
+        //dd($echeancier->dossier_id);
         return redirect()->route("paiements.choix_rubrique", $echeancier->dossier_id)->with("success", "Opération effectuée avec succès");
     }
 

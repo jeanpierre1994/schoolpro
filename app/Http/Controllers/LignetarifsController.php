@@ -35,7 +35,10 @@ class LignetarifsController extends Controller
 
         if (isset($grille_tarifaire) && !empty($grille_tarifaire)) {
             $grille_id = $grille_tarifaire;
-            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id", $grille_id)->get();
+            $ligneTarifaires = Lignetarifs::join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+        //->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")  
+        ->where("grille_tarifaire_id", $grille_id)
+        ->orderBy("rubriques.libelle","ASC")->get();
             $grilleTarifaires = Grilletarifaires::orderBy("libelle", "asc")->get();
             $grille = Grilletarifaires::find($grille_id);
             $default = false; 
@@ -44,7 +47,10 @@ class LignetarifsController extends Controller
 
         if (isset($_POST["grille_tarifaire"]) && isset($_POST["choix"])) {
             $grille_id = $_POST["grille_tarifaire"];
-            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id", $grille_id)->get();
+            $ligneTarifaires = Lignetarifs::join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+            //->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")  
+            ->where("grille_tarifaire_id", $grille_id)
+            ->orderBy("rubriques.libelle","ASC")->get();
             $grilleTarifaires = Grilletarifaires::orderBy("libelle", "asc")->get();
             $grille = Grilletarifaires::find($grille_id);
             
@@ -92,7 +98,11 @@ class LignetarifsController extends Controller
             $default = false;
             $grille_id = $_POST["grille_tarifaire"];
             $grille = Grilletarifaires::find($grille_id);
-            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id", $grille_id)->get();
+            $ligneTarifaires = Lignetarifs::join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+            //->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")  
+            ->where("grille_tarifaire_id", $grille_id)
+            ->orderBy("rubriques.libelle","ASC")->get();
+               
             $grilleTarifaires = Grilletarifaires::orderBy("libelle", "asc")->get();
 
             if ($ligneTarifaires->count() == 0) {
@@ -107,7 +117,10 @@ class LignetarifsController extends Controller
 
         } else {
             # code...
-            $ligneTarifaires = Lignetarifs::where("grille_tarifaire_id", 1)->get();
+            $ligneTarifaires = Lignetarifs::join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+            //->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")  
+            ->where("grille_tarifaire_id", 1)
+            ->orderBy("rubriques.libelle","ASC")->get(); 
             $default = true;
             $grille = Grilletarifaires::find(1);
             $grilleTarifaires = Grilletarifaires::orderBy("libelle", "asc")->get();

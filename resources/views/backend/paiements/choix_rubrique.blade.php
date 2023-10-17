@@ -105,12 +105,12 @@
                                                 $net_a_payer = $net_a_payer + $item->montant_rubrique;
                                             @endphp
 
-                                            <tr>
+                                            <tr> 
                                                 <td class="text-center"><b>{{ $i++ }}</b></td>
                                                 <td>{{ $item->dossier_id ? $item->getDossier->code : '' }}</td>
-                                                <td>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->familleRubrique->libelle : '' }}
+                                                <td>{{ $item->lignetarif_id ? $item->famille : '' }}
                                                     <br>
-                                                    <b>{{ $item->lignetarif_id ? $item->getLignetarif->rubrique->libelle : '' }}</b>
+                                                    <b>{{ $item->lignetarif_id ? $item->rubrique : '' }}</b>
                                                 </td>
                                                 <td>{{ number_format($item->montant_rubrique, 0, ',', '.') }}</td>
                                                 <td><input class="remise" value="0" type="number" width="50px"

@@ -38,7 +38,7 @@ class DossiersController extends Controller
     public function valide()
     {
         // dossier en attente
-        $dossiers = Etudiants::orderBy('id', 'DESC')->get();
+        $dossiers = Etudiants::orderBy('id', 'DESC')->get(); 
         return view("backend.dossiers.valide", compact("dossiers"));
     }
 
@@ -411,7 +411,14 @@ class DossiersController extends Controller
         }
         
         
-        $echeanciers = Echeanciers::where("dossier_id", $dossier->id)->where("active", true)->get();
+        $echeanciers = Echeanciers::
+        join("lignetarifs","lignetarifs.id","=","echeanciers.lignetarif_id")
+        ->join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+        ->join("dossiers","dossiers.id","=","echeanciers.dossier_id")
+        ->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")
+        ->where("dossier_id", $dossier->id)->where("active", true)
+        ->orderBy("famille_rubriques.libelle","ASC") 
+        ->get(["echeanciers.id","echeanciers.dossier_id","famille_rubriques.libelle as famille","rubriques.libelle as rubrique","echeanciers.montant_rubrique","echeanciers.lignetarif_id","dossiers.code"]);
        
         if ($dossier->portefeuille_id) {
         } else {

@@ -67,9 +67,17 @@ class PdfController extends Controller
         $paiement = Paiements::where("reference",$reference)->first();
         $details = historiquepaiementecheanciers::where("paiement_id",$paiement->id)->where("montant_payer",">",0)->get();
         $oneDetail = historiquepaiementecheanciers::where("paiement_id",$paiement->id)->where("montant_payer",">",0)->first();
-        $etudiant = Etudiants::where("dossier_id",$oneDetail->getEcheancier->dossier_id)->first();
+        if ($oneDetail) {
+            # code...
+            $etudiant = Etudiants::where("dossier_id",$oneDetail->getEcheancier->dossier_id)->first();
         $pdf = Pdf::loadView('backend.pdf.recu', compact('paiement', 'details', 'etudiant', 'oneDetail'));
         return $pdf->stream();
+        } else {
+            # code...  
+            return redirect()->route("info.impression-recu",$reference)->with("error","Aucun montant ventilé.");
+        }
+        
+        
         // dd("Interface reçu de paiement $reference");
     }
 }

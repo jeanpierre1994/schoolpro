@@ -345,8 +345,8 @@
                                                         <div class="col-md-12 mb-2">
                                                             <label for="form-label">Choix parent <i
                                                                     class="text-danger">*</i></label>
-                                                            <select class="browser-default custom-select search-select"
-                                                                name="choix_parent_id" id="choix_parent_id">
+                                                            <select class="browser-default custom-select search-select w-100"
+                                                                name="choix_parent_id" id="choix_parent_id" style="min-width: 100%; width:100%;">
                                                                 <option value="" selected>Choisissez un parent
                                                                 </option>
                                                                 @foreach ($parents as $data)
