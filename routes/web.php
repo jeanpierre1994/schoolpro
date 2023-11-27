@@ -383,3 +383,9 @@ Route::get('comptable/paiements/portefeuilles', [PaiementController::class, 'his
 // règlement des paiements
 Route::get('admin/regelement/{id}/paiements', [DossiersController::class, 'ajouterPaiement'])->name('admin.reglement-paiement');
 Route::get('suppression/echeancier/{id}/rubrique', [PaiementController::class, 'retirerRubrique'])->name('paiement.retirerRubrique')->middleware("auth");
+Route::get('admin/edit/{id}/echeancier', [DossiersController::class, 'editEcheancier'])->name('admin.edit-echeancier');
+// paiement.edition-retirerRubrique
+Route::get('suppression/edition/echeancier/{id}/rubrique', [PaiementController::class, 'retirerRubriqueEdition'])->name('paiement.edition-retirerRubrique')->middleware("auth");
+Route::post('admin/update/liste/echeancier', [AjaxController::class, 'storeUpdateEcheancier'])->name('store.update_echeancier')->middleware("auth");
+
+

@@ -372,7 +372,7 @@ class DossiersController extends Controller
         //
     }
 
-    // choix des rubriques
+    // reglement echeancier
     public function ajouterPaiement(Request $request, $id)
     {
         $dossier = Dossiers::find($id);
@@ -418,7 +418,7 @@ class DossiersController extends Controller
         ->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")
         ->where("dossier_id", $dossier->id)->where("active", true)
         ->orderBy("famille_rubriques.libelle","ASC") 
-        ->get(["echeanciers.id","echeanciers.dossier_id","famille_rubriques.libelle as famille","rubriques.libelle as rubrique","echeanciers.montant_rubrique","echeanciers.lignetarif_id","dossiers.code"]);
+        ->get(["echeanciers.id","echeanciers.dossier_id","famille_rubriques.libelle as famille","rubriques.libelle as rubrique","echeanciers.montant_rubrique","echeanciers.montant_payer","echeanciers.montant_restant","echeanciers.lignetarif_id","dossiers.code"]);
        
         if ($dossier->portefeuille_id) {
         } else {
@@ -586,6 +586,7 @@ class DossiersController extends Controller
                 //$echeancier->setAttribute("montant_payer",$montant_negocier[$key]);
                 //$echeancier->setAttribute("remise",$remise[$key]);
                 $echeancier->setAttribute("montant_restant",$montant_restant[$key]-$montant_regle[$key]);
+                $echeancier->setAttribute("date_paiement",date("Y-m-d"));
                 $echeancier->update();
                     }
                     
@@ -603,4 +604,102 @@ class DossiersController extends Controller
             return redirect()->route("info.impression-recu",$paiement->reference);
     }
 
+    // edit echancier
+    public function editEcheancier(Request $request, $id)
+    {
+        $dossier = Dossiers::find($id);
+        if ($dossier->groupepedagogique_id) {
+        } else {
+            $etudiant = Etudiants::where("dossier_id",$dossier->id)->first();
+            $dossier->setAttribute("groupepedagogique_id",$etudiant->groupepedagogique_id)->update();;
+            //$dossier
+        }
+        $checkEcheancier = Echeanciers::where("dossier_id", $dossier->id)->exists();
+       
+        if ($checkEcheancier) {
+            # code...
+
+        } else {
+ 
+            # code...
+             # code...
+             $user = auth()->user();
+             $ligne_tarif = Lignetarifs::where("grille_tarifaire_id", $dossier->getGp->grilletarifaire_id)->get();
+            
+             foreach ($ligne_tarif as $value) {
+                 # code...
+                 $echeancier = new Echeanciers();
+                 $echeancier->setAttribute("dossier_id", $dossier->id);
+                 $echeancier->setAttribute("lignetarif_id", $value->id);
+                 $echeancier->setAttribute("montant_rubrique", $value->montant);
+                 $echeancier->setAttribute("montant_payer", $value->montant);
+                 $echeancier->setAttribute("montant_restant", $value->montant);
+                 $echeancier->setAttribute("statutpaiement_id", 1); // en attente
+                 $echeancier->setAttribute("created_by", $user->id);
+                 $echeancier->setAttribute("updated_by", $user->id);
+                 $echeancier->save();
+             }
+
+        }
+        
+        
+        $echeanciers = Echeanciers::
+        join("lignetarifs","lignetarifs.id","=","echeanciers.lignetarif_id")
+        ->join("rubriques","rubriques.id","=","lignetarifs.rubrique_id")
+        ->join("dossiers","dossiers.id","=","echeanciers.dossier_id")
+        ->join("famille_rubriques","famille_rubriques.id","=","rubriques.famille_rubrique_id")
+        ->where("dossier_id", $dossier->id)->where("active", true)
+        ->orderBy("famille_rubriques.libelle","ASC") 
+        ->get(["echeanciers.id","echeanciers.dossier_id","famille_rubriques.libelle as famille","rubriques.libelle as rubrique","echeanciers.montant_rubrique","echeanciers.montant_restant","echeanciers.montant_payer","echeanciers.lignetarif_id","dossiers.code"]);
+       
+        if ($dossier->portefeuille_id) {
+        } else {
+            // vérifier si le compte parent existe
+            if ($dossier->parent_id) {
+                # code...
+                $get_parent = Personnes::where("compte_id", $dossier->parent_id)->first();
+                // vérifier si le parent dispose déjà de portefeuille
+                $check_portefeuille = Portefeuilles::where("personne_id", $get_parent->id)->first();
+                if ($check_portefeuille) {
+                    # code...
+
+                    $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                    $dossier->update();
+                } else {
+                    # code... new portefeuille
+                    $portefeuille = new Portefeuilles();
+                    $portefeuille->setAttribute("montant", 0);
+                    $portefeuille->setAttribute("personne_id", $get_parent->id);
+                    $portefeuille->setAttribute("statut_id", 1);
+                    $portefeuille->setAttribute("created_by", $dossier->parent_id);
+                    $portefeuille->setAttribute("updated_by", $dossier->parent_id);
+                    $portefeuille->save();
+                    $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                    $dossier->update();
+                }
+            } else {
+                # code... prendre le portefeuille de l'étudiant même
+                $personne = Personnes::find($dossier->personne_id);
+                $check_portefeuille = Portefeuilles::where("personne_id", $personne->id)->first();
+                if ($check_portefeuille) {
+                    # code...
+                    $dossier->setAttribute("portefeuille_id", $check_portefeuille->id);
+                    $dossier->update();
+                } else {
+                    # code... new portefeuille
+                    $portefeuille = new Portefeuilles();
+                    $portefeuille->setAttribute("montant", 0);
+                    $portefeuille->setAttribute("personne_id", $personne->id);
+                    $portefeuille->setAttribute("statut_id", 1);
+                    $portefeuille->setAttribute("created_by", $personne->compte_id);
+                    $portefeuille->setAttribute("updated_by", $personne->compte_id);
+                    $portefeuille->save();
+                    $dossier->setAttribute("portefeuille_id", $portefeuille->id);
+                    $dossier->update();
+                }
+            }
+        }
+
+        return view('backend.paiements.edit_echancier', compact('dossier', 'echeanciers'));
+    }
 }

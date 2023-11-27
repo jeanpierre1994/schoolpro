@@ -40,6 +40,19 @@ class PaiementController extends Controller
         return redirect()->route("paiements.choix_rubrique", $echeancier->dossier_id)->with("success", "Opération effectuée avec succès");
     }
 
+    // retrait rubrique
+    public function retirerRubriqueEdition(Request $request, $id)
+    {   
+        $echeancier = Echeanciers::find($id);
+        if($echeancier->montant_restant != $echeancier->montant_payer ){
+            return redirect()->route("paiements.choix_rubrique", $echeancier->dossier_id)->with("error", "Vous ne pouvez pas retirer cette rubrique. Un paiement est déjà enregistré.");
+        }
+        $echeancier->setAttribute("active", false);
+        $echeancier->update(); 
+        //dd($echeancier->dossier_id);
+            return redirect()->route("admin.edit-echeancier", $echeancier->dossier_id)->with("success", "Opération effectuée avec succès");
+    }
+
     // retrait multiple rubriques
     public function retirerMultipleRubrique(Request $request)
     {
@@ -598,8 +611,9 @@ class PaiementController extends Controller
 
     public function historiquePaiementsPortefeuilles(Request $request)
     {  
-        $portefeuilles = Historiqueportefeuilles::where("type","CREDIT")->orderBy("id","desc")->get();
-        $montant_total = Historiqueportefeuilles::sum("new_montant");
+        $portefeuilles = Historiqueportefeuilles::where("type","CREDIT")
+        ->orderBy("id","desc")->get();
+        $montant_total = Historiqueportefeuilles::where("type","CREDIT")->sum("new_montant");
       
 
         return view('backend.paiements.historiques-portefeuilles', compact("portefeuilles","montant_total"));

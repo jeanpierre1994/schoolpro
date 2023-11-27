@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cycles;
 use App\Models\Examenprog;
 use App\Models\Examens;
 use App\Models\Examentypes;
 use App\Models\Groupepedagogiques;
 use App\Models\Matieres;
+use App\Models\Poles;
 use Illuminate\Http\Request;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 
@@ -32,7 +34,9 @@ class ExamensController extends Controller
     {
         $gp = Groupepedagogiques::all();
         $examentypes = Examentypes::where("statut_id", 1)->get();  
-        return view("backend.examens.create", compact("gp","examentypes"));
+        $poles = Poles::where("statut_id", 1)->get();
+        $cycles = Cycles::where("statut_id", 1)->get();  
+        return view("backend.examens.create", compact("gp","examentypes","poles","cycles"));
     }
 
     /**
@@ -144,7 +148,31 @@ class ExamensController extends Controller
 
         // générer le calendrier scolaire par défaut
         // get liste matiere
-        $liste_matieres = Matieres::all();
+        if (!empty($request->gp)) {
+            # code...
+            $liste_matieres = Matieres::where("matieres.groupepedagogique_id",$request->gp)
+            ->get(["matieres.id"]);
+        } else if(!empty($request->cycle_id)) { // cycle
+            # code...
+            $liste_matieres = Matieres::
+            join("groupepedagogiques","groupepedagogiques.id","=","matieres.groupepedagogique_id")
+            ->where("groupepedagogiques.cycle_id",$request->cycle_id)
+            ->get(["matieres.id"]);
+        } else if(!empty($request->filiere_id)){ // filiere
+            $liste_matieres = Matieres::
+            join("groupepedagogiques","groupepedagogiques.id","=","matieres.groupepedagogique_id")
+            ->where("groupepedagogiques.filiere_id",$request->filiere_id)
+            ->get(["matieres.id"]);
+        } else if(!empty($request->pole_id)){ // pole
+            $liste_matieres = Matieres::
+            join("groupepedagogiques","groupepedagogiques.id","=","matieres.groupepedagogique_id")
+            ->where("groupepedagogiques.pole_id",$request->pole_id)
+            ->get(["matieres.id"]);
+        } else {
+            $liste_matieres = Matieres::all();
+
+        }
+        
          foreach ($liste_matieres as $matiere) {
             # code...
         $examenprog = new Examenprog();

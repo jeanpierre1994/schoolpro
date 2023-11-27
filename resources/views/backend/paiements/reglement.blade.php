@@ -124,7 +124,7 @@
                                                         data-montantrestant="montant_restant_{{ $item->id }}"
                                                         id="montant_restant_{{ $item->id }}" readonly type="number"
                                                         width="50px" name="montant_restant[]" min="0"></td>
-                                                <td><input class="montant_regle" value="{{ $item->montant_restant }}"
+                                                <td><input class="montant_regle" value="0"
                                                         data-montantregle="montant_regle_{{ $item->id }}"
                                                         id="montant_regle_{{ $item->id }}" type="number"
                                                         width="50px" name="montant_regle[]" min="0"></td>
@@ -382,6 +382,7 @@
                 }
                 // Récupérez les données du formulaire
                 var formData = new FormData($('#form')[0]);
+                console.log("data : "+formData)
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('crediter-portefeuille') }}', // Remplacez par l'URL de votre route de traitement
@@ -412,12 +413,11 @@
                         $("#solde").val(response.montant_portefeuille);
                         checkMontantRegle(response.montant_portefeuille)
                         if (response.kkiapay) {
-                            //console.log(response)
-
+                            //console.log(response) 
                             var status_sandbox = "true";
                             var key = '{{ env('KKIAPAY_SANDBOX_PUBLIC_KEY') }}';
-                            // afficher le formulaire de kkiapay pour le paiement
-                            showKkiapay(response.montant_portefeuille, response.reference,
+                            // afficher le formulaire de kkiapay pour le paiement 
+                            showKkiapay(response.montant_a_payer, response.reference,
                                 response.nom_client, status_sandbox, key)
 
                         } else {

@@ -61,7 +61,7 @@
                                                 @else
                                                 <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
                                                 style="width: 45px; height: 45px" class="rounded-circle" />
-                                                
+
                                                   @endif
                                                      
                                                 
@@ -109,6 +109,9 @@
                                                                 style="color: white" aria-hidden="true"></i></button>
                                                     </a>
                                                     <a title="Ajouter un paiement" href="{{route('admin.reglement-paiement',$item->getDossier->id)}}" class="btn btn-sm btn-success">
+                                                        <i class="bi bi-credit-card" style="color: white" aria-hidden="true"></i>
+                                                    </a>
+                                                    <a title="Modifier l'échéancier" href="{{route('admin.edit-echeancier',$item->getDossier->id)}}" class="btn btn-sm btn-warning">
                                                         <i class="bi bi-credit-card" style="color: white" aria-hidden="true"></i>
                                                     </a>
                                                 </div>

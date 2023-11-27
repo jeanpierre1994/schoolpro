@@ -222,6 +222,22 @@ class AdminController extends Controller
             $niveaux = Niveaux::where('filiere_id', $filiere_id)->where('cycle_id', $cycle_id)->where("statut_id",1)->get(["id","libelle"]);
             return json_encode($niveaux,true);          
         }
+
+         // récupérer la liste des gp si cycle change
+         if (isset($_POST['cycle_for_gp_change'])) { 
+            $filiere_id = $_POST["filiere_id"];
+            $cycle_id = $_POST["cycle_id"];
+            $pole_id = $_POST["pole_id"];
+            $gp = Groupepedagogiques::
+            join("poles","groupepedagogiques.pole_id","=","poles.id")
+            ->join("filieres","groupepedagogiques.filiere_id","=","filieres.id")
+            ->join("cycles","groupepedagogiques.cycle_id","=","cycles.id")
+            ->where("groupepedagogiques.pole_id",$pole_id)
+            ->where("groupepedagogiques.filiere_id",$filiere_id)
+            ->where("groupepedagogiques.cycle_id",$cycle_id)  
+            ->get(["groupepedagogiques.id","groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire","poles.libelle as pole","filieres.libelle as filiere","cycles.libelle as cycle"]);
+            return json_encode($gp,true);          
+        }
        
     }
 

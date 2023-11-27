@@ -1,17 +1,18 @@
 @extends('backend/include/layout')
 <!-- title -->
 @section('title')
-    Choix Rubrique Paiement || {{ env('APP_NAME') }}
+    Edition de l'échéancier || {{ env('APP_NAME') }}
 @endsection
 
 
 @section('fil-arial')
     <div class="pagetitle">
-        <h1>Choix Rubrique Paiement</h1>
+        <h1>Edition de l'échéancier</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
-                <li class="breadcrumb-item active">Choix Rubrique Paiement </li>
+                <li class="breadcrumb-item active"><a href="{{ route('dossiers.valide') }}">Dossiers validés</a> </li>
+                <li class="breadcrumb-item active">Edition de l'échéancier </li>
             </ol>
         </nav>
     </div>
@@ -25,7 +26,6 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title" style="margin: 0px;">
-
                             <div class="row">
 
                                 <div class="col-md-3">
@@ -43,15 +43,13 @@
 
                             </div>
                             <hr>
-
-                            <button type="btn" id="recharger" class="btn btn-success float-right  show-modal">Recharger
-                                portefeuille</button>
+                             
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Paiements échéanciers</h5>
+                        <h5 class="card-title">Edition de l'échéancier</h5>
                         @if ($errors->any())
                         <div class="alert alert-danger">
                             <strong>Error!</strong>
@@ -62,22 +60,22 @@
                             </ul>
                         </div>
                         @endif
-                        <form action="{{ route('ventilation_echeancier') }}" method="post">
+                        <form action="{{ route('store.update_echeancier') }}" method="post">
                             @csrf
                             @method('post')
                             <!-- Bordered Table -->
                             <div class="table-responsive">
                                 <div class=" float-right mb-3">
                                     Total montant négocié : <b id="total_montant_negocie">0 FCFA</b> &nbsp;&nbsp; Total
-                                    montant réglé : <b id="total_montant_regle">0F CFA</b> &nbsp;
+                                    <div class="d-none">montant réglé : <b id="total_montant_regle">0F CFA</b> &nbsp;</div>
                                     <input type="hidden" name="get_montant_total_negocier" id="get_montant_total_negocier">
                                     <input type="hidden" name="get_montant_total_regler" id="get_montant_total_regler">
 
                                     <input type="hidden" id="dossier_id" name="dossier_id" value="{{ $dossier->id }}" required>
                                     <input type="hidden" id="montant_portefeuille" name="montant_portefeuille"
                                         value="{{ $dossier->getPortefeuille->montant }}" required>
-                                    <button type="submit" id="valider_echeancier" class="btn btn-primary">Valider
-                                        l'échéancier</button>
+                                    <button type="submit" id="valider_echeancierx" class="btn btn-primary">Valider
+                                        l'édition</button>
                                 </div>
                                 <table class="table table-striped table-hover table-bordered data-tables">
                                     <thead>
@@ -88,7 +86,7 @@
                                             <th scope="col">Montant rubrique</th>
                                             <th scope="col">Remise</th>
                                             <th scope="col">Montant négocié</th>
-                                            <th scope="col">Montant réglé</th>
+                                            <th scope="col">Montant restant</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -115,15 +113,15 @@
                                                 <td>{{ number_format($item->montant_rubrique, 0, ',', '.') }}</td>
                                                 <td><input class="remise" value="0" type="number" width="50px"
                                                         name="remise[]" data-remise="remise_{{ $item->id }}"
-                                                        id="remise_{{ $item->id }}" min="0"></td>
-                                                <td><input class="montant_negocier" value="{{ $item->montant_rubrique }}"
+                                                        id="remise_{{ $item->id }}" max="{{ $item->montant_restant }}" min="0"></td>
+                                                <td><input class="montant_negocier" value="{{ $item->montant_payer }}"
                                                         data-montantnegocier="montant_negocier_{{ $item->id }}"
                                                         id="montant_negocier_{{ $item->id }}" readonly type="number"
                                                         width="50px" name="montant_negocier[]" min="0"></td>
-                                                <td><input class="montant_regle" value="0"
-                                                        data-montantregle="montant_regle_{{ $item->id }}"
-                                                        id="montant_regle_{{ $item->id }}" type="number"
-                                                        width="50px" name="montant_regle[]" min="0"></td>
+                                                        <td><input class="montant_restant" value="{{ $item->montant_restant }}"
+                                                            data-montantrestant="montant_restant_{{ $item->id }}"
+                                                            id="montant_restant_{{ $item->id }}" readonly type="number"
+                                                            width="50px" name="montant_restant[]" min="0"></td>
                                                 <td class="text-center">
                                                     <div class="d-flex justify-content-evenly">
                                                         <a href="#" class="page-constructionv" data-bs-toggle="modal"
@@ -160,7 +158,7 @@
                                                                     <!-- Modal footer -->
                                                                     <div class="modal-footer">
  
-                                                                            <a href="{{ route('paiement.retirerRubrique', $item->id) }}">
+                                                                            <a href="{{ route('paiement.edition-retirerRubrique', $item->id) }}">
                                                                                 <button type="button"
                                                                                 class="btn btn-danger btn-md"
                                                                                 id="" value="">OUI
@@ -332,15 +330,16 @@
                 var montant_remise = parseInt($(this).val())
                 var id_rubrique = $(this).attr("data-remise").split('_')[1]
                 var montant_negocier = $("#montant_negocier_" + id_rubrique).val()
+                var montant_restant = $("#montant_restant_" + id_rubrique).val()
 
-                if (montant_remise < montant_negocier) {
+                if (montant_remise < montant_restant) {
                     montant_negocier = montant_negocier - montant_remise;
                     $("#montant_negocier_" + id_rubrique).val(montant_negocier)
-                    $("#montant_regle_" + id_rubrique).val(montant_negocier)
+                    //$("#montant_regle_" + id_rubrique).val(montant_negocier)
                 } else {
                     swal({
                         title: "Attention!!!",
-                        text: "Le montant de la remise ne doit pas être supérieur au motant de la négocié.",
+                        text: "Le montant de la remise ne doit pas être supérieur au motant de la restant.",
                         buttons: true,
                         closeOnClickOutside: false,
                         timer: 3000,
@@ -396,10 +395,10 @@
                         closeOnClickOutside: false,
                         timer: 3000,
                         icon: "error"
-                    });*/  
+                    });*/
                     $("#valider_echeancier").prop('disabled', true);
                     return false;
-                } else {  
+                } else {
                     $("#valider_echeancier").prop('disabled', false);
                     return true;
                 }
@@ -489,7 +488,7 @@
                             .montant_portefeuille) + " F CFA");
                         $("#montant_portefeuille").val(data.montant_portefeuille)
                         $("#solde").val(data.montant_portefeuille);
-                        checkMontantRegle(data.montant_portefeuille)
+                        checkMontantRegle(data.montant_portefeuille);
                         swal({
                             title: "Succès!!!",
                             text: "Opération effectuée avec succès.",
@@ -572,7 +571,7 @@
                             var status_sandbox = "true";
                             var key = '{{ env('KKIAPAY_SANDBOX_PUBLIC_KEY') }}';
                             // afficher le formulaire de kkiapay pour le paiement
-                            showKkiapay(response.montant_a_payer, response.reference,response.nom_client, status_sandbox, key)
+                            showKkiapay(response.montant_portefeuille, response.reference,response.nom_client, status_sandbox, key)
 
                         } else {
                             swal({

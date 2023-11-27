@@ -89,7 +89,7 @@ class AjaxController extends Controller
             $paiement->setAttribute('enregistrer_par', $user->id);
             $paiement->save();
             // redirection sur le formulaire de paiement kkiapay
-            return response()->json(['status' => 200, 'montant_portefeuille' => $portefeuille->montant, 'nom_client' => $portefeuille->getPersonne->nom . ' ' . $portefeuille->getPersonne->prenoms, 'reference' => $paiement->reference, 'kkiapay' => true]);
+            return response()->json(['status' => 200, 'montant_portefeuille' => $portefeuille->montant, 'nom_client' => $portefeuille->getPersonne->nom . ' ' . $portefeuille->getPersonne->prenoms, 'reference' => $paiement->reference, 'kkiapay' => true,'montant_a_payer' =>$request->montant ]);
             //return redirect()->route("recharge-portefeuille-parent.kkiapay", ['id'=>$portefeuille->id,'reference'=>$paiement->reference]);
         } else {
             # code...
@@ -232,9 +232,9 @@ class AjaxController extends Controller
         $portefeuille->setAttribute("montant", $new_montant);
         $portefeuille->setAttribute("updated_at", Date("Y-m-d H:i:s"));
         $portefeuille->update();
-        return response()->json(['status' => 200, 'montant_portefeuille' => $portefeuille->montant, 'reference' => $paiement->reference, 'nom_client' => $portefeuille->getPersonne->nom . ' ' . $portefeuille->getPersonne->prenoms, 'kkiapay' => false]);
+        return response()->json(['status' => 200,'montant_payer' => $paiement->montant_paye, 'montant_portefeuille' => $portefeuille->montant, 'reference' => $paiement->reference, 'nom_client' => $portefeuille->getPersonne->nom . ' ' . $portefeuille->getPersonne->prenoms, 'kkiapay' => false]);
         // redirection
-        return redirect()->route("dossiers.en_attente")->with("success", "Opération effectuée avec succès.");
+        //return redirect()->route("dossiers.en_attente")->with("success", "Opération effectuée avec succès.");
     }
 
     public function ventilationEcheancier(Request $request)
@@ -355,6 +355,9 @@ class AjaxController extends Controller
                 $echeancier->setAttribute("montant_payer",$montant_negocier[$key]);
                 $echeancier->setAttribute("remise",$remise[$key]);
                 $echeancier->setAttribute("montant_restant",$montant_negocier[$key]-$montant_regle[$key]);
+                if($montant_regle[$key] > 0){
+                    $echeancier->setAttribute("date_paiement",date("Y-m-d"));
+                }
                 $echeancier->update();
                     }
                     
@@ -434,4 +437,49 @@ class AjaxController extends Controller
             return redirect()->route("info.impression-recu",$paiement->reference);
     }
  
+    public function storeUpdateEcheancier(Request $request)
+    {
+        $user = auth()->user();
+        $this->validate($request, [ 
+            'dossier_id' => 'required', 
+            'remise' => 'required',
+            'montant_negocier' => 'required', 
+            'echeancier_id' => 'required'
+        ]);
+        $dossier = Dossiers::find($request->dossier_id);
+ 
+        // enregistrement historique paiement echeancier
+        $data = $request->echeancier_id;
+        $montant_negocier = $request->montant_negocier; 
+        $remise = $request->remise; 
+         
+            foreach ($data as $key =>  $echeancier_id) {
+                # code...
+                // enregistrement détails paiement
+               // if ($montant_regle[$key] > 0) {
+                    # code...
+
+                    if (isset($montant_negocier[$key]) && !empty($montant_negocier[$key])) {
+                        # code...
+                        $echeancier = Echeanciers::find($echeancier_id);  
+     
+                // update echeancier
+                $echeancier->setAttribute("montant_payer",$montant_negocier[$key]);
+                $echeancier->setAttribute("montant_restant",$echeancier->montant_restant-$remise[$key]);
+                $echeancier->setAttribute("remise",$remise[$key]); 
+                $echeancier->update();
+                $update_detail = historiquepaiementecheanciers::where("echeancier_id",$echeancier->id)->orderBy("id","desc")->first();
+                if($update_detail){
+                    $update_detail->setAttribute("montant_restant",$echeancier->montant_restant-$remise[$key]); 
+                    $update_detail->update();
+                }
+                    }
+                    
+               // }
+                
+            } 
+ 
+            return redirect()->route("dossiers.valide")->with("success", "Opération effectuée avec succès");
+        }
+
 }

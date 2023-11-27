@@ -218,7 +218,7 @@
                 </a>
                 <ul id="examens-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="{{ route('examenprog.index') }}" id="etudiants-add" style="text-decoration: none;">
+                        <a href="{{ route('examens.index') }}" id="etudiants-add" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Programmation</span>
                         </a>
                     </li>
@@ -624,7 +624,7 @@
                 </a>
                 <ul id="examens-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="{{ route('examenprog.index') }}" id="etudiants-add" style="text-decoration: none;">
+                        <a href="{{ route('examens.index') }}" id="etudiants-add" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Programmation</span>
                         </a>
                     </li>
