@@ -332,14 +332,14 @@
                 var montant_negocier = $("#montant_negocier_" + id_rubrique).val()
                 var montant_restant = $("#montant_restant_" + id_rubrique).val()
 
-                if (montant_remise < montant_restant) {
+                if (montant_remise <= montant_restant) {
                     montant_negocier = montant_negocier - montant_remise;
                     $("#montant_negocier_" + id_rubrique).val(montant_negocier)
                     //$("#montant_regle_" + id_rubrique).val(montant_negocier)
                 } else {
                     swal({
                         title: "Attention!!!",
-                        text: "Le montant de la remise ne doit pas être supérieur au motant de la restant.",
+                        text: "Le montant de la remise ne doit pas être supérieur au motant restant.",
                         buttons: true,
                         closeOnClickOutside: false,
                         timer: 3000,
