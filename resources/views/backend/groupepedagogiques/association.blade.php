@@ -274,7 +274,7 @@
                 <form id="form" action="{{ route('groupepedagogiques.delete-data') }}" method="post">
                     @csrf
                     <input type="hidden" value="" name="gp_id" id="gp_id">
-                    <input type="hidden" name="prof_sup_id" id="prof_sup_id">
+                    <input type="text" name="prof_sup_id" id="prof_sup_id">
                     <input type="text" value="" name="matiere_delete_id" id="matiere_delete_id">
                     <div class="modal-body">
                         <div class="row">

@@ -36,14 +36,14 @@
                                         <select class="form-select form-select-lg" name="examen_id" id="examen_id" required>
                                            <optgroup label="Valeur par défaut">
                                             @if ($choix_examen)
-                                               <option value="{{$examen->id}}">{{$examen->code_examen}}</option>
+                                               <option value="{{$examen->id}}">{{$examen->code_examen}} {{$examen->libelle}}</option>
                                             @else
                                                 <option value="">- - - Choisissez un examen - - -</option>
                                             @endif
                                            </optgroup>
                                             <optgroup label="Liste disponible">
                                                 @foreach ($examens as $item)
-                                                <option value="{{$item->id}}">{{$item->code_examen}}</option>
+                                                <option value="{{$item->id}}">{{$item->code_examen}} {{$item->libelle}}</option>
                                                 @endforeach
                                             </optgroup>
                                         </select>

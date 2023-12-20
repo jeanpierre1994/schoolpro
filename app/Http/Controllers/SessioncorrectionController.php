@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Crypt;
 
 class SessioncorrectionController extends Controller
 {
-    public function index()
+    public function indexOld()
     {
         //$sessioncorrections = Sessioncorrections::where("professeur_id", auth()->user()->id)->get();
         // vérifier le profil de l'utilisateur connecter 
-        /*  $user_profil = Profil::find(Auth()->user()->profil_id);
+          $user_profil = Profil::find(Auth()->user()->profil_id);
         if ($user_profil) {
             # code...
             switch ($user_profil->libelle) {
@@ -56,10 +56,10 @@ class SessioncorrectionController extends Controller
                     ->where("examens.statut_id", 1)
                     ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
                     ->get(); 
-                    $examenprog = Groupepedagogiques::
+                    /*$examenprog = Groupepedagogiques::
                     join("matieres", "groupepedagogiques.id", "=", "matieres.groupepedagogique_id")
-                    ->get()->count();
-                    dd($examenprog);
+                    ->get()->count();*/
+                    //dd($examenprog);
                     // groupe pédagogique
 
                     break;
@@ -73,11 +73,17 @@ class SessioncorrectionController extends Controller
             # code...
             return redirect()->back()->with("error", "Profil de l'utilisateur inconnu.");
         }
-
-*/
-        $gp = Groupepedagogiques::all();
-        return view("backend.administrations.sessioncorrections.index", compact("gp"));
+ 
+        return view("backend.administrations.sessioncorrections.index_old", compact("examenprog"));
     }
+
+    public function index()
+    { 
+        $gp = Groupepedagogiques::all();
+        return view("backend.administrations.sessioncorrections.index", compact("gp")); 
+    }
+
+
 
     public function listeEtudiantByGP(Request $request, $id)
     {
@@ -185,7 +191,7 @@ class SessioncorrectionController extends Controller
                 case "PROFESSEUR":*/
         # code...
         // vérifier si une session de correction est ouverte ?
-        $check_data = Sessioncorrections::where("groupepedagogique_id", $id)->exists();
+        $check_data = Sessioncorrections::where("examen_prog_id", $id)->exists();
         if ($check_data) {
             # code...
             $session = Sessioncorrections::where("examen_prog_id", $id)->first();
@@ -200,7 +206,8 @@ class SessioncorrectionController extends Controller
                 # code...
                 $session = new Sessioncorrections();
                 $session->setAttribute("examen_prog_id", $id);
-                $session->setAttribute("professeur_id", $prof->id);
+                //$session->setAttribute("professeur_id", $prof->id);
+                $session->setAttribute("generer_par", $prof->id);
                 $session->setAttribute("nbre_etudiant", 0);
                 $session->setAttribute("statutvalidation_id", 1);
                 $session->setAttribute("created_by", $prof->id);
@@ -215,8 +222,9 @@ class SessioncorrectionController extends Controller
                     $note->setAttribute("examen_prog_id", $id);
                     $note->setAttribute("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id);
                     $note->setAttribute("etudiant_id", $etudiant->id);
-                    $note->setAttribute("professeur_id", $prof->id);
+                    //$note->setAttribute("professeur_id", $prof->id);
                     $note->setAttribute("statutvalidation_id", 1);
+                    $note->setAttribute("enregistrer_par", $prof->id);
                     $note->setAttribute("created_by", $prof->id);
                     $note->save();
                 }
@@ -298,9 +306,59 @@ class SessioncorrectionController extends Controller
         }
     }
 
+    
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeOld(Request $request)
+    {
+        //Enrégistrements du statuts
+        $this->validate($request, [
+            'note' => 'required',
+            'note_id' => 'required',
+            'gp_id' => 'required', 
+            'examen_id' => 'required',
+        ]);
+
+        try {
+            $notes = $request->note;
+            $notes_id = $request->note_id;
+            $commentaires = $request->commentaire; 
+
+            foreach ($notes as $key => $note) { 
+                    # code...
+                    // initialisation des variables
+                    $note_etudiant = $notes[$key];
+                    $note_id = $notes_id[$key];
+                    $commentaire = $commentaires[$key];
+                    if (!empty($notes_id[$key]) && $notes_id[$key] != null  && !empty($notes[$key]) && $notes[$key] != null ) {
+                        # code...
+                       // dd($note_etudiant);
+                        // mise à jour des informations
+                    $note_objet = Notes::find($note_id);
+                    $note_objet->setAttribute("note_examen", $note_etudiant);
+                    $note_objet->setAttribute("note", $note_etudiant);
+                    $note_objet->setAttribute("commentaire", $commentaire);
+                    $note_objet->setAttribute("statutvalidation_id", 2);
+                    $note_objet->update();
+                    } 
+
+                   
+            }  
+            return redirect()->route("sessionscorrections.create",['id'=> $request->examenprog_id])->with("success", "Note enregistré avec succès");
+        } catch (\Throwable $th) {
+            
+            return redirect()->route("sessionscorrections.create",['id'=> $request->examenprog_id])->with("error", "Echec lors de l'enregistrement des donnéees. ".$th);
+        }
+    }
+
     public function listeEtudiant(Request $request, $id)
     {
-        $session = Sessioncorrections::where("examen_prog_id", $id)->where("professeur_id", Auth()->user()->id)->first();
+        $session = Sessioncorrections::where("examen_prog_id", $id)->where("generer_par", Auth()->user()->id)->first();
         $notes = Notes::where("statutvalidation_id", 2)->where("sessioncorrection_id", $session->id)->get();
         $user_profil = Profil::find(Auth()->user()->profil_id);
         if ($user_profil) {

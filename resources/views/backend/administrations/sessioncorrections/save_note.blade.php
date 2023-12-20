@@ -33,6 +33,7 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                         </ul>
                     </div>
                 @endif
+                
                     <div class="card-body">
                         <div class="card-body row mb-2" style="border-bottom: 2px #e0adad solid;">
                             <div class="col-md-12 mb-2">Groupe péda. : <b>{{$session->getExamenprog->getMatiere->getGp->getPole->libelle}} {{$session->getExamenprog->getMatiere->getGp->getFiliere->libelle}} {{$session->getExamenprog->getMatiere->getGp->libelle_classe}} {{$session->getExamenprog->getMatiere->getGp->libelle_secondaire}}</b> </div>
@@ -53,8 +54,14 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                         </div>
                         <h5 class="card-title">Interface d'édition des notes</h5>
                         <!-- Bordered Table -->
-                        <form action="{{route("sessionscorrections.store")}}" method="POST">
+                        <form action="{{route("sessionscorrections.anc_store")}}" method="POST">
                             @csrf
+                            
+                
+                <input type="hidden" value="{{$session->getExamenprog->getExamen->id}}" name="examen_id">
+                <input type="hidden" value="{{$session->getExamenprog->id}}" name="examenprog_id">
+                <input type="hidden" value="{{$session->getExamenprog->getMatiere->getGp->id}}" name="gp_id">
+                
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
@@ -78,6 +85,7 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                                             <td>
                                                 <input type="number" name="note[]" value="{{$data->note}}" class="form-control">
                                                 <input type="hidden" name="note_id[]" value="{{$data->id}}">
+                                                <input type="hidden" value="{{ $data->etudiant_id ?  $data->getEtudiant->id : ''}}" name="etudiant_id[]">
                                             </td>   
                                             <td><input type="text" name="commentaire[]" class="form-control" value="{{$data->commentaire}}"></td> 
                                         </tr>

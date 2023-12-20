@@ -379,7 +379,7 @@ class GroupepedagogiquesController extends Controller
                         $check_matiere->delete();
                     } catch (\Throwable $th) {
                         //throw $th;
-                        return redirect()->back()->with("error", "Echec de la suppression, La matière est liée à un examen.");
+                        return redirect()->back()->with("error", "Echec de la suppression, La matière est liée à la table matieresporfesseurs.");
                     }
                    
                 } else {
@@ -399,7 +399,7 @@ class GroupepedagogiquesController extends Controller
                     $matiere_prof->delete();
                    } catch (\Throwable $th) {
                     //throw $th;
-                    return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table.");
+                    return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table...".$th);
                    }
                 } else {
                     # code...
@@ -414,13 +414,21 @@ class GroupepedagogiquesController extends Controller
                 if ($check_matiere_prof) {
                     # code...
                     $matiere_prof = Matiereprofesseurs::where("matiere_id",$request->matiere_delete_id)->where("professeur_id",$request->prof_sup_id)->first();
-                   try {
-                    //code...
-                    $matiere_prof->delete();
-                   } catch (\Throwable $th) {
-                    //throw $th;
-                    return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table.");
+                   if ($matiere_prof) {
+                    # code...
+                    try {
+                        //code...
+                        $matiere_prof->delete();
+                       } catch (\Throwable $th) {
+                        //throw $th;
+                        return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table...".$th);
+                       }
+                   } else {
+                    # code...
+                    return redirect()->back()->with("error", "Echec de la suppression, L'identifiant du professeur n'existe pas.".$th);
+
                    }
+                   
                 } 
 
                 $check_matiere = Matieres::find($request->matiere_delete_id);
@@ -431,10 +439,10 @@ class GroupepedagogiquesController extends Controller
                         $check_matiere->delete();
                     } catch (\Throwable $th) {
                         //throw $th;
-                        return redirect()->back()->with("error", "Echec de la suppression, L'entité est liée à une autre table.");
+                        return redirect()->back()->with("error", $request->matiere_delete_id."Echec de la suppression, L'entité est liée à une autre table.".$th);
                     }
                     
-                } 
+                }
                 return redirect()->back()->with("success", "Opération effectuée avec succès.");
                 break;
             
