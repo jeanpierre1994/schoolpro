@@ -388,4 +388,7 @@ Route::get('admin/edit/{id}/echeancier', [DossiersController::class, 'editEchean
 Route::get('suppression/edition/echeancier/{id}/rubrique', [PaiementController::class, 'retirerRubriqueEdition'])->name('paiement.edition-retirerRubrique')->middleware("auth");
 Route::post('admin/update/liste/echeancier', [AjaxController::class, 'storeUpdateEcheancier'])->name('store.update_echeancier')->middleware("auth");
 
-
+// ancien menu 
+Route::get('admin/anc/sessions/corrections', [SessioncorrectionController::class, 'indexOld'])->name('admin.anc_sessioncorrections')->middleware("auth");
+// 
+Route::post('admin/anc/sessions/corrections/store', [SessioncorrectionController::class, 'storeOld'])->name('sessionscorrections.anc_store')->middleware("auth");
