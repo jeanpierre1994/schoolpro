@@ -90,7 +90,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.sessioncorrections') }}" id="dossier-valide"
+                        <a href="{{ route('admin.anc_sessioncorrections') }}" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Session de correction</span>
                         </a>
@@ -233,7 +233,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.sessioncorrections') }}" id="dossier-valide"
+                        <a href="{{ route('admin.anc_sessioncorrections') }}" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Session de correction</span>
                         </a>
@@ -639,7 +639,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.sessioncorrections') }}" id="dossier-valide"
+                        <a href="{{ route('admin.anc_sessioncorrections') }}" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Session de correction</span>
                         </a>
@@ -668,7 +668,25 @@
                     </li>
                     <li>
                         <a href="{{ route('dossiers.valide') }}" id="dossier-valide" style="text-decoration: none;">
-                            <i class="bi bi-circle"></i><span>Liste des Paiements</span>
+                            <i class="bi bi-circle"></i><span>Dossiers validés</span>
+                        </a>
+                    </li>
+                   <!-- <li>
+                        <a href="{{ route('admin.comptable.paiements-dossier') }}" id="histo-dossiers"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Dossiers</span>
+                        </a>
+                    </li> -->
+                    <li>
+                        <a href="{{ route('admin.comptable.paiements-portefeuille') }}" id="histo-portefeuilles"
+                            style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Portefeuilles</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="{{ route('admin.paiements') }}" id="import-personnes" style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Etat des Paiements</span>
                         </a>
                     </li>
                 </ul>
@@ -867,36 +885,10 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('admin.paiements') }}" id="import-personnes" style="text-decoration: none;">
-                        <i class="bi bi-circle"></i><span>Etat des Paiements</span>
-                    </a>
-                </li>
             </ul>
         </li>
         <!-- End Frais & Finances -->
-
-        <!-- paiements -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#paiement-nav" data-bs-toggle="collapse" href="#">
-                <i class="ri-newspaper-fill"></i><span>Paiements</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="paiement-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('admin.comptable.paiements-dossier') }}" id="histo-dossiers"
-                        style="text-decoration: none;">
-                        <i class="bi bi-circle"></i><span>Dossiers</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.comptable.paiements-portefeuille') }}" id="histo-portefeuilles"
-                        style="text-decoration: none;">
-                        <i class="bi bi-circle"></i><span>Portefeuilles</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End paiements Nav -->
+ 
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('signout') }}" style="text-decoration: none;">
