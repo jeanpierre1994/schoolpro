@@ -48,6 +48,7 @@ use App\Http\Controllers\SessioncorrectionController;
 use App\Http\Controllers\GroupepedagogiquesController;
 use App\Http\Controllers\PortefeuillesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BulletinsController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -66,22 +67,22 @@ Route::post('ajax_requete', [AdminController::class, 'ajaxRequete'])->name('ajax
 Route::get("/",[FrontendController::class,'index'])->name("index");
 Route::get("/connexion",[FrontendController::class,'connexion'])->name("connexion");
 Route::get("/inscription",[FrontendController::class,'inscription'])->name("inscription");
-Route::post("/inscription/form",[FrontendController::class,'inscriptionForm'])->name("inscription-form"); 
-Route::get("/inscription/parent/{id}/etudiant",[FrontendController::class,'inscriptionParentEtudiant'])->name("parent_etudiant"); 
+Route::post("/inscription/form",[FrontendController::class,'inscriptionForm'])->name("inscription-form");
+Route::get("/inscription/parent/{id}/etudiant",[FrontendController::class,'inscriptionParentEtudiant'])->name("parent_etudiant");
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboard')->middleware("auth");
 Route::get('/admin/parametres', [AdminController::class, 'parametres'])->name('admin.parametres')->middleware("auth");
-// dashboard étudiant 
+// dashboard étudiant
 Route::get('/admin/dashboard/etudiant', [AdminController::class, 'dashboardEtudiant'])->name('dashboard_etudiant')->middleware("auth");
-// dashboard parent 
+// dashboard parent
 Route::get('/admin/dashboard/parent', [AdminController::class, 'dashboardParent'])->name('dashboard_parent')->middleware("auth");
- 
-// authentification routes 
+
+// authentification routes
 Route::get('/authentification', [CustomAuthController::class, 'login'])->name('authentification');
-Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
+Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
 Route::get('registration', [CustomAuthController::class, 'registration'])->name('register-user');
-Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom'); 
-Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout'); 
+Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
+Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
 
 Auth::routes(['verified' => true]);
 
@@ -92,7 +93,7 @@ Route::get('/email/verify/{id}/{hash}', [EmailVerifiedController::class, 'verify
 Route::post('/email/verification-notification', [EmailVerifiedController::class, 'send'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
-// check code activation compte 
+// check code activation compte
 Route::get('/activation/compte/user/{code_activation}', [CustomAuthController::class, 'checkmailConfirmation'])->name('tojumi.checkmailActivation');
 
 // route activation & desactivation
@@ -109,7 +110,7 @@ Route::get('/ActiveStorage', function () {
     $resultat = Artisan::output();
     $search = 'already';
     $error = 'Lien symbolique existant, Bien vouloir vérifier le contenu !';
- 
+
     if (strpos($resultat, $search) === false) {
         return back()->with('success', $resultat);
     } else {
@@ -141,17 +142,17 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
     Route::resource('genres', GenresController::class);
     Route::resource('etablissements', EtablissementsController::class);
     Route::resource('statutjuridiques', StatutjuridiquesController::class);
-    Route::resource('sites', SitesController::class); 
-    Route::resource('niveaux', NiveauxController::class); 
-    Route::resource('filieres', FilieresController::class); 
-    Route::resource('poles', PolesController::class); 
-    Route::resource('cycles', CyclesController::class); 
-    Route::resource('typesponsors', TypesponsorsController::class); 
-    Route::resource('categories', CategoriesController::class); 
-    Route::resource('sections', SectionsController::class); 
-    Route::resource('groupepedagogiques', GroupepedagogiquesController::class); 
-    Route::resource('matieres', MatieresController::class); 
-    Route::resource('examentypes', ExamentypesController::class); 
+    Route::resource('sites', SitesController::class);
+    Route::resource('niveaux', NiveauxController::class);
+    Route::resource('filieres', FilieresController::class);
+    Route::resource('poles', PolesController::class);
+    Route::resource('cycles', CyclesController::class);
+    Route::resource('typesponsors', TypesponsorsController::class);
+    Route::resource('categories', CategoriesController::class);
+    Route::resource('sections', SectionsController::class);
+    Route::resource('groupepedagogiques', GroupepedagogiquesController::class);
+    Route::resource('matieres', MatieresController::class);
+    Route::resource('examentypes', ExamentypesController::class);
     Route::resource('examens', ExamensController::class);
     Route::resource('examenprog', ExamenprogController::class);
     Route::resource('matiereconfigs', MatiereconfigController::class);
@@ -167,25 +168,25 @@ Route::group(['prefix' => "admin", 'middleware' => ['auth']], function () {
  Route::get('pdf/{id}/{gp_id}/{etudiant_id}', PdfController::class)->name('pdf');
 
  // check_dashboard
-Route::get('admin/check/dashboard', [AdminController::class, 'checkDashboard'])->name('check_dashboard'); 
+Route::get('admin/check/dashboard', [AdminController::class, 'checkDashboard'])->name('check_dashboard');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // store inscription
-Route::post('inscription/store', [FrontendController::class, 'store'])->name('inscription.store'); 
+Route::post('inscription/store', [FrontendController::class, 'store'])->name('inscription.store');
 
-// enregistrement des étudiants 
-Route::post('inscription/store/etudiant', [FrontendController::class, 'storeEtudiant'])->name('inscription.store_etudiant'); 
+// enregistrement des étudiants
+Route::post('inscription/store/etudiant', [FrontendController::class, 'storeEtudiant'])->name('inscription.store_etudiant');
 // enregistrement des parents
-Route::post('inscription/store/parent', [FrontendController::class, 'storeParent'])->name('inscription.store_parent'); 
-// 
-Route::post('inscription/store/parent/etudiant', [FrontendController::class, 'storeParentEtudiant'])->name('inscription.store_parent_etudiant'); 
+Route::post('inscription/store/parent', [FrontendController::class, 'storeParent'])->name('inscription.store_parent');
+//
+Route::post('inscription/store/parent/etudiant', [FrontendController::class, 'storeParentEtudiant'])->name('inscription.store_parent_etudiant');
 // profil
-Route::get('profil', [FrontendController::class, 'profil'])->name('profil'); 
+Route::get('profil', [FrontendController::class, 'profil'])->name('profil');
 // ajouter étudiant
-Route::get('parent/ajouter/etudiant', [FrontendController::class, 'ajouterEtudiant'])->name('ajouter-etudiant'); 
+Route::get('parent/ajouter/etudiant', [FrontendController::class, 'ajouterEtudiant'])->name('ajouter-etudiant');
 // store ajouter étudiant
-Route::post('parent/enregistrer/etudiant', [FrontendController::class, 'saveEtudiant'])->name('save-etudiant'); 
- 
+Route::post('parent/enregistrer/etudiant', [FrontendController::class, 'saveEtudiant'])->name('save-etudiant');
+
 //route etudiant
 Route::get('admin/etudiant/identite', [EtudiantController::class, 'identite'])->name('etudiant.identite')->middleware("auth");
 // route parent identite
@@ -198,31 +199,31 @@ Route::post('admin/etudiant/edit/profil/store', [EtudiantController::class, 'edi
 Route::get('admin/parent/edit/{id}/profil', [ParentsController::class, 'editProfil'])->name('parent.edit_profil')->middleware("auth");
 // parent store edit profil
 Route::post('admin/parent/edit/profil/store', [ParentsController::class, 'editProfilStore'])->name('parent.edit_profil-store')->middleware("auth");
-// parent etudiant 
+// parent etudiant
 Route::get('admin/parent/etudiants', [ParentsController::class, 'etudiants'])->name('parent.etudiants')->middleware("auth");
-// parent ajouter etudiant 
+// parent ajouter etudiant
 Route::get('admin/parent/add/etudiant', [ParentsController::class, 'addEtudiant'])->name('parent.add-etudiant')->middleware("auth");
-// store etudiant 
+// store etudiant
 Route::post('admin/parent/store/etudiant', [ParentsController::class, 'storeEtudiant'])->name('parent.etudiant-store')->middleware("auth");
-// parent add dossier 
+// parent add dossier
 Route::get('admin/parent/nouveau/{id}/dossier/etudiant', [ParentsController::class, 'newDossier'])->name('parent.new-dossier-etudiant')->middleware("auth");
-// parent store dossier 
+// parent store dossier
 Route::post('admin/parent/store/dossier/etudiant', [ParentsController::class, 'storeDossier'])->name('parent.dossier-store')->middleware("auth");
-// parent dossiers 
+// parent dossiers
 Route::get('admin/parent/dossiers/etudiants', [ParentsController::class, 'dossiers'])->name('parent.dossiers')->middleware("auth");
-// parent inscriptions 
+// parent inscriptions
 Route::get('admin/parent/inscriptions/etudiants', [ParentsController::class, 'inscriptions'])->name('parents.inscriptions')->middleware("auth");
 
 
 Route::get('admin/etudiant/dossiers', [EtudiantController::class, 'dossiers'])->name('etudiant.dossiers')->middleware("auth");
 //nouveau dossier
 Route::get('admin/etudiant/nouveau/dossiers', [EtudiantController::class, 'newDossier'])->name('etudiant.new-dossier')->middleware("auth");
-// save dossier 
+// save dossier
 Route::post('admin/etudiant/store/dossiers', [EtudiantController::class, 'saveDossier'])->name('etudiant.dossier-store')->middleware("auth");
 // dossier valide : inscription
 Route::get('admin/etudiant/inscriptions', [EtudiantController::class, 'dossierValide'])->name('etudiant.dossiers-valide')->middleware("auth");
 
-//********** gestion des professeurs */ 
+//********** gestion des professeurs */
 Route::get('admin/professeurs/liste', [ProfesseursController::class, 'index'])->name('professeurs.index')->middleware("auth");
 // professeurs.edit
 Route::get('admin/professeurs/create', [ProfesseursController::class, 'create'])->name('professeurs.create')->middleware("auth");
@@ -236,14 +237,14 @@ Route::post('admin/professeurs/delete/matiere', [ProfesseursController::class, '
 
 // gestion des sessions de correction
 Route::get('admin/sessions/corrections', [SessioncorrectionController::class, 'index'])->name('admin.sessioncorrections')->middleware("auth");
-// 
+//
 Route::get('admin/sessions/corrections/{id}/{id_gp}/create', [SessioncorrectionController::class, 'create'])->name('sessionscorrections.create')->middleware("auth");
-// 
+//
 Route::post('admin/sessions/corrections/store', [SessioncorrectionController::class, 'store'])->name('sessionscorrections.store')->middleware("auth");
 // sessionscorrections.liste
 Route::get('admin/sessions/corrections/{id}/{id_gp}/liste', [SessioncorrectionController::class, 'listeEtudiant'])->name('sessionscorrections.liste')->middleware("auth");
 
-// traitement des dossiers 
+// traitement des dossiers
 // dossiers en attente
 Route::get('admin/dossiers/en_attente', [DossiersController::class, 'enAttente'])->name('dossiers.en_attente')->middleware("auth");
 // dossiers.traitement
@@ -260,7 +261,7 @@ Route::get('admin/dossiers/rejete', [DossiersController::class, 'rejete'])->name
 // add gp
 Route::post('matieres/add/gp', [MatiereconfigController::class, 'addGP'])->name('matiereconfigs.store-gp')->middleware("auth");
 
-// groupepedagogiques.association 
+// groupepedagogiques.association
 Route::get('admin/association/{id}/gp', [GroupepedagogiquesController::class, 'association'])->name('groupepedagogiques.association')->middleware("auth");
 Route::post('admin/association/store/gp', [GroupepedagogiquesController::class, 'associationStore'])->name('groupepedagogiques.association-store')->middleware("auth");
 Route::post('admin/association/delete/data', [GroupepedagogiquesController::class, 'deleteMatiereProf'])->name('groupepedagogiques.delete-data')->middleware("auth");
@@ -272,7 +273,7 @@ Route::post('admin/association/update/prof-matiere', [GroupepedagogiquesControll
 
 // add etudiant admin.add-etudiant
 Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant'])->name('admin.add-etudiant')->middleware("auth");
-//liste etudiant 
+//liste etudiant
 Route::get('admin/etudiants', [AdminEtudiantController::class, 'index'])->name('admin.etudiants')->middleware('auth');
 Route::get('admin/etudiant/edit/{id}', [AdminEtudiantController::class, 'edit'])->name('admin.etudiant.edit')->middleware('auth');
 Route::get('admin/etudiant/releve/{id}', [AdminEtudiantController::class, 'releve'])->name('admin.etudiant.releve');
@@ -290,36 +291,36 @@ Route::get('/load-students/{groupePedagogique}', TreeController::class);
     $resultat = Artisan::output();
      $search = 'already';
      $error = 'Lien symbolique existant, Bien vouloir vérifier le contenu !';
-  
-  
+
+
     if(strpos($resultat, $search) === false) {
         return redirect()->back()->with('success', $resultat);
-  
+
     }else{
        return redirect()->back()->with('error', $error);
     }
-  
-  
+
+
   })->name('active_storage');
-  
-  
+
+
   // Purger tous les caches à une opération unique
   Route::get('/ClearCache', function()  {
     Artisan::call('optimize:clear');
     $resultat = Artisan::output();
     $search = 'successfully';
     $error = 'Echec de nettoyage de caches';
-  
-  
+
+
     if(strpos($resultat, $search) === false) {
       return redirect()->back()->with('success', $resultat);
-      
+
   }else{
      return redirect()->back()->with('error', $error);
   }
-  
-  })->name('vider_cache'); 
-  
+
+  })->name('vider_cache');
+
 
   // add etudiant admin.add-etudiant
 Route::get('admin/add/etudiant', [AdminEtudiantController::class, 'addEtudiant'])->name('admin.add-etudiant')->middleware("auth");
@@ -328,17 +329,17 @@ Route::post('admin/store/etudiant/express', [EtudiantController::class, 'storeEt
 //
 Route::post('admin/store/dossier/etudiant/express', [EtudiantController::class, 'storeDossierSansInscription'])->name('etudiant.dossierExpress-sansInscription')->middleware("auth");
 
-// 
+//
 Route::get('admin/sessions/corrections/{id}/etudiant', [SessioncorrectionController::class, 'listeEtudiantByGP'])->name('sessioncorrections.gp-etudiants')->middleware("auth");
-// 
+//
 Route::any('admin/note/{id}/{etudiant_id}/etudiant/{examen_id?}', [SessioncorrectionController::class, 'showNoteEtudiant'])->name('sessioncorrections.show-note')->middleware("auth");
 // paiement.kkiapay
 Route::get('admin/{reference}/paiement', [PaiementController::class, 'paiementKkiapay'])->name('paiement.kkiapay')->middleware("auth");
-// 
+//
 Route::get('admin/{reference}/paiement/store', [PaiementController::class, 'paiementKkiapayStore'])->name('paiement.kkiapay-store')->middleware("auth");
-// 
+//
 Route::get('admin/{reference}/paiement/express', [PaiementController::class, 'paiementKkiapayExpress'])->name('paiement-express.kkiapay')->middleware("auth");
-// 
+//
 Route::get('admin/{reference}/paiement/express/store', [PaiementController::class, 'paiementKkiapayExpressStore'])->name('paiement-express.kkiapay-store')->middleware("auth");
 
 // route parent compte
@@ -363,9 +364,9 @@ Route::post('admin/recharge/portefeuille/etudiant', [EtudiantsController::class,
 
 // ajax recharge
 Route::post('admin/recharge/portefeuille/ajax', [AjaxController::class, 'crediterPortefeuille'])->name('crediter-portefeuille')->middleware("auth");
-// 
+//
 Route::post('admin/recharge/portefeuille/kkiapay', [AjaxController::class, 'paiementKkiapayStore'])->name('update-kkiapay-transaction')->middleware("auth");
-// 
+//
 Route::post('admin/ventilation/echeancier', [AjaxController::class, 'ventilationEcheancier'])->name('ventilation_echeancier')->middleware("auth");
 //
 Route::post('admin/reglement/echeancier', [DossiersController::class, 'reglementEcheancier'])->name('reglement_echeancier')->middleware("auth");
@@ -373,7 +374,7 @@ Route::post('admin/reglement/echeancier', [DossiersController::class, 'reglement
 Route::get('admin/{reference}/telechargement/recu', [PdfController::class, 'infoImpressionRecu'])->name('info.impression-recu')->middleware("auth");
 //
 Route::get('admin/impression/{reference}/recu', [PdfController::class, 'recuPaiement'])->name('impression-recu')->middleware("auth");
- 
+
 // Détails sur les paiements
 Route::get('admin/paiements', [PaiementController::class, 'index'])->name('admin.paiements');
 Route::get('admin/paiements/{dossier:id}/list', [PaiementController::class, 'listePaiements'])->name('admin.paiements.list');
@@ -388,9 +389,10 @@ Route::get('admin/edit/{id}/echeancier', [DossiersController::class, 'editEchean
 Route::get('suppression/edition/echeancier/{id}/rubrique', [PaiementController::class, 'retirerRubriqueEdition'])->name('paiement.edition-retirerRubrique')->middleware("auth");
 Route::post('admin/update/liste/echeancier', [AjaxController::class, 'storeUpdateEcheancier'])->name('store.update_echeancier')->middleware("auth");
 
-// ancien menu 
+// ancien menu
 Route::get('admin/anc/sessions/corrections', [SessioncorrectionController::class, 'indexOld'])->name('admin.anc_sessioncorrections')->middleware("auth");
-// 
+//
 Route::post('admin/anc/sessions/corrections/store', [SessioncorrectionController::class, 'storeOld'])->name('sessionscorrections.anc_store')->middleware("auth");
 // update session correction
 Route::get('admin/new/sessions/corrections', [SessioncorrectionController::class, 'indexNew'])->name('sessionscorrections.new-index')->middleware("auth");
+Route::get('admin/bulletins/template', [BulletinsController::class, 'index'])->name('bulletins.template')->middleware('auth');
