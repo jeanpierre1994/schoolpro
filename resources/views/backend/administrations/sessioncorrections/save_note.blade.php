@@ -11,7 +11,7 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}" style="text-decoration: none;">Paramètres</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.sessioncorrections') }}" style="text-decoration: none;">Session de correction</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.anc_sessioncorrections') }}" style="text-decoration: none;">Session de correction</a></li>
                 <li class="breadcrumb-item active">Ouverture session de correction</li>
             </ol>
         </nav>
@@ -41,7 +41,7 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                             <div class="col-md-12 mb-2">Epreuve de : <b>{{$session->getExamenprog->getMatiere->libelle}}</b> </div>
                             <div class="col-md-12 mb-2">Nbre d'étudiants notés : <b>{{$notes_etudiants_valide}}</b> 
                                 @if ($notes_etudiants_valide > 0)
-                                <a href="{{route("sessionscorrections.liste",$session->getExamenprog->id)}}"><span class="badge bg-primary p-1">consulter la liste</span></a>
+                                <a href="{{route("sessionscorrections.liste",['id'=>$session->getExamenprog->id,'id_gp'=>$session->getExamenprog->getMatiere->getGp->id])}}"><span class="badge bg-primary p-1">consulter la liste</span></a>
                                 @endif
                             </div>
                             <div class="col-md-12">Statut de la session : 
@@ -83,7 +83,7 @@ Ouverture Session de correction || {{ env('APP_NAME') }}
                                             <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
                                             <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
                                             <td>
-                                                <input type="number" name="note[]" value="{{$data->note}}" class="form-control">
+                                                <input type="number" step=".01" name="note[]" value="{{$data->note}}" class="form-control">
                                                 <input type="hidden" name="note_id[]" value="{{$data->id}}">
                                                 <input type="hidden" value="{{ $data->etudiant_id ?  $data->getEtudiant->id : ''}}" name="etudiant_id[]">
                                             </td>   

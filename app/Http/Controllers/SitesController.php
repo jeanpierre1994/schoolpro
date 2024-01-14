@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Etablissements;
 use App\Models\Sites;
 use Illuminate\Http\Request;
+use App\Models\Matiereprofesseurs;
+use App\Models\Examenprog;
 
 class SitesController extends Controller
 {
@@ -15,6 +17,26 @@ class SitesController extends Controller
      */
     public function index()
     {
+        /*$examenprog = Matiereprofesseurs::
+                    join("matieres","matiereprofesseurs.matiere_id","=","matieres.id")
+                    ->leftjoin("groupepedagogiques", "groupepedagogiques.id", "=", "matieres.groupepedagogique_id")
+                    ->leftjoin("poles","groupepedagogiques.pole_id","=","poles.id")
+                    ->leftjoin("niveaux","groupepedagogiques.niveau_id","=","niveaux.id")
+                    ->leftjoin("cycles","groupepedagogiques.cycle_id","=","cycles.id")
+                    ->leftjoin("filieres","groupepedagogiques.filiere_id","=","filieres.id")
+                    ->join("examenprogs","matieres.id","=","examenprogs.matiere_id")
+                    ->leftjoin("examens", "examens.id", "=", "examenprogs.examen_id") 
+                    ->where("examens.statut_id", 1)
+                    ->where("groupepedagogiques.id", 23)
+                    ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.id as id_gp","groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
+                    ->get(); 
+
+                    foreach ($examenprog as $key => $value) {
+                        # code...
+                        $v = Examenprog::find($value->id)->delete();
+                        //dd($v->id);
+                    }
+                    dd($examenprog->count());*/
         $sites = Sites::orderBy("id", "desc")->get();
         return view("backend.sites.index", compact("sites"));
     }

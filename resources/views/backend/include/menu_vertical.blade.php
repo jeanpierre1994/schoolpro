@@ -592,7 +592,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('matieres.index') }}" id="dossier-valide" style="text-decoration: none;">
+                        <a href="{{ route('matiereconfigs.index') }}" id="dossier-valide" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Matières</span>
                         </a>
                     </li>

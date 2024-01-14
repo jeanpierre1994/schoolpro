@@ -237,11 +237,11 @@ Route::post('admin/professeurs/delete/matiere', [ProfesseursController::class, '
 // gestion des sessions de correction
 Route::get('admin/sessions/corrections', [SessioncorrectionController::class, 'index'])->name('admin.sessioncorrections')->middleware("auth");
 // 
-Route::get('admin/sessions/corrections/{id}/create', [SessioncorrectionController::class, 'create'])->name('sessionscorrections.create')->middleware("auth");
+Route::get('admin/sessions/corrections/{id}/{id_gp}/create', [SessioncorrectionController::class, 'create'])->name('sessionscorrections.create')->middleware("auth");
 // 
 Route::post('admin/sessions/corrections/store', [SessioncorrectionController::class, 'store'])->name('sessionscorrections.store')->middleware("auth");
 // sessionscorrections.liste
-Route::get('admin/sessions/corrections/{id}/liste', [SessioncorrectionController::class, 'listeEtudiant'])->name('sessionscorrections.liste')->middleware("auth");
+Route::get('admin/sessions/corrections/{id}/{id_gp}/liste', [SessioncorrectionController::class, 'listeEtudiant'])->name('sessionscorrections.liste')->middleware("auth");
 
 // traitement des dossiers 
 // dossiers en attente
@@ -392,3 +392,5 @@ Route::post('admin/update/liste/echeancier', [AjaxController::class, 'storeUpdat
 Route::get('admin/anc/sessions/corrections', [SessioncorrectionController::class, 'indexOld'])->name('admin.anc_sessioncorrections')->middleware("auth");
 // 
 Route::post('admin/anc/sessions/corrections/store', [SessioncorrectionController::class, 'storeOld'])->name('sessionscorrections.anc_store')->middleware("auth");
+// update session correction
+Route::get('admin/new/sessions/corrections', [SessioncorrectionController::class, 'indexNew'])->name('sessionscorrections.new-index')->middleware("auth");

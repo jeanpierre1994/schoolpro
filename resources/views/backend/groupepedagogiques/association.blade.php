@@ -142,6 +142,7 @@
                                                                 <span class="badge bg-primary">{{ $data->nom }}
                                                                     {{ $data->prenoms }} {{ $data->email }}</span> &nbsp;
                                                             @endif
+                                                            
                                                             <input type="hidden" id="prof_delete_id"
                                                                 name="prof_delete_id" value="{{ $data->user_id }}">
                                                         @endforeach
@@ -159,13 +160,16 @@
                                                                 <button type="button" class="btn btn-sm btn-warning"><i
                                                                         class="bi bi-person" style="color: white"
                                                                         aria-hidden="true"></i></button></a>
+                                                                        @foreach (getProfByMatiere($item->id, $item->groupepedagogique_id) as $datas)
                                                             <a href="#" title="Supprimer"><button type="button"
                                                                     data-matiere="{{ $item->id }}"
                                                                     data-libelle-matiere="{{ $item->libelle }}"
                                                                     data-gp="{{ $gp->id }}"
+                                                                    data-prof-id="{{ $datas->user_id }}"
                                                                     class="btn btn-sm btn-danger show-delete-modal"><i
                                                                         class="bi bi-trash" style="color: white"
                                                                         aria-hidden="true"></i></button></a>
+                                                                        @endforeach
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -259,7 +263,7 @@
             </div>
         </div>
     </div>
-    <!-- end modal export -->
+    <!-- end modal export-->
 
     <!-- modal delete data -->
 
@@ -274,8 +278,8 @@
                 <form id="form" action="{{ route('groupepedagogiques.delete-data') }}" method="post">
                     @csrf
                     <input type="hidden" value="" name="gp_id" id="gp_id">
-                    <input type="text" name="prof_sup_id" id="prof_sup_id">
-                    <input type="text" value="" name="matiere_delete_id" id="matiere_delete_id">
+                    <input type="hidden" name="prof_sup_id" id="prof_sup_id">
+                    <input type="hidden" value="" name="matiere_delete_id" id="matiere_delete_id">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -291,7 +295,7 @@
                             <div class="col-md-6">
 
                             </div>
-                            <div class="col-md-12">
+                            <!--<div class="col-md-12">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="delete_data" value="1">
                                     <label class="form-check-label" for="">Matière</label>
@@ -300,11 +304,11 @@
                                     <input class="form-check-input" type="radio" name="delete_data" value="2">
                                     <label class="form-check-label" for="">Professeur</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="delete_data" value="3">
-                                    <label class="form-check-label" for="">Matière et professeur</label>
+                                <div class="form-check form-check-inline">-->
+                                    <input class="form-check-input" type="hidden" name="delete_data" value="3">
+                                  <!--  <label class="form-check-label" for="">Matière et professeur</label>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -410,7 +414,7 @@
                 $("#libelle_matiere").val($(this).attr("data-libelle-matiere"));
                 $("#gp_id").val($(this).attr("data-gp"));
                 $("#matiere_delete_id").val($(this).attr("data-matiere"));
-                $("#prof_sup_id").val($("#prof_delete_id").val())
+                $("#prof_sup_id").val($(this).attr("data-prof-id"))
                 $('#modalDeleteMatiere').modal('show')
             });
             // show prof modal

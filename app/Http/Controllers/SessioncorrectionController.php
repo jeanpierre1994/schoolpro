@@ -37,7 +37,7 @@ class SessioncorrectionController extends Controller
                     ->join("examenprogs","matieres.id","=","examenprogs.matiere_id")
                     ->leftjoin("examens", "examens.id", "=", "examenprogs.examen_id") 
                     ->where("examens.statut_id", 1)
-                    ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
+                    ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.id as id_gp","groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
                     ->get();
                        // dd(Auth()->user()->id);
                     break;
@@ -54,7 +54,7 @@ class SessioncorrectionController extends Controller
                     ->join("examenprogs","matieres.id","=","examenprogs.matiere_id")
                     ->leftjoin("examens", "examens.id", "=", "examenprogs.examen_id") 
                     ->where("examens.statut_id", 1)
-                    ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
+                    ->select(["examenprogs.id", "examens.code_examen", "examens.libelle", "groupepedagogiques.id as id_gp","groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire", "matieres.libelle as matiere","poles.libelle as pole","niveaux.libelle as niveau","filieres.libelle as filiere"])
                     ->get(); 
                     /*$examenprog = Groupepedagogiques::
                     join("matieres", "groupepedagogiques.id", "=", "matieres.groupepedagogique_id")
@@ -191,12 +191,25 @@ class SessioncorrectionController extends Controller
                 case "PROFESSEUR":*/
         # code...
         // vérifier si une session de correction est ouverte ?
+       // $notes = Notes::where("statutvalidation_id", 1)->where("examen_prog_id", $id)->where("groupepedagogique_id",$request->id_gp)->get();
+
         $check_data = Sessioncorrections::where("examen_prog_id", $id)->exists();
         if ($check_data) {
             # code...
-            $session = Sessioncorrections::where("examen_prog_id", $id)->first();
-            $notes_etudiants_valide = Notes::where("examen_prog_id", $id)->where("statutvalidation_id", 2)->count();
-            $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->get();
+             // get note
+             $get_note = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$request->id_gp)->first();
+             if($get_note){
+                 $session = Sessioncorrections::find($get_note->sessioncorrection_id );
+
+                 $notes_etudiants_valide = Notes::where("examen_prog_id", $id)->where("statutvalidation_id", 2)->where("groupepedagogique_id",$request->id_gp)->count();
+                 $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$request->id_gp)->get();
+                  
+
+             }else{
+
+                 return redirect()->back()->with("error","Pas de liste disponible.");
+             }
+             
             return view("backend.administrations.sessioncorrections.save_note", compact("session", "notes_etudiants_valide", "notes_etudiants_encours", "gp"));
         } else {
             //dd($examenprog->getMatiere->groupepedagogique_id);
@@ -234,7 +247,7 @@ class SessioncorrectionController extends Controller
             }
 
             $notes_etudiants_valide = 0;
-            $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->where("statutvalidation_id", 1)->get();
+            $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->get();
             return view("backend.administrations.sessioncorrections.save_note", compact("session", "notes_etudiants_valide", "notes_etudiants_encours", "gp"));
         }
 
@@ -349,28 +362,50 @@ class SessioncorrectionController extends Controller
 
                    
             }  
-            return redirect()->route("sessionscorrections.create",['id'=> $request->examenprog_id])->with("success", "Note enregistré avec succès");
+            return redirect()->route("sessionscorrections.create",['id'=> $request->examenprog_id,'id_gp'=>$request->gp_id])->with("success", "Note enregistré avec succès");
         } catch (\Throwable $th) {
             
-            return redirect()->route("sessionscorrections.create",['id'=> $request->examenprog_id])->with("error", "Echec lors de l'enregistrement des donnéees. ".$th);
+            return redirect()->route("sessionscorrections.create",['id'=> $request->examenprog_id,'id_gp'=>$request->gp_id])->with("error", "Echec lors de l'enregistrement des donnéees. ".$th);
         }
     }
 
     public function listeEtudiant(Request $request, $id)
     {
-        $session = Sessioncorrections::where("examen_prog_id", $id)->where("generer_par", Auth()->user()->id)->first();
-        $notes = Notes::where("statutvalidation_id", 2)->where("sessioncorrection_id", $session->id)->get();
+        
         $user_profil = Profil::find(Auth()->user()->profil_id);
         if ($user_profil) {
             # code...
             switch ($user_profil->libelle) {
                 case "PROFESSEUR":
+                    $session = Sessioncorrections::where("examen_prog_id", $id)->where("generer_par", Auth()->user()->id)->first();
+                    if($session){ 
+                        $notes = Notes::where("sessioncorrection_id", $session->id)->where("groupepedagogique_id",$request->id_gp)->get();
+                    }else{
+                        return redirect()->back()->with("error","Vous n'avez pas de liste disponible.");
+                    }
                     return view("backend.administrations.sessioncorrections.liste_etudiants", compact("notes", "session"));
 
                     break;
 
                 case "ADMIN":
                     # code...
+                    $check_session = Sessioncorrections::where("examen_prog_id", $id)->exists();
+                    if($check_session){ 
+                        
+                        // get note
+                        $get_note = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$request->id_gp)->first();
+                        if($get_note){
+                            $session = Sessioncorrections::find($get_note->sessioncorrection_id );
+
+                            $notes = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$request->id_gp)->get();
+
+                        }else{
+
+                            return redirect()->back()->with("error","Pas de liste disponible.");
+                        }
+                    }else{
+                        return redirect()->back()->with("error","Pas de liste disponible.");
+                    }
                     return view("backend.administrations.sessioncorrections.liste_etudiants", compact("notes", "session"));
                     break;
 
@@ -383,5 +418,9 @@ class SessioncorrectionController extends Controller
             # code...
             return redirect()->back()->with("error", "Profil de l'utilisateur inconnu.");
         }
+    }
+
+    public function indexNew(Request $request){
+        return view("backend.administrations.sessioncorrections.new_index");
     }
 }

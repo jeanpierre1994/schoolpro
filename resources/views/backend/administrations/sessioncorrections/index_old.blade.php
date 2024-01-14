@@ -61,9 +61,9 @@
                                             <td>{{ $item->matiere }}</td> 
                                             <td class="text-center">
                                                 @if (checkSession($item->id))
-                                                <a href="{{route("sessionscorrections.liste",$item->id)}}" title="consulter la liste" class="btn btn-sm btn-warning"><i class="bi bi-list" style="color: white" aria-hidden="true"></i></a>
+                                                <a href="{{route('sessionscorrections.liste',['id'=>$item->id,'id_gp'=>$item->id_gp])}}" title="consulter la liste" class="btn btn-sm btn-warning"><i class="bi bi-list" style="color: white" aria-hidden="true"></i></a>
                                                 @endif
-                                                <a href="{{ route('sessionscorrections.create', $item->id ) }}" title="Ouvrir une session de correction." class="btn btn-sm btn-primary"><i class="bi bi-eye" style="color: white" aria-hidden="true"></i></a>
+                                                <a href="{{ route('sessionscorrections.create', ['id'=>$item->id,'id_gp'=>$item->id_gp] ) }}" title="Ouvrir une session de correction." class="btn btn-sm btn-primary"><i class="bi bi-eye" style="color: white" aria-hidden="true"></i></a>
                                             </td>  
                                         </tr>
                                     @endforeach
