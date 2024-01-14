@@ -49,7 +49,7 @@
                     </select> 
                 </div>
               </div>  --}}
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="inputText" class=" col-form-label">Type examen<i class="text-danger">*</i></label>
                 <div> 
                     <select class="form-select" name="examentype_id" id="examentype_id" required>
@@ -61,26 +61,48 @@
                 </div>
               </div> 
               
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="inputText" class=" col-form-label">Libellé <i class="text-danger">*</i></label>
                 <div>
                   <input type="text" class="form-control" required name="libelle" id="libelle" minlength="1" maxlength="100" >
                 </div>
               </div>  
+              <div class="col-md-4">
+                <label for="inputText" class=" col-form-label">Colonne<i class="text-danger">*</i></label>
+                <div> 
+                    <select class="form-select" name="colonne" id="colonne" required>
+                      <option selected value="">Sélectionnez une option</option> 
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select> 
+                </div>
+              </div> 
             </div>
             <div class="row mb-3">   
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="inputText" class=" col-form-label">Démarre le <i class="text-danger">*</i></label>
                 <div>
                   <input type="date" class="form-control" required name="date_debut" id="date_debut">
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
               <label for="inputText" class=" col-form-label">Finit le <i class="text-danger">*</i></label>
                 <div>
                   <input type="date" class="form-control" required name="date_fin" id="date_fin">
                 </div>  
               </div>
+              <div class="col-md-4">
+                <label for="inputText" class=" col-form-label">Bulletin<i class="text-danger">*</i></label>
+                <div> 
+                    <select class="form-select" name="bulletin" id="bulletin" required>
+                      <option selected value="">Sélectionnez une option</option>
+                      @foreach ($bulletins as $item)
+                      <option value="{{$item->code}}">{{$item->code}} {{$item->libelle_primaire}}</option> 
+                      @endforeach
+                    </select> 
+                </div>
+              </div> 
             </div> 
             <div class="row mb-3"> 
               <div class="col-md-6 mb-1">

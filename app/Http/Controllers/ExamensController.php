@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bulletinprog;
 use App\Models\Cycles;
 use App\Models\Examenprog;
 use App\Models\Examens;
@@ -36,7 +37,8 @@ class ExamensController extends Controller
         $examentypes = Examentypes::where("statut_id", 1)->get();  
         $poles = Poles::where("statut_id", 1)->get();
         $cycles = Cycles::where("statut_id", 1)->get();  
-        return view("backend.examens.create", compact("gp","examentypes","poles","cycles"));
+        $bulletins = Bulletinprog::all();
+        return view("backend.examens.create", compact("gp","examentypes","poles","cycles","bulletins"));
     }
 
     /**
@@ -138,6 +140,8 @@ class ExamensController extends Controller
         $examen->setAttribute('min_moyenne', trim($request->min_moyenne));
         $examen->setAttribute('max_moyenne', trim($request->max_moyenne)); 
         $examen->setAttribute('ponderation', trim($request->ponderation));  
+        $examen->setAttribute('colonnes', trim($request->colonne));  
+        $examen->setAttribute('code_bulletin', trim($request->bulletin));  
         $examen->setAttribute('note_max', trim($request->note_max)); 
         $examen->setAttribute('commentaire', trim($request->commentaire)); 
         $examen->setAttribute('annee_academique', trim($request->annee_academique)); 
