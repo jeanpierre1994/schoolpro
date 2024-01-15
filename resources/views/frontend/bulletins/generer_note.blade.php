@@ -103,7 +103,7 @@
                                             <td>{{ $data->etudiant_id ?  $data->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
                                             <td>{{ $data->examen_prog_id ?  $data->getExamenprog->getMatiere->libelle : '' }}</td>
                                             <td>{{ $data->note_first }}</td>
-                                            <td>{{ $data->note_first }}</td>
+                                            <td>{{ $data->note_second }}</td>
                                             <td>{{ $data->devoir }}</td>
                                             <td></td>
                                         </tr>

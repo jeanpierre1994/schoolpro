@@ -32,9 +32,9 @@ class BulletinsController extends Controller
             'bulletin' => 'required',
             'classe' => 'required',
         ]);
-
-        
-        $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)->where("code_bulletin",$request->bulletin)->count();
+ 
+        $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+        ->where("code_bulletin",$request->bulletin)->count();
         if ($count_notes > 0) {
             $gp = Groupepedagogiques::all();
             $bulletins = Bulletinprog::all();
@@ -58,11 +58,15 @@ class BulletinsController extends Controller
         
 
         // enregistrement des donnees dans la premiere colonne
-        $notes_one = Notes::join("examenprogs","examenprogs.id","=","notes.examen_prog_id")
-        ->join("examens","examens.id","=","examenprogs.examen_id")
+        $notes_one = Notes::join("sessioncorrections","sessioncorrections.id","=","notes.sessioncorrection_id")
+        ->join("examenprogs","examenprogs.id","=","sessioncorrections.examen_prog_id")
+        ->join("examens","examens.id","=","examenprogs.examen_id") 
+        ->join("matieres","matieres.id","=","examenprogs.matiere_id") 
         ->where("notes.groupepedagogique_id",$request->classe)
+        ->where("matieres.groupepedagogique_id",$request->classe)
         ->where("examens.colonnes",1)
-        ->where("examens.code_bulletin",$request->bulletin)->get();
+        ->where("examens.code_bulletin",$request->bulletin)
+        ->get(["notes.id","notes.etudiant_id","notes.groupepedagogique_id","notes.examen_prog_id","notes.note_examen"]);
 
         if ($notes_one->count() > 0) {
             foreach ($notes_one as $key => $value) {
@@ -81,22 +85,29 @@ class BulletinsController extends Controller
        
 
         // enregistrement des donnees dans la deuxieme colonne...
-        $get_synthese_note = Synthesenotes::where("groupepedagogique_id",$request->classe)->get();
-        $notes_two = Notes::join("examenprogs","examenprogs.id","=","notes.examen_prog_id")
-        ->join("examens","examens.id","=","examenprogs.examen_id")
+        $get_synthese_note = Synthesenotes::where("groupepedagogique_id",$request->classe)
+        ->where("synthesenotes.code_bulletin",$request->bulletin)
+        ->get();
+        $notes_two = Notes::join("sessioncorrections","sessioncorrections.id","=","notes.sessioncorrection_id")
+        ->join("examenprogs","examenprogs.id","=","sessioncorrections.examen_prog_id")
+        ->join("examens","examens.id","=","examenprogs.examen_id") 
+        ->join("matieres","matieres.id","=","examenprogs.matiere_id") 
         ->where("notes.groupepedagogique_id",$request->classe)
+        ->where("matieres.groupepedagogique_id",$request->classe)
         ->where("examens.colonnes",2)
-        ->where("examens.code_bulletin",$request->bulletin)->get();
+        ->where("examens.code_bulletin",$request->bulletin)
+        ->get(["notes.id","notes.etudiant_id","notes.groupepedagogique_id","notes.examen_prog_id","notes.note_examen","matieres.id as matiere_id"]);
 
         if ($notes_two->count() > 0) {
             # code...
-            foreach ($get_synthese_note as $key => $value) {
+            foreach ($get_synthese_note as $key => $data) {
                 # code...
                 foreach ($notes_two as $key => $notes_tw) {
                     # code...
-                    if ($notes_tw->etudiant_id == $value->etudiant_id && $notes_tw->groupepedagogique_id == $value->groupepedagogique_id && $notes_tw->examen_prog_id == $value->examen_prog_id  ) {
+                    if ($notes_tw->etudiant_id == $data->etudiant_id && $notes_tw->groupepedagogique_id == $data->groupepedagogique_id && $notes_tw->matiere_id == $data->getExamenprog->matiere_id ) {
                         # code...
-                        $synthese_note = Synthesenotes::find($value->id); 
+
+                        $synthese_note = Synthesenotes::find($data->id); 
                         $synthese_note->setAttribute("note_second",$notes_tw->note_examen);
                         $synthese_note->update(); 
                     }
@@ -106,11 +117,15 @@ class BulletinsController extends Controller
     
 
         // enregistrement des donnees dans la premiere colonne
-        $notes_tree = Notes::join("examenprogs","examenprogs.id","=","notes.examen_prog_id")
-        ->join("examens","examens.id","=","examenprogs.examen_id")
+        $notes_tree = Notes::join("sessioncorrections","sessioncorrections.id","=","notes.sessioncorrection_id")
+        ->join("examenprogs","examenprogs.id","=","sessioncorrections.examen_prog_id")
+        ->join("examens","examens.id","=","examenprogs.examen_id") 
+        ->join("matieres","matieres.id","=","examenprogs.matiere_id") 
         ->where("notes.groupepedagogique_id",$request->classe)
+        ->where("matieres.groupepedagogique_id",$request->classe)
         ->where("examens.colonnes",3)
-        ->where("examens.code_bulletin",$request->bulletin)->get();
+        ->where("examens.code_bulletin",$request->bulletin)
+        ->get(["notes.id","notes.etudiant_id","notes.groupepedagogique_id","notes.examen_prog_id","notes.note_examen","matieres.id as matiere_id"]);
 
         if ($notes_tree->count() > 0) {
             # code...
@@ -118,7 +133,7 @@ class BulletinsController extends Controller
                 # code...
                 foreach ($notes_tree as $key => $notes_tre) {
                     # code...
-                    if ($notes_tre->etudiant_id == $value->etudiant_id && $notes_tre->groupepedagogique_id == $value->groupepedagogique_id && $notes_tre->examen_prog_id == $value->examen_prog_id  ) {
+                    if ($notes_tre->etudiant_id == $value->etudiant_id && $notes_tre->groupepedagogique_id == $value->groupepedagogique_id && $notes_tre->matiere_id == $value->getExamenprog->matiere_id  ) {
                         # code...
                         $synthese_note = Synthesenotes::find($value->id); 
                         $synthese_note->setAttribute("devoir",$notes_tre->note_examen);
