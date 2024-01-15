@@ -529,7 +529,7 @@
 
             <div class="col-xxl-4 col-md-4">
                 <div class="card info-card sales-card">
-                    <a href="{{ route('bulletin.generer-note') }}" style="text-decoration: none;">
+                    <a href="{{ route('bulletins.generer-note') }}" style="text-decoration: none;">
                         <div class="card-body">
                             <h5 class="card-title">Gestion Bulletin <span></span></h5>
                             <div class="d-flex align-items-center">

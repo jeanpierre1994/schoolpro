@@ -18,8 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('examen_prog_id');        
             $table->unsignedBigInteger('groupepedagogique_id');  
             $table->unsignedBigInteger('etudiant_id');      
-            $table->string('note_first')->nullable();     
-            $table->string('note_second')->nullable();     
+            $table->double('note_first')->nullable();     
+            $table->double('note_second')->nullable();    
+            $table->double('devoir')->nullable();    
+            $table->double('moyenne')->nullable();    
             $table->string('code_bulletin')->nullable();     
             $table->string('rang')->nullable();      
             $table->foreign('examen_prog_id')->references('id')->on('examenprogs');
