@@ -43,7 +43,7 @@ class BulletinsController extends Controller
         if ($count_notes > 0) {
             $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
             ->where("code_bulletin",$request->bulletin)->delete();
-           /* $gp = Groupepedagogiques::all();
+        /* $gp = Groupepedagogiques::all();
             $bulletins = Bulletinprog::all();
             $get_gp = Groupepedagogiques::find($request->classe);
             $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first(); 

@@ -115,17 +115,17 @@
                                                 </td>
                                                 <td>{{ $data->examen_prog_id ? $data->getExamenprog->getMatiere->libelle : '' }}
                                                 </td>
-                                                <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
-                                                <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
-                                                <td>{{ $data->devoir }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{ $data->note_first ? $data->note_first : 0 }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{ $data->note_second ? $data->note_second : 0 }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{ $data->devoir ? $data->devoir : 0  }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
                                                 <td>{{$my}}</td>
                                                 <td class="text-center">
-                                                  {{--   <a target="_blank"
+                                                     <a target="_blank"
                                                         href="{{ route('show-bulletin', ['id' => \Crypt::encrypt($data->etudiant_id), 'codeBulletin'=>$data->code_bulletin]) }}"
                                                         title="Bulletin"><button type="button"
                                                             class="btn btn-sm btn-danger"><i
                                                                 class="bi bi-file-earmark-pdf text-white"
-                                                                style="color: white" aria-hidden="true"></i></button></a> --}}
+                                                                style="color: white" aria-hidden="true"></i></button></a>
                                                     {{-- <form
                                                         action="{{ route('admin.etudiant.mail', \Crypt::encrypt($item->id)) }}">
                                                         @csrf
