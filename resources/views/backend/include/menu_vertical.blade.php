@@ -649,6 +649,11 @@
                             <i class="bi bi-circle"></i><span>Devoir de maison</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('bulletins.generer-note') }}" id="gestion-bulletin" style="text-decoration: none;">
+                            <i class="bi bi-circle"></i><span>Gestion Bulletin</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <!-- End Examens Nav -->
