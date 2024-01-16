@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bulletinprog;
-use App\Models\Examens;
-use App\Models\Groupepedagogiques;
 use App\Models\Notes;
-use App\Models\Synthesenotes;
-use Barryvdh\DomPDF\Facade\Pdf;
-
+use App\Models\Examens;
+use App\Models\Etudiants;
+use App\Models\Bulletinprog;
 use Illuminate\Http\Request;
+use App\Models\Synthesenotes;
+
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Groupepedagogiques;
 
 class BulletinsController extends Controller
 {
-    public function index()
+    public function index($id, $codeBulletin)
     {
-        $pdf = Pdf::loadView('frontend.bulletins.template');
+
+        $etudiant_id = \Crypt::decrypt($id);
+        $etudiant = Etudiants::find($etudiant_id);
+        $bulletinData = Synthesenotes::get()->where('etudiant_id', $etudiant_id)->where('code_bulletin', $codeBulletin);
+        $pdf = Pdf::loadView('frontend.bulletins.template', compact('etudiant'));
         return $pdf->stream();
     }
 
