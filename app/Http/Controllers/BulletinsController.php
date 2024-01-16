@@ -41,14 +41,16 @@ class BulletinsController extends Controller
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
         if ($count_notes > 0) {
-            $gp = Groupepedagogiques::all();
+            $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)->delete();
+           /* $gp = Groupepedagogiques::all();
             $bulletins = Bulletinprog::all();
             $get_gp = Groupepedagogiques::find($request->classe);
             $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first(); 
             $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
             ->where("code_bulletin",$request->bulletin)->get();
             $update = true;
-            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes"));
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes"));*/
         }
         // liste des examens
         $examens = Examens::where("code_bulletin",$request->bulletin)->get();
@@ -80,7 +82,8 @@ class BulletinsController extends Controller
                 $synthese_note->setAttribute("examen_prog_id",$value->examen_prog_id);
                 $synthese_note->setAttribute("groupepedagogique_id",$value->groupepedagogique_id);
                 $synthese_note->setAttribute("etudiant_id",$value->etudiant_id);
-                $synthese_note->setAttribute("note_first",$value->note_examen);
+                $note = $value->note_examen ? $value->note_examen : 0;
+                $synthese_note->setAttribute("note_first",$note);
                 $synthese_note->setAttribute("code_bulletin",$request->bulletin);
                 $synthese_note->save(); 
             }
@@ -113,7 +116,8 @@ class BulletinsController extends Controller
                         # code...
 
                         $synthese_note = Synthesenotes::find($data->id); 
-                        $synthese_note->setAttribute("note_second",$notes_tw->note_examen);
+                        $note = $notes_tw->note_examen ? $notes_tw->note_examen : 0;
+                        $synthese_note->setAttribute("note_second",$note);
                         $synthese_note->update(); 
                     }
                 }
@@ -141,7 +145,8 @@ class BulletinsController extends Controller
                     if ($notes_tre->etudiant_id == $value->etudiant_id && $notes_tre->groupepedagogique_id == $value->groupepedagogique_id && $notes_tre->matiere_id == $value->getExamenprog->matiere_id  ) {
                         # code...
                         $synthese_note = Synthesenotes::find($value->id); 
-                        $synthese_note->setAttribute("devoir",$notes_tre->note_examen);
+                        $note = $notes_tre->note_examen ? $notes_tre->note_examen : 0;
+                        $synthese_note->setAttribute("devoir",$note);
                         $synthese_note->update(); 
                     }
                 }

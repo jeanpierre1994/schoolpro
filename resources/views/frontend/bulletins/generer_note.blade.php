@@ -78,8 +78,10 @@
                                 {{ $get_gp->libelle_secondaire }} &nbsp;&nbsp;&nbsp;
                                 Bulletin : {{ $get_bulletin->code_bulletin }} {{ $get_bulletin->libelle_primaire }}
                             @else
-                            @endif
+                            
                             Classe................ Bulletin ................
+
+                            @endif
                         </h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
@@ -103,6 +105,9 @@
                                             $i = 1;
                                         @endphp
                                         @foreach ($liste_notes as $data)
+                                        @php
+                                            $my = ceil( (($data->note_first+$data->note_second)/2 + ($data->devoir*$data->getExamenprog->getMatiere->coef) )/2);
+                                        @endphp
                                             <tr>
                                                 <td><b>{{ $i++ }}</b></td>
                                                 <td>{{ $data->etudiant_id ? $data->getEtudiant->matricule : '' }}</td>
@@ -110,17 +115,17 @@
                                                 </td>
                                                 <td>{{ $data->examen_prog_id ? $data->getExamenprog->getMatiere->libelle : '' }}
                                                 </td>
-                                                <td>{{ $data->note_first }}</td>
-                                                <td>{{ $data->note_second }}</td>
-                                                <td>{{ $data->devoir }}</td>
-                                                <td></td>
+                                                <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{ $data->devoir }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{$my}}</td>
                                                 <td class="text-center">
-                                                    <a target="_blank"
+                                                  {{--   <a target="_blank"
                                                         href="{{ route('show-bulletin', ['id' => \Crypt::encrypt($data->etudiant_id), 'codeBulletin'=>$data->code_bulletin]) }}"
                                                         title="Bulletin"><button type="button"
                                                             class="btn btn-sm btn-danger"><i
                                                                 class="bi bi-file-earmark-pdf text-white"
-                                                                style="color: white" aria-hidden="true"></i></button></a>
+                                                                style="color: white" aria-hidden="true"></i></button></a> --}}
                                                     {{-- <form
                                                         action="{{ route('admin.etudiant.mail', \Crypt::encrypt($item->id)) }}">
                                                         @csrf
