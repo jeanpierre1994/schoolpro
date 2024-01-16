@@ -395,6 +395,6 @@ Route::get('admin/anc/sessions/corrections', [SessioncorrectionController::class
 Route::post('admin/anc/sessions/corrections/store', [SessioncorrectionController::class, 'storeOld'])->name('sessionscorrections.anc_store')->middleware("auth");
 // update session correction
 Route::get('admin/new/sessions/corrections', [SessioncorrectionController::class, 'indexNew'])->name('sessionscorrections.new-index')->middleware("auth");
-Route::get('admin/bulletins/template', [BulletinsController::class, 'index'])->name('bulletins.template');//->middleware('auth');
+Route::get('admin/bulletins/template', [BulletinsController::class, 'index'])->name('bulletins.template')->name('show-bulletin');//->middleware('auth');
 Route::get('admin/bulletins/genere/note', [BulletinsController::class, 'genereNote'])->name('bulletins.generer-note')->middleware('auth');
 Route::post('admin/bulletins/save/note', [BulletinsController::class, 'saveNote'])->name('bulletins.save-note')->middleware('auth');
