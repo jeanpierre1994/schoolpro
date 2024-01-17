@@ -32,12 +32,17 @@
             <div class="student-infos">
 
                 <div>
-                    <p>Nom de l'élève : [NOM DE L'ÉLÈVE]</p>
-                    <p>Classe : [CLASSE]</p>
-                </div>
-                <div>
-                    <p>Department</p>
-                    <p>Registration</p>
+                    <p> <b>Nom de l'élève :</b>
+                        {{ $personne->nom . ' ' . $personne->prenoms . ' ' . $personne->surnom }} <span
+                            style=" display:flexbox; justify-content:end">
+                            {{ ' ' }}<b>Department</b></span></p>
+                    <p> <b>Classe :</b> {{ $etudiant->getGp->libelle_classe }} <span>
+                            {{ ' ' }}
+                            <b>
+                                Registration:
+                            </b>
+                            {{ $etudiant->matricule }}
+                        </span></p>
                 </div>
             </div>
         </section>
@@ -57,30 +62,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Mathématiques</td>
-                            <td>18/20</td>
-                            <td>17/20</td>
-                            <td>19/20</td>
-                            <td>64/60</td>
-                            <td>Excellent</td>
-                        </tr>
-                        <tr>
-                            <td>Français</td>
-                            <td>17/20</td>
-                            <td>16/20</td>
-                            <td>18/20</td>
-                            <td>51/60</td>
-                            <td>Très bien</td>
-                        </tr>
-                        <tr>
-                            <td>Anglais</td>
-                            <td>16/20</td>
-                            <td>15/20</td>
-                            <td>17/20</td>
-                            <td>48/60</td>
-                            <td>Bien</td>
-                        </tr>
+                        @foreach ($notesSectionEng as $data)
+                            @php
+                                $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
+                            @endphp
+                            <tr>
+                                <td>{{ $data->getExamenprog->getMatiere->libelle }}</td>
+                                <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                <td>{{ $data->devoir }}/60</td>
+                                <td>{{ $my }}</td>
+                                <td>{{ $my < 70 ? 'AVERAGE' : 'GOOD' }}</td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -100,38 +95,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Mathématiques</td>
-                        <td>18/20</td>
-                        <td>17/20</td>
-                        <td>19/20</td>
-                        <td>64/60</td>
-                        <td>Excellent</td>
-                    </tr>
-                    <tr>
-                        <td>Français</td>
-                        <td>17/20</td>
-                        <td>16/20</td>
-                        <td>18/20</td>
-                        <td>51/60</td>
-                        <td>Très bien</td>
-                    </tr>
-                    <tr>
-                        <td>Anglais</td>
-                        <td>16/20</td>
-                        <td>15/20</td>
-                        <td>17/20</td>
-                        <td>48/60</td>
-                        <td>Bien</td>
-                    </tr>
+                    @foreach ($notesSectionFrench as $data)
+                        @php
+                            $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
+                        @endphp
+                        <tr>
+                            <td>{{ $data->getExamenprog->getMatiere->libelle }}</td>
+                            <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                            <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                            <td>{{ $data->devoir }}/60</td>
+                            <td>{{ $my }}</td>
+                            <td>{{ $my < 70 ? 'BIEN' : 'TRES-BIEN' }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </section>
-        <section class="comportement">
+        {{-- <section class="comportement">
             <h3>Comportement</h3>
             <p>L'élève est un(e) élève sérieux(se) et travailleur(se). Il/Elle est respectueux(se) envers ses camarades
                 et ses professeurs.</p>
-        </section>
+        </section> --}}
     </main>
     <footer>
         <p>Copyright © 2024 École bilingue</p>
@@ -189,7 +173,7 @@
     }
 
     section {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
     }
 
     table {
@@ -223,7 +207,7 @@
     }
 
     .notes {
-        margin-top: 50px;
+        margin-top: 20px;
     }
 
     .infos-gen {
