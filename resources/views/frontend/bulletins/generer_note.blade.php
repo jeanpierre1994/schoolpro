@@ -57,6 +57,7 @@
 
                                     <div class="form-group">
                                         <label for="label fw-bold">Action</label><br>
+                                        <input type="submit" name="afficher" value="Afficher" class="btn btn-primary btn-sm">
                                         <button type="submit" class="btn btn-secondary btn-sm">Generer notes</button>
                                     </div>
                                 </div>
@@ -92,10 +93,10 @@
                                         <th scope="col">Matricule</th>
                                         <th scope="col">Eleve</th>
                                         <th scope="col">Matiere</th>
-                                        <th scope="col">Note 1</th>
-                                        <th scope="col">Note 2</th>
-                                        <th scope="col">Devoir</th>
-                                        <th scope="col">Moyenne</th>
+                                        <th scope="col">Note 1 (20)</th>
+                                        <th scope="col">Note 2 (20)</th>
+                                        <th scope="col">Devoir (60)</th>
+                                        <th scope="col">Moyenne (100)</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -106,8 +107,9 @@
                                         @endphp
                                         @foreach ($liste_notes as $data)
                                         @php
-                                            $my = ceil( (($data->note_first+$data->note_second)/2 + ($data->devoir*$data->getExamenprog->getMatiere->coef) )/2);
-                                        @endphp
+                                           // $my = ceil( (($data->note_first+$data->note_second)/2 + ($data->devoir*$data->getExamenprog->getMatiere->coef) )/2);
+                                           $my = $data->note_first+$data->note_second +$data->devoir;
+                                       @endphp
                                             <tr>
                                                 <td><b>{{ $i++ }}</b></td>
                                                 <td>{{ $data->etudiant_id ? $data->getEtudiant->matricule : '' }}</td>
@@ -115,9 +117,9 @@
                                                 </td>
                                                 <td>{{ $data->examen_prog_id ? $data->getExamenprog->getMatiere->libelle : '' }}
                                                 </td>
-                                                <td>{{ $data->note_first ? $data->note_first : 0 }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
-                                                <td>{{ $data->note_second ? $data->note_second : 0 }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
-                                                <td>{{ $data->devoir ? $data->devoir : 0  }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
+                                                <td>{{ $data->note_first ? $data->note_first : 0 }}</td>
+                                                <td>{{ $data->note_second ? $data->note_second : 0 }}</td>
+                                                <td>{{ $data->devoir ? $data->devoir : 0  }}</td>
                                                 <td>{{$my}}</td>
                                                 <td class="text-center">
                                                      <a target="_blank"

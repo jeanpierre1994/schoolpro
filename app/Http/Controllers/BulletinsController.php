@@ -40,17 +40,20 @@ class BulletinsController extends Controller
  
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
-        if ($count_notes > 0) {
-            $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
-            ->where("code_bulletin",$request->bulletin)->delete();
-        /* $gp = Groupepedagogiques::all();
+        if ($count_notes > 0 && isset($_POST['afficher'])) {
+            $gp = Groupepedagogiques::all();
             $bulletins = Bulletinprog::all();
             $get_gp = Groupepedagogiques::find($request->classe);
-            $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first(); 
+            $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first();
             $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
-            ->where("code_bulletin",$request->bulletin)->get();
-            $update = true;
-            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes"));*/
+            ->where("code_bulletin",$request->bulletin)
+            ->get();
+            $update = true; 
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes")); 
+        }
+        if ($count_notes > 0) {
+            $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)->delete(); 
         }
         // liste des examens
         $examens = Examens::where("code_bulletin",$request->bulletin)->get();
@@ -160,7 +163,7 @@ class BulletinsController extends Controller
         $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)
         ->get();
-        $update = true;
+        $update = true; 
         return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes"));
     }
 
