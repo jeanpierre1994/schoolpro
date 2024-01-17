@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Notes;
 use App\Models\Examens;
+use App\Models\Matieres;
 use App\Models\Etudiants;
+use App\Models\Personnes;
 use App\Models\Bulletinprog;
+
 use Illuminate\Http\Request;
 use App\Models\Synthesenotes;
-
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Groupepedagogiques;
 
@@ -20,7 +22,24 @@ class BulletinsController extends Controller
         $etudiant_id = \Crypt::decrypt($id);
         $etudiant = Etudiants::find($etudiant_id);
         $bulletinData = Synthesenotes::get()->where('etudiant_id', $etudiant_id)->where('code_bulletin', $codeBulletin);
-        $pdf = Pdf::loadView('frontend.bulletins.template', compact('etudiant'));
+        $personne = Personnes::where('id', $etudiant->getDossier->personne_id)->get()->first() ;
+
+        $notesSectionFrench = [];
+        $notesSectionEng = [];
+        foreach( $bulletinData as $data )
+        { 
+            if (!empty($data) || !empty($data->examen_prog_id)) {
+                # code...
+            $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
+            if($matiere->section_id == 1)
+            {
+                $notesSectionFrench[] = $data;
+            }else{
+                $notesSectionEng[] = $data;            }
+
+            }
+        }
+        $pdf = Pdf::loadView('frontend.bulletins.template', compact('etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng'));
         return $pdf->stream();
     }
 
