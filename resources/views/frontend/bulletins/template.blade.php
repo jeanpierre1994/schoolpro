@@ -111,15 +111,15 @@
                 </tbody>
             </table>
         </section>
-        {{-- <section class="comportement">
+        <section class="comportement">
             <h3>Comportement</h3>
             <p>L'élève est un(e) élève sérieux(se) et travailleur(se). Il/Elle est respectueux(se) envers ses camarades
                 et ses professeurs.</p>
-        </section> --}}
+        </section>
     </main>
-    <footer>
+    {{-- <footer>
         <p>Copyright © 2024 École bilingue</p>
-    </footer>
+    </footer> --}}
 </body>
 <style>
     body {
