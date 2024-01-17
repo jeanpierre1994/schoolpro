@@ -53,7 +53,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Matière</th>
+                            <th>Subject</th>
                             <th>Test1</th>
                             <th>Test2</th>
                             <th>EXAM</th>
@@ -87,11 +87,11 @@
                 <thead>
                     <tr>
                         <th>Matière</th>
-                        <th>Test1</th>
-                        <th>Test2</th>
-                        <th>EXAM</th>
-                        <th>TOTAL_MARK</th>
-                        <th>REMARKS</th>
+                        <th>Devoir1</th>
+                        <th>Devoir2</th>
+                        <th>COMPOSITION</th>
+                        <th>TOTAL DEVOIR</th>
+                        <th>APPRECIATION</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,7 +105,7 @@
                             <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
                             <td>{{ $data->devoir }}/60</td>
                             <td>{{ $my }}</td>
-                            <td>{{ $my < 70 ? 'BIEN' : 'TRES-BIEN' }}</td>
+                            <td>{{ $my < 50 ? 'INSUFFISANT' : 'BIEN' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
