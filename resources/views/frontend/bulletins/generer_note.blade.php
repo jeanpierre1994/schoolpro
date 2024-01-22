@@ -32,7 +32,15 @@
                                     <div class="form-group">
                                         <label for="label fw-bold">Classe</label>
                                         <select name="classe" id="classe" class="form-select">
+                                            @if ($update)
+                                            <option selected value="{{ $get_gp->id }}">{{ $get_gp->getCycle->libelle }}
+                                                {{ $get_gp->getPole->libelle }} {{ $get_gp->getFiliere->libelle }}
+                                                    {{ $get_gp->libelle_classe }} {{ $get_gp->libelle_secondaire }}
+                                            </option>
+                                            @else
                                             <option value="">--- Choisissez une valeur ---</option>
+                                            @endif
+
                                             @foreach ($gp as $item)
                                                 <option value="{{ $item->id }}">{{ $item->getCycle->libelle }}
                                                     {{ $item->getPole->libelle }} {{ $item->getFiliere->libelle }}
@@ -45,7 +53,12 @@
                                     <div class="form-group">
                                         <label for="label fw-bold">Bulletin</label>
                                         <select name="bulletin" id="bulletin" class="form-select">
-                                            <option value="">--- Choisissez une valeur ---</option>
+                                            @if ($update)
+                                            <option selected value="{{ $get_bulletin->code }}">{{ $get_bulletin->code }} {{ $get_bulletin->libelle_primaire }}</option>
+                                            @else
+                                            <option value="">--- Choisissez une valeur ---</option>                                            
+                                            @endif
+
                                             @foreach ($bulletins as $item)
                                                 <option value="{{ $item->code }}">{{ $item->code }}
                                                     {{ $item->libelle_primaire }}</option>
@@ -86,6 +99,54 @@
                         </h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
+                            <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Matricule</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Prenoms</th>
+                                        <th scope="col">Rang</th>
+                                        <th scope="col">Moyenne</th>
+                                        <th scope="col">Appreciation 1</th>
+                                        <th scope="col">Appreciation 2</th> 
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($update == true)
+                                    @php
+                                        $i=1;
+                                    @endphp
+                                        @foreach ($liste_moyennes as $datas) 
+                                       <tr>
+                                        <td><b>{{ $i++ }}</b></td>
+                                        <td>{{ $datas->etudiant_id ? $datas->getEtudiant->matricule : '' }}</td>
+                                        <td>{{ $datas->etudiant_id ? $datas->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
+                                        <td>{{ $datas->etudiant_id ? $datas->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
+                                        <td>
+                                            @if ($loop->first)
+                                                {{$datas->rang}} er
+                                            @else
+                                           
+                                            @if ($liste_moyennes[$loop->index - 1]->rang == $datas->rang)
+                                            {{$datas->rang}}x ex                                                
+                                            @else
+                                            {{$datas->rang}} eme                                                
+                                            @endif
+
+                                            @endif
+                                        </td>
+                                        <td>{{ $datas->moyenne ? $datas->moyenne : 0 }}%</td>
+                                        <td> - - -</td>
+                                        <td> - - -</td>
+                                        <td></td>
+                                       </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table> <br><br><br>
+
                             <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>

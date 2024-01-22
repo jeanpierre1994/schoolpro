@@ -54,27 +54,64 @@
                     <thead>
                         <tr>
                             <th>Subject</th>
-                            <th>Test1</th>
-                            <th>Test2</th>
-                            <th>EXAM</th>
-                            <th>TOTAL_MARK</th>
+                            <th>TEST1 (20)</th>
+                            <th>TEST2 (20)</th>
+                            <th>EXAMS / 60</th>
+                            <th>TOTAL.MARKS / 100</th>
                             <th>REMARKS</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $count_en = 0; $total_en = 0;
+                            
+                        @endphp
                         @foreach ($notesSectionEng as $data)
                             @php
-                                $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
+                             $my = $data->note_first + $data->note_second + $data->devoir;
+                             $count_en = $count_en + 1; $total_en = $total_en + $my;
+                               // $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
                             @endphp
                             <tr>
-                                <td>{{ $data->getExamenprog->getMatiere->libelle }}</td>
+                                <td style="text-align: left">{{ $data->getExamenprog->getMatiere->libelle }}</td>
                                 <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
                                 <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
                                 <td>{{ $data->devoir }}/60</td>
                                 <td>{{ $my }}</td>
-                                <td>{{ $my < 70 ? 'AVERAGE' : 'GOOD' }}</td>
+                                <td>
+                                    @if ($my < 70)
+                                        SATISFACTORY
+
+                                    @elseif ($my > 69 && $my < 80)
+                                    GOOD
+                                    @elseif ($my > 79 && $my < 90)
+                                    VERY GOOD
+                                    @else
+                                        EXCELLENT
+                                    @endif
+                                    </td>
                             </tr>
+                          
+
                         @endforeach
+                        <tr>
+                            <td>TOTAL MARK /(N):</td>
+                            <td colspan="5" style="text-align: left"><b>{{$total_en}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>AVERAGE MARK (%):</td>
+                            <td colspan="2" style="text-align: left"><b>{{ceil(($total_en*100)/(100*$count_en))}}%</b></td>
+                            <td>SCORING KEY :</td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td>MARK /(20):</td>
+                            <td colspan="5"><b></b></td>
+                        </tr>
+                        <tr>
+                            <td>CLASS TEACHER'S REMARK(S):</td>
+                            <td colspan="5"><b></b></td>
+                        </tr>
 
                     </tbody>
                 </table>
@@ -86,28 +123,58 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Matière</th>
-                        <th>Devoir1</th>
-                        <th>Devoir2</th>
-                        <th>COMPOSITION</th>
-                        <th>TOTAL DEVOIR</th>
+                        <th>MATIERE</th>
+                        <th>DEVOIRS_1 /20</th>
+                        <th>DEVOIRS_2 /20</th>
+                        <th>TOT.DEVOIRS /40</th>
+                        <th>COMPOSITION /60</th>
+                        <th>TOTAL /100</th>
                         <th>APPRECIATION</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($notesSectionFrench as $data)
-                        @php
-                            $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
-                        @endphp
-                        <tr>
-                            <td>{{ $data->getExamenprog->getMatiere->libelle }}</td>
-                            <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
-                            <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
-                            <td>{{ $data->devoir }}/60</td>
-                            <td>{{ $my }}</td>
-                            <td>{{ $my < 50 ? 'INSUFFISANT' : 'BIEN' }}</td>
-                        </tr>
-                    @endforeach
+                    @php
+                    $count_fr = 0; $total_fr = 0;
+                    
+                @endphp
+                @if ($notesSectionFrench)
+                @foreach ($notesSectionFrench as $data)
+                @php
+                    $my = $data->note_first + $data->note_second + $data->devoir;
+                    $my_devoir = $data->note_first + $data->note_second; 
+                     $count_fr = $count_fr + 1; $total_fr = $total_fr + $my;
+                    //$my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
+                @endphp
+                <tr>
+                    <td style="text-align: left;">{{ $data->getExamenprog->getMatiere->libelle }}</td>
+                    <td>{{ $data->note_first }}</td>
+                    <td>{{ $data->note_second }}</td> 
+                    <td>{{$my_devoir}}</td>
+                    <td>{{ $data->devoir }}</td>
+                    <td>{{ $my }}</td>
+                    <td>
+                        @if ($my < 50)
+                        FAIBLE
+                        @elseif ($my > 49 && $my < 79)
+                        BIEN
+                    @elseif ($my > 79 && $my < 90)
+                    TRES BIEN 
+                    @else
+                        EXCELLENT
+                    @endif
+                    </td>
+                </tr>
+            @endforeach
+            <tr>
+                <td>TOTAUX :</td>
+                <td colspan="6" style="text-align: left"><b>{{$total_fr}}</b></td>
+            </tr>
+            <tr>
+                <td>MOYENNE GENERALE (%):</td>
+                <td colspan="6" style="text-align: left"><b>{{ceil(($total_fr*100)/(100*$count_fr))}}%</b></td> 
+            </tr>
+                @endif
+                    
                 </tbody>
             </table>
         </section>

@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use App\Models\Synthesenotes;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Groupepedagogiques;
-use App\Models\Synthesebulletins;
 
 class BulletinsController extends Controller
 {
@@ -68,22 +67,13 @@ class BulletinsController extends Controller
             $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
             ->where("code_bulletin",$request->bulletin)
             ->get();
-            $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
-        ->where("code_bulletin",$request->bulletin)
-        ->orderBy("rang","ASC")
-        ->get();
             $update = true; 
-            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes")); 
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes")); 
         }
-
         if ($count_notes > 0) {
             $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
             ->where("code_bulletin",$request->bulletin)->delete(); 
-            // delete synthese note for this class
-            $delete_bulletin = $count_notes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
-            ->where("code_bulletin",$request->bulletin)->delete(); 
         }
-
         // liste des examens
         $examens = Examens::where("code_bulletin",$request->bulletin)->get();
         if ($examens->count() == 3) {
@@ -184,63 +174,6 @@ class BulletinsController extends Controller
                 }
             }
         }
-
-        // get eleves by class
-        $liste_eleves = Etudiants::where("groupepedagogique_id",$request->classe)->get();
-        // calcul des moyennes par matiere
-        $get_current_liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
-        ->where("code_bulletin",$request->bulletin)
-        ->get(); 
-        $test = 0;
-        foreach ($liste_eleves as $key => $eleve) {
-            # code...
-            $count = 0; $somme_moyenne = 0; 
-
-            foreach ($get_current_liste_notes as $key => $g_note) {
-                # code...
-                if ($g_note->etudiant_id == $eleve->id) {
-                    $test++;
-                    # code...
-                    $my = $g_note->note_first + $g_note->note_second + $g_note->devoir;
-                    $my_devoir = $g_note->note_first + $g_note->note_second; 
-                    $count = $count + 1; 
-                    $somme_moyenne = $somme_moyenne + $my;
-                    $update_note = Synthesenotes::find($g_note->id);
-                    $update_note->setAttribute("moyenne",$my);
-                    $update_note->update();
-                }
-    
-            } 
-            
-            // check if eleve have the note
-            if($count > 0 && $somme_moyenne > 0){
-                
-                // insert data int table synthese bulletin
-                $insert_synthesebulletin = new Synthesebulletins();
-                $insert_synthesebulletin->setAttribute("groupepedagogique_id",$request->classe);
-                $insert_synthesebulletin->setAttribute("etudiant_id",$eleve->id);
-                $insert_synthesebulletin->setAttribute("moyenne",ceil(($somme_moyenne*100)/(100*$count)));
-                $insert_synthesebulletin->setAttribute("code_bulletin",$request->bulletin);
-                $insert_synthesebulletin->save();
-            }
-
-        }
-        
-        // update rang 
-        $get_current_liste_notes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
-        ->where("code_bulletin",$request->bulletin)
-        ->orderBy("moyenne","DESC")
-        ->get();
-
-        $rang = 0;
-        foreach ($get_current_liste_notes as $key => $value) {
-            # code...
-            $rang = $rang + 1;
-            $up = Synthesebulletins::find($value->id);
-            $up->setAttribute("rang",$rang);
-            $up->update();
-        }
-        
  
         $gp = Groupepedagogiques::all();
         $bulletins = Bulletinprog::all();
@@ -249,13 +182,8 @@ class BulletinsController extends Controller
         $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)
         ->get();
-
-        $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
-        ->where("code_bulletin",$request->bulletin)
-        ->orderBy("rang","ASC")
-        ->get();
         $update = true; 
-        return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"));
+        return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes"));
     }
 
 
