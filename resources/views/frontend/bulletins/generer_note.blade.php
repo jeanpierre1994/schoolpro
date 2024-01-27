@@ -163,19 +163,23 @@
                                                                 style="color: white" aria-hidden="true"></i></button></a>
 
                                             
-                                                                <a target="_blank"
+                                                               {{--
+                                                                
+                                                                 <a target="_blank"
                                                                 href="{{ route('bulletins.consultation-note', ['etudiant' => \Crypt::encrypt($datas->etudiant_id), 'gp'=>$get_gp->id,'bulletin'=>$datas->code_bulletin]) }}"
                                                                 title="Bulletin détaillé"><button type="button"
                                                                     class="btn btn-sm btn-primary"><i
                                                                         class="bi bi-list text-white"
                                                                         style="color: white" aria-hidden="true"></i></button></a>
 
+
+                                                                --}}
                                                                         <a href="#" title="Consultation des notes"
                                                                         data-etudiant="{{ $datas->etudiant_id }}"
                                                                         data-etudiant_name="{{ $datas->getEtudiant->matricule }} || {{$datas->getEtudiant->getDossier->getPersonne->nom}}  {{$datas->getEtudiant->getDossier->getPersonne->prenoms}} "
                                                                         data-gp="{{ $get_gp->id }}"
                                                                         data-bulletin="{{ $datas->code_bulletin }}" class="show-modal">
-                                                                        <button type="button" class="btn btn-sm btn-warning"><i
+                                                                        <button type="button" class="btn btn-sm btn-primary"><i
                                                                                 class="bi bi-list" style="color: white"
                                                                                 aria-hidden="true"></i></button></a>
 

@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body style="font-size:75%; font-family: 'Work Sans', sans-serif;">
 <header style="background: none; color:#000;">
 
     <div class="row">
@@ -89,10 +89,10 @@
 <main>
     <section class="infos-generales">
         <div class="infos-gen">
-            <h3 style="font-family: 'Poppins'">Student Transcription Report</h3>
+            <h3 style="font-family: 'Poppins'; pading:0px">Student Transcription Report</h3>
         </div>
     </section>
-    <section class="notes">
+    <section class="notes" style="padding: 0px;">
         <h3>English Programm</h3>
         <div class="data-table">
             <div class="details"></div>
@@ -237,7 +237,7 @@
             </table>
         </section>
         <section class="comportement">
-            <h3>Comportement</h3>
+            <h3>Observation</h3>
             <p>{{$synt_bulletin->appreciation_fr ? $synt_bulletin->appreciation_fr : ''}}</p>
         </section>
     @endif
