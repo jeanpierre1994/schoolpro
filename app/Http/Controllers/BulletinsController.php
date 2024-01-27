@@ -32,11 +32,13 @@ class BulletinsController extends Controller
             if (!empty($data) || !empty($data->examen_prog_id)) {
                 # code...
             $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
+            
             if($matiere->section_id == 1)
             {
                 $notesSectionFrench[] = $data;
             }else{
-                $notesSectionEng[] = $data;            }
+                $notesSectionEng[] = $data;            
+            }
 
             }
         }

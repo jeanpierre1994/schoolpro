@@ -104,8 +104,7 @@
                                 @method("post")
                                 @if ($update == true)
                                  <input type="hidden" name="classe" value="{{ $get_gp->id }}">
-                                <input type="hidden" name="bulletin" value="{{ $get_bulletin->code }}">
-                                  
+                                <input type="hidden" name="bulletin" value="{{ $get_bulletin->code }}"> 
                                 <button style="float: right" type="submit" class="btn btn-warning btn-sm text-white mb-2" name="valider_appreciation">Valider appreciation</button>
                                 @endif
                             <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
@@ -170,6 +169,16 @@
                                                                     class="btn btn-sm btn-primary"><i
                                                                         class="bi bi-list text-white"
                                                                         style="color: white" aria-hidden="true"></i></button></a>
+
+                                                                        <a href="#" title="Consultation des notes"
+                                                                        data-etudiant="{{ $datas->etudiant_id }}"
+                                                                        data-etudiant_name="{{ $datas->getEtudiant->matricule }} || {{$datas->getEtudiant->getDossier->getPersonne->nom}}  {{$datas->getEtudiant->getDossier->getPersonne->prenoms}} "
+                                                                        data-gp="{{ $get_gp->id }}"
+                                                                        data-bulletin="{{ $datas->code_bulletin }}" class="show-modal">
+                                                                        <button type="button" class="btn btn-sm btn-warning"><i
+                                                                                class="bi bi-list" style="color: white"
+                                                                                aria-hidden="true"></i></button></a>
+
                                         </td>
                                        </tr>
                                         @endforeach
@@ -181,6 +190,38 @@
  
                         </div>
                         <!-- End Bordered Table -->
+
+                        
+
+    <!-- modal consultation bulletin-->
+
+    <div class="modal fade" id="modalConsultationNote" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalematiere" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary w-100 text-center text-white">
+                <h5 class="modal-title text-white" id="modalDelete">Liste des notes de :
+                    <b id="afficher_etudiant"></b> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-12"> 
+                            <section id="table-note">
+
+                            </section>
+                        </div>  
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" id="valider" class="btn btn-primary">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end modal consultation bulletin -->
 
 
                     </div>
@@ -245,6 +286,60 @@
                     }
                 }
             });
+
+            // show modal
+            $(".show-modal").on("click", function() {
+                // get all data
+                var etudiant_id = $(this).attr("data-etudiant");
+                var groupe_pedagogique = $(this).attr("data-gp");
+                var code_bulletin = $(this).attr("data-bulletin"); 
+                // 
+                $.ajax({
+                    url: "{{ route('ajax_requete') }}",
+                    data: {
+                    consultation_note: "ok",
+                    etudiant_id: etudiant_id,
+                    groupe_pedagogique: groupe_pedagogique,
+                    code_bulletin: code_bulletin,
+                        _token: '{{csrf_token()}}'
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(data, status) { 
+                        //console.log(data);
+
+                        $("#table-note").html(data)
+                        /*jQuery.each(data, function(key, value) {
+                            $('#filiere_id').append('<option value="' + value.id + '">' + value.libelle + '</option>');
+                        });*/
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert('Veuillez renseigner tous les champs.'); 
+                        console.log(xhr); 
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                    }
+                });  
+                $("#afficher_etudiant").text($(this).attr("data-etudiant_name"))
+                $('#modalConsultationNote').modal('show')
+            });
+
+            // show delete modal
+            $(".show-delete-modal").on("click", function() {
+                $("#libelle_matiere").val($(this).attr("data-libelle-matiere"));
+                $("#gp_id").val($(this).attr("data-gp"));
+                $("#matiere_delete_id").val($(this).attr("data-matiere"));
+                $("#prof_sup_id").val($(this).attr("data-prof-id"))
+                $('#modalDeleteMatiere').modal('show')
+            });
+
+
+
+
+
+
+
+
 
         });
     </script>
