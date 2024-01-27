@@ -40,7 +40,10 @@ class BulletinsController extends Controller
 
             }
         }
-        $pdf = Pdf::loadView('frontend.bulletins.template', compact('etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng'));
+        $synt_bulletin = Synthesebulletins::where("code_bulletin",$codeBulletin)
+        ->where("etudiant_id",$etudiant_id)
+        ->first();
+        $pdf = Pdf::loadView('frontend.bulletins.template', compact('synt_bulletin', 'etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng'));
         return $pdf->stream();
     }
 
@@ -52,6 +55,71 @@ class BulletinsController extends Controller
         return view("frontend.bulletins.generer_note",compact("gp","bulletins","update"));
     }
 
+    public function consultationNote(Request $request,$etudiant,$gp,$bulletin){
+        $etudiant = \Crypt::decrypt($etudiant);
+        $get_gp = Groupepedagogiques::find($gp);
+        $get_bulletin = Bulletinprog::where("code",$bulletin)->first();
+        $liste_notes = Synthesenotes::where("groupepedagogique_id",$gp)
+        ->where("code_bulletin",$bulletin)
+        ->where("etudiant_id",$etudiant)
+        ->get();
+
+        $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$gp)
+        ->where("code_bulletin",$bulletin)
+        ->where("etudiant_id",$etudiant)
+        ->orderBy("rang","ASC")
+        ->get();
+
+        $update = true; 
+        $get_etudiant = Etudiants::find($etudiant);
+        return view("frontend.bulletins.consultation_note",compact("get_bulletin","get_gp","liste_notes","liste_moyennes","get_etudiant")); 
+
+    }
+
+    public function saveAppreciation(Request $request){
+        /*
+        $this->validate($request, [
+           // 'bulletin' => 'required',
+           // 'classe' => 'required',
+        ]); 
+ 
+        $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+        ->where("code_bulletin",$request->bulletin)->count();
+ 
+        
+            // enregistrement
+            $data = $request->bulletin_id;
+            $appreciation_fr = $request->appreciation_fr;
+            $appreciation_en = $request->appreciation_en; 
+
+            foreach ($data as $key => $bulletin_id) {
+                # code...
+                if (!empty($bulletin_id)) {
+                    # code...
+                $synt_bulletin = Synthesebulletins::find($bulletin_id); 
+                $synt_bulletin->setAttribute("appreciation_fr",$appreciation_fr[$key]);
+                $synt_bulletin->setAttribute("appreciation_en",$appreciation_en[$key]);
+                $synt_bulletin->save();
+                }
+            }
+
+            $gp = Groupepedagogiques::all();
+            $bulletins = Bulletinprog::all();
+            $get_gp = Groupepedagogiques::find($request->classe);
+            $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first();
+            $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)
+            ->get();
+            $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)
+            ->orderBy("rang","ASC")
+            ->get();
+            $update = true; 
+            
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectue avec succes."); 
+        */
+    }
+
     public function saveNote(Request $request){
         $this->validate($request, [
             'bulletin' => 'required',
@@ -60,6 +128,7 @@ class BulletinsController extends Controller
  
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
+
         if ($count_notes > 0 && isset($_POST['afficher'])) {
             $gp = Groupepedagogiques::all();
             $bulletins = Bulletinprog::all();
@@ -74,6 +143,38 @@ class BulletinsController extends Controller
         ->get();
             $update = true; 
             return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes")); 
+        }
+        // save appreciation
+        if (isset($_POST['valider_appreciation'])) {
+            // enregistrement
+            $data = $request->bulletin_id;
+            $appreciation_fr = $request->appreciation_fr;
+            $appreciation_en = $request->appreciation_en; 
+
+            foreach ($data as $key => $bulletin_id) {
+                # code...
+                if (!empty($bulletin_id)) {
+                    # code...
+                $synt_bulletin = Synthesebulletins::find($bulletin_id); 
+                $synt_bulletin->setAttribute("appreciation_fr",$appreciation_fr[$key]);
+                $synt_bulletin->setAttribute("appreciation_en",$appreciation_en[$key]);
+                $synt_bulletin->save();
+                }
+            }
+
+            $gp = Groupepedagogiques::all();
+            $bulletins = Bulletinprog::all();
+            $get_gp = Groupepedagogiques::find($request->classe);
+            $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first();
+            $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)
+            ->get();
+            $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)
+            ->orderBy("rang","ASC")
+            ->get();
+            $update = true; 
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectué avec succès."); 
         }
 
         if ($count_notes > 0) {
@@ -194,17 +295,18 @@ class BulletinsController extends Controller
         $test = 0;
         foreach ($liste_eleves as $key => $eleve) {
             # code...
-            $count = 0; $somme_moyenne = 0; 
+            $count = 0; $somme_moyenne = 0; $somme_coef = 0;
 
             foreach ($get_current_liste_notes as $key => $g_note) {
                 # code...
                 if ($g_note->etudiant_id == $eleve->id) {
                     $test++;
-                    # code...
-                    $my = $g_note->note_first + $g_note->note_second + $g_note->devoir;
+                    # code... my = ( n1*coef + n2*coef + n3*coef ) / 5 / coef
+                    $my = round(($g_note->note_first*$g_note->getExamenprog->getMatiere->coef + $g_note->note_second*$g_note->getExamenprog->getMatiere->coef + $g_note->devoir*$g_note->getExamenprog->getMatiere->coef)/5/$g_note->getExamenprog->getMatiere->coef,2);
                     $my_devoir = $g_note->note_first + $g_note->note_second; 
                     $count = $count + 1; 
                     $somme_moyenne = $somme_moyenne + $my;
+                    $somme_coef = $somme_coef + $g_note->getExamenprog->getMatiere->coef;
                     $update_note = Synthesenotes::find($g_note->id);
                     $update_note->setAttribute("moyenne",$my);
                     $update_note->update();
@@ -219,7 +321,7 @@ class BulletinsController extends Controller
                 $insert_synthesebulletin = new Synthesebulletins();
                 $insert_synthesebulletin->setAttribute("groupepedagogique_id",$request->classe);
                 $insert_synthesebulletin->setAttribute("etudiant_id",$eleve->id);
-                $insert_synthesebulletin->setAttribute("moyenne",ceil(($somme_moyenne*100)/(100*$count)));
+                $insert_synthesebulletin->setAttribute("moyenne",round($somme_moyenne/$somme_coef,2));
                 $insert_synthesebulletin->setAttribute("code_bulletin",$request->bulletin);
                 $insert_synthesebulletin->save();
             }

@@ -9,19 +9,31 @@
 </head>
 
 <body>
-    <header>
-
-        <div class="banniere">
-            <div style="display: flex">
-                <h1 class="">
-                    <span></span>British & French Academy
-                </h1>
-                <h6>Adresse:</h6>
-                <div class="dataschool">
-                    <h6>Email:</h6>
-                </div>
-
-            </div>
+    <header style="background: none; color:#000;">
+ 
+        <div class="row">
+            <table style="width: 100%; border:none;">
+                <tr>
+                    <td style="width: 30%; border:none;">
+                        <img src="{{asset('nice/assets/img/british.png')}}" alt="logo" class="img-responsive" width="auto" height="50px" style="width: auto; height:50px;">
+                    </td>
+                    <td style="text-align: center; font-size:130%; width:40%; border:none;">
+                        BULLETIN BRITISH
+                    </td>
+                    <td style="width: 30%; border:none; text-align:center;">
+                        <div class="col-12">
+                            <b> {{ $personne->nom . ' ' . $personne->prenoms . ' ' . $personne->surnom }}</b>
+                        </div> 
+                            <div class="col-12">
+                                <b> ACADEMIC YEAR 2022-2023</b>
+                            </div> 
+                            <div class="col-12">
+                                <b> AVERAGE MARK/%</b>
+                            </div>
+                    </td>
+                </tr>
+            </table>
+           
         </div>
     </header>
     <main>
@@ -64,10 +76,13 @@
                     <tbody>
                         @php
                             $count_en = 0; $total_en = 0;
-                            
+                            $somme_moyenne = 0; $somme_coef = 0;
                         @endphp
                         @foreach ($notesSectionEng as $data)
                             @php
+                            $my_ok = round(($data->note_first*$data->getExamenprog->getMatiere->coef + $data->note_second*$data->getExamenprog->getMatiere->coef + $data->devoir*$data->getExamenprog->getMatiere->coef)/5/$data->getExamenprog->getMatiere->coef,2);
+                            $somme_moyenne = $somme_moyenne + $my_ok;
+                            $somme_coef = $somme_coef + $data->getExamenprog->getMatiere->coef;
                              $my = $data->note_first + $data->note_second + $data->devoir;
                              $count_en = $count_en + 1; $total_en = $total_en + $my;
                                // $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
@@ -106,11 +121,11 @@
                         </tr>
                         <tr>
                             <td>MARK /(20):</td>
-                            <td colspan="5"><b></b></td>
+                            <td colspan="5"><b>{{round($somme_moyenne/$somme_coef,2)}}</b></td>
                         </tr>
                         <tr>
                             <td>CLASS TEACHER'S REMARK(S):</td>
-                            <td colspan="5"><b></b></td>
+                            <td colspan="5"><b>{{$synt_bulletin->appreciation_en ? $synt_bulletin->appreciation_en : ''}}</b></td>
                         </tr>
 
                     </tbody>
@@ -135,11 +150,16 @@
                 <tbody>
                     @php
                     $count_fr = 0; $total_fr = 0;
+                            $somme_moyenne = 0; $somme_coef = 0;
                     
                 @endphp
                 @if ($notesSectionFrench)
                 @foreach ($notesSectionFrench as $data)
                 @php
+                $my_ok = round(($data->note_first*$data->getExamenprog->getMatiere->coef + $data->note_second*$data->getExamenprog->getMatiere->coef + $data->devoir*$data->getExamenprog->getMatiere->coef)/5/$data->getExamenprog->getMatiere->coef,2);
+                            $somme_moyenne = $somme_moyenne + $my_ok;
+                            $somme_coef = $somme_coef + $data->getExamenprog->getMatiere->coef;
+
                     $my = $data->note_first + $data->note_second + $data->devoir;
                     $my_devoir = $data->note_first + $data->note_second; 
                      $count_fr = $count_fr + 1; $total_fr = $total_fr + $my;
@@ -170,8 +190,8 @@
                 <td colspan="6" style="text-align: left"><b>{{$total_fr}}</b></td>
             </tr>
             <tr>
-                <td>MOYENNE GENERALE (%):</td>
-                <td colspan="6" style="text-align: left"><b>{{ceil(($total_fr*100)/(100*$count_fr))}}%</b></td> 
+                <td>MOYENNE GENERALE (/20):</td>
+                <td colspan="6" style="text-align: left"><b>{{round($somme_moyenne/$somme_coef,2)}} </b></td> 
             </tr>
                 @endif
                     
@@ -180,8 +200,7 @@
         </section>
         <section class="comportement">
             <h3>Comportement</h3>
-            <p>L'élève est un(e) élève sérieux(se) et travailleur(se). Il/Elle est respectueux(se) envers ses camarades
-                et ses professeurs.</p>
+            <p>{{$synt_bulletin->appreciation_fr ? $synt_bulletin->appreciation_fr : ''}}</p>
         </section>
     </main>
     {{-- <footer>

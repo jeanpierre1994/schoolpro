@@ -99,6 +99,15 @@
                         </h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
+                            <form action="{{ route('bulletins.save-note') }}" method="post">
+                                @csrf
+                                @method("post")
+                                @if ($update == true)
+                                 <input type="hidden" name="classe" value="{{ $get_gp->id }}">
+                                <input type="hidden" name="bulletin" value="{{ $get_bulletin->code }}">
+                                  
+                                <button style="float: right" type="submit" class="btn btn-warning btn-sm text-white mb-2" name="valider_appreciation">Valider appreciation</button>
+                                @endif
                             <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
                                     <tr>
@@ -115,7 +124,8 @@
                                 </thead>
                                 <tbody>
                                     @if ($update == true)
-                                    @php
+                                    
+                                      @php
                                         $i=1;
                                     @endphp
                                         @foreach ($liste_moyennes as $datas) 
@@ -130,96 +140,45 @@
                                             @else
                                            
                                             @if ($liste_moyennes[$loop->index - 1]->rang == $datas->rang)
-                                            {{$datas->rang}}x ex                                                
+                                            {{$datas->rang}} ex                                                
                                             @else
                                             {{$datas->rang}} eme                                                
                                             @endif
 
                                             @endif
                                         </td>
-                                        <td>{{ $datas->moyenne ? $datas->moyenne : 0 }}%</td>
-                                        <td> - - -</td>
-                                        <td> - - -</td>
-                                        <td></td>
-                                       </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table> <br><br><br>
-
-                            <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Matricule</th>
-                                        <th scope="col">Eleve</th>
-                                        <th scope="col">Matiere</th>
-                                        <th scope="col">Note 1 (20)</th>
-                                        <th scope="col">Note 2 (20)</th>
-                                        <th scope="col">Devoir (60)</th>
-                                        <th scope="col">Moyenne (100)</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if ($update == true)
-                                        @php
-                                            $i = 1;
-                                        @endphp
-                                        @foreach ($liste_notes as $data)
-                                        @php
-                                           // $my = ceil( (($data->note_first+$data->note_second)/2 + ($data->devoir*$data->getExamenprog->getMatiere->coef) )/2);
-                                           $my = $data->note_first+$data->note_second +$data->devoir;
-                                       @endphp
-                                            <tr>
-                                                <td><b>{{ $i++ }}</b></td>
-                                                <td>{{ $data->etudiant_id ? $data->getEtudiant->matricule : '' }}</td>
-                                                <td>{{ $data->etudiant_id ? $data->getEtudiant->getDossier->getPersonne->nom : '' }}
-                                                </td>
-                                                <td>{{ $data->examen_prog_id ? $data->getExamenprog->getMatiere->libelle : '' }}
-                                                </td>
-                                                <td>{{ $data->note_first ? $data->note_first : 0 }}</td>
-                                                <td>{{ $data->note_second ? $data->note_second : 0 }}</td>
-                                                <td>{{ $data->devoir ? $data->devoir : 0  }}</td>
-                                                <td>{{$my}}</td>
-                                                <td class="text-center">
-                                                     <a target="_blank"
-                                                        href="{{ route('show-bulletin', ['id' => \Crypt::encrypt($data->etudiant_id), 'codeBulletin'=>$data->code_bulletin]) }}"
+                                        <td>{{ $datas->moyenne ? $datas->moyenne : 0 }}</td>
+                                        <td>
+                                            <input type="hidden" name="bulletin_id[]" value="{{$datas->id}}" required>
+                                            <input type="text" name="appreciation_fr[]" value="{{$datas->appreciation_fr}}" id="" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="appreciation_en[]" value="{{$datas->appreciation_en}}" id="" class="form-control">
+                                        </td>
+                                        <td>
+                                            <a target="_blank"
+                                                        href="{{ route('show-bulletin', ['id' => \Crypt::encrypt($datas->etudiant_id), 'codeBulletin'=>$datas->code_bulletin]) }}"
                                                         title="Bulletin"><button type="button"
                                                             class="btn btn-sm btn-danger"><i
                                                                 class="bi bi-file-earmark-pdf text-white"
                                                                 style="color: white" aria-hidden="true"></i></button></a>
-                                                    {{-- <form
-                                                        action="{{ route('admin.etudiant.mail', \Crypt::encrypt($item->id)) }}">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <input type="hidden" name="etudiant_id"
-                                                            value="{{ \Crypt::encrypt($etudiant->id) }}">
-                                                        <button type="submit" class="btn btn-sm btn-primary"><i
-                                                                class="bi bi-envelope text-white" style="color: white"
-                                                                aria-hidden="true"></i>
-                                                        </button>
-                                                    </form> --}}
 
-
-                                                </td>
-                                            </tr>
+                                            
+                                                                <a target="_blank"
+                                                                href="{{ route('bulletins.consultation-note', ['etudiant' => \Crypt::encrypt($datas->etudiant_id), 'gp'=>$get_gp->id,'bulletin'=>$datas->code_bulletin]) }}"
+                                                                title="Bulletin détaillé"><button type="button"
+                                                                    class="btn btn-sm btn-primary"><i
+                                                                        class="bi bi-list text-white"
+                                                                        style="color: white" aria-hidden="true"></i></button></a>
+                                        </td>
+                                       </tr>
                                         @endforeach
-                                    @else
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
                                     @endif
                                 </tbody>
-                            </table>
+                            </table> 
+                        </form>
+                            
+ 
                         </div>
                         <!-- End Bordered Table -->
 
