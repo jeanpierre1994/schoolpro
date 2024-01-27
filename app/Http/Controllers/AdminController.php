@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bulletinprog;
 use App\Models\User;
 use App\Models\Poles;
 use App\Models\Sites;
@@ -21,10 +22,13 @@ use App\Models\Examentypes;
 use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
+use App\Models\Etudiants;
 use App\Models\Statutjuridiques;
 use App\Models\Groupepedagogiques;
 use App\Models\Matiereprofesseurs;
 use App\Models\Sessioncorrections;
+use App\Models\Synthesebulletins;
+use App\Models\Synthesenotes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert as Alert; 
@@ -180,6 +184,69 @@ class AdminController extends Controller
      */
     public function ajaxRequete(Request $request)
     {
+        // consultation des notes
+        // get_matiere
+        if (isset($_POST['consultation_note'])) { 
+            $etudiant_id = $_POST['etudiant_id'];
+            $groupe_pedagogique = $_POST['groupe_pedagogique'];
+            $code_bulletin = $_POST['code_bulletin'];
+
+            $get_gp = Groupepedagogiques::find($groupe_pedagogique);
+        $get_bulletin = Bulletinprog::where("code",$code_bulletin)->first();
+
+        $liste_notes = Synthesenotes::where("groupepedagogique_id",$groupe_pedagogique)
+        ->where("code_bulletin",$code_bulletin)
+        ->where("etudiant_id",$etudiant_id)
+        ->get();
+
+        $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$groupe_pedagogique)
+        ->where("code_bulletin",$code_bulletin)
+        ->where("etudiant_id",$etudiant_id)
+        ->orderBy("rang","ASC")
+        ->get();
+
+        $update = true; 
+        $get_etudiant = Etudiants::find($etudiant_id);
+
+        $table_note = '
+
+        <div class="table-responsive"> 
+
+                            <table id="tableHead" class="table table-striped table-hover table-bordered data-tables">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th> 
+                                        <th scope="col">Matiere</th>
+                                        <th scope="col">Note 1 (20)</th>
+                                        <th scope="col">Note 2 (20)</th>
+                                        <th scope="col">Devoir (60)</th>
+                                        <th scope="col">Total (100)</th>
+                                        <th scope="col">Moyenne (20)</th> 
+                                    </tr>
+                                </thead>
+                                <tbody> ';
+                                 
+                                            $i = 1; 
+                                        foreach ($liste_notes as $key => $data) {
+                                                # code... 
+                                           // $my = ceil( (($data->note_first+$data->note_second)/2 + ($data->devoir*$data->getExamenprog->getMatiere->coef) )/2);
+                                           $my = $data->note_first+$data->note_second+$data->devoir;
+
+                                           $table_note .= '<tr>';
+                                           $table_note .= '<td><b>'.$i++.'</b></td><td>'. $data->getExamenprog->getMatiere->libelle .'</td><td>'. $data->note_first .'</td><td>'. $data->note_second .'</td><td>'. $data->devoir .'</td><td>'.$my.'</td><td>'. $data->moyenne .'</td></tr>';
+
+                                       }
+                                   
+                          $table_note .= '</tbody>
+                       </table>
+                   </div>
+   
+   ';
+
+ 
+            return json_encode($table_note,true);          
+        }
+
         // get_matiere
         if (isset($_POST['get_matiere'])) { 
             $gp_id = $_POST['gp_id'];
