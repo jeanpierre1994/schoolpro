@@ -243,9 +243,34 @@
     @endif
 
 </main>
-{{-- <footer>
-    <p>Copyright © 2024 École bilingue</p>
-</footer> --}}
+<div style="display: flex; justify-content:space-between;">
+    <div></div>
+    <table style="width: 100%; border:none; background: transparent; ">
+        <tr style="background: transparent;">
+            <td style="width: 30%; border:none; margin-right: 0; ">
+                <img src="nice/assets/img/badgeBritish.png" alt="badge" class="img-responsive" width="auto" height="50px"
+                     style="width: auto; height:150px;">
+
+            </td>
+            <td style="border: none; margin-left: 0; padding-left: 0">
+                    <p style="font-family: montserrat; font-size: 15px">
+                        <i>The Principal</i>
+                    </p>
+                <p style="font-family: Poppins; font-size: 18px; font-weight: bold; margin-bottom: 0">
+                    Charlotte Frédérique K. de SOUZA
+                </p>
+                <div style="width: 400px; height: 2px; background-color: #6d4c41; margin-left: -2px; ">
+
+                </div>
+                <p style="margin-left: 300px">
+                    <i>
+                        {{\Illuminate\Support\Facades\Date::make(now())->format(" d F Y ")}}
+                    </i>
+                </p>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 <style>
     body {
@@ -317,12 +342,6 @@
         background-color: #eee;
     }
 
-    footer {
-        background-color: #000;
-        color: #fff;
-        padding: 20px;
-        text-align: center;
-    }
 
     .notes th {
         text-align: center;
