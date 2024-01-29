@@ -32,7 +32,7 @@ class BulletinsController extends Controller
             if (!empty($data) || !empty($data->examen_prog_id)) {
                 # code...
             $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
-            
+
             if($matiere->section_id == 1)
             {
                 $notesSectionFrench[] = $data;
@@ -42,10 +42,12 @@ class BulletinsController extends Controller
 
             }
         }
+        
         $synt_bulletin = Synthesebulletins::where("code_bulletin",$codeBulletin)
         ->where("etudiant_id",$etudiant_id)
         ->first();
-        $pdf = Pdf::loadView('frontend.bulletins.template', compact('synt_bulletin', 'etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng'));
+        $bulletin_info = Bulletinprog::where("code",$codeBulletin)->first();
+        $pdf = Pdf::loadView('frontend.bulletins.template', compact('bulletin_info', 'synt_bulletin', 'etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng'));
         return $pdf->stream();
     }
 

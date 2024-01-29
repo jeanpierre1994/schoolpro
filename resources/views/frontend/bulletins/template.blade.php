@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body style="font-size:75%; font-family: 'Work Sans', sans-serif;">
+<body style="font-size:95%; font-family: 'Work Sans', sans-serif;">
 <header style="background: none; color:#000;">
 
     <div class="row">
@@ -17,15 +17,15 @@
                 <td style="width: 30%; border:none;">
                     <img src="nice/assets/img/british.png" alt="logo" class="img-responsive" width="auto" height="50px"
                          style="width: auto; height:150px;">
-                    <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: bold; font-size: 12px; margin-top: 5px ; margin-bottom: 0">
+                    <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: bold; font-size: 18px; margin-top: 5px ; margin-bottom: 0">
                         Born on {{ \Illuminate\Support\Facades\Date::make($personne->ddn)->format(" d F Y ") }}</p>
-                    <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: bold; font-size: 12px; margin-top: 5px ; margin-bottom: 0">
+                    <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: bold; font-size: 18px; margin-top: 5px ; margin-bottom: 0">
                         {{ $personne->genre == 1 ? "BOY" : "GIRL" }} <span
                             style="font-size: 20px; font-weight: bolder; margin-left: 40px;">{{$etudiant->getGp->libelle_classe . ' | ' . $etudiant->getGp->libelle_secondaire}}</span>
                     </p>
                 </td>
                 <td style="text-align: center; font-size:130%; width:40%; border:none; ">
-                    <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: inherit; font-size: 10px; margin-top: 0 ; margin-bottom: 0">
+                    <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: inherit; font-size: 18px; margin-top: 0 ; margin-bottom: 0">
                         Quartier JAK, Lot 209 A | 06 BP 129 COTONOU | Tel. 97 20 95 88 | 97 46 45 70</p>
 
                     <p style="font-weight: bold; margin-top: 0">BRITISH <span style="color: red">&</span> FRENCH ACADEMY
@@ -35,12 +35,12 @@
                     <p style="color: orangered;font-family: 'Poppins'; font-weight: lighter; font-size: 25px; margin-top: 0; margin-bottom: 5px ">
                         BULLETIN</p>
                     <p style="font-family: 'Poppins'; font-weight: bold; font-size: 17px; margin-top: 0 ">
-                        fbritishacademy@gmail.com</p>
+                        fbritishacademy@gmail.com &nbsp;&nbsp;&nbsp;&nbsp; <span style="padding: 5px; background-color:rgb(204, 230, 230);">www.brif.one</span></p>
 
                 </td>
                 <td style="width: 30%; border:none; text-align:center;">
                     <div class="col-12" style="font-weight: lighter; margin-bottom: 10px ">
-                        <a style="font-size: 15px; padding-bottom: 50px"> {{ $personne->nom . ' ' . $personne->prenoms . ' ' . $personne->surnom }}</a>
+                        <a style="font-size: 18px; padding-bottom: 50px"> {{ $personne->nom . ' ' . $personne->prenoms . ' ' . $personne->surnom }}</a>
                     </div>
                     <div class="col-12" style="background: #6d4c41">
                         <b style="color: white; font-size: 20px; font-family: 'Work Sans', sans-serif;"> ACADEMIC YEAR
@@ -87,13 +87,13 @@
     </div>
 </header>
 <main>
-    <section class="infos-generales">
+    {{--<section class="infos-generales">
         <div class="infos-gen">
             <h3 style="font-family: 'Poppins'; pading:0px">Student Transcription Report</h3>
         </div>
-    </section>
+    </section>--}}
     <section class="notes" style="padding: 0px;">
-        <h3>English Programm</h3>
+        <h3>ENGLISH || {{ $bulletin_info->libelle_secondaire}}</h3>
         <div class="data-table">
             <div class="details"></div>
             <table style="font-family: 'Poppins'">
@@ -172,7 +172,7 @@
     <br><br>
     @if($notesSectionFrench != null)
         <section class="notes">
-            <h3>Programme Français</h3>
+            <h3>FRANCAIS || {{ $bulletin_info->libelle_secondaire}}</h3>
             <table style="font-family: 'Poppins'">
                 <thead>
                 <tr>
