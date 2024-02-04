@@ -399,4 +399,5 @@ Route::get('admin/bulletins/template/{id}/{codeBulletin}/afficher', [BulletinsCo
 Route::get('admin/bulletins/genere/note', [BulletinsController::class, 'genereNote'])->name('bulletins.generer-note')->middleware('auth');
 Route::post('admin/bulletins/save/note', [BulletinsController::class, 'saveNote'])->name('bulletins.save-note')->middleware('auth');
 Route::get('admin/consultation/{etudiant}/{gp}/{bulletin}/note', [BulletinsController::class, 'consultationNote'])->name('bulletins.consultation-note')->middleware('auth');
+Route::get('admin/bulletins/synthese/{id}/{codeBulletin}/afficher', [BulletinsController::class, 'synthese'])->name('show-bulletinSynthese');
 //Route::post('admin/bulletins/save/appreciation', [BulletinsController::class, 'saveAppreciation'])->name('bulletins.save-appreciation')->middleware('auth');
