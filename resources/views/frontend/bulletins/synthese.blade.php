@@ -207,11 +207,9 @@
                                 @endphp
                                 <tr>
                                     <td style="text-align: left;">{{ $data->getExamenprog->getMatiere->libelle }}</td>
-                                    <td>{{ $data->note_first }}</td>
-                                    <td>{{ $data->note_second }}</td>
-                                    <td>{{$my_devoir}}</td>
-                                    <td>{{ $data->devoir }}</td>
                                     <td>{{ $my }}</td>
+                                    <td>{{$data->getExamenprog->getMatiere->coef}}</td>
+                                    <td>{{ $my * $data->getExamenprog->getMatiere->coef }}</td>
                                     <td>
                                         @if ($my < 50)
                                             FAIBLE
