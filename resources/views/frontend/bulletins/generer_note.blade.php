@@ -32,20 +32,23 @@
                                     <div class="form-group">
                                         <label for="label fw-bold">Classe</label>
                                         <select name="classe" id="classe" class="form-select">
-                                            @if ($update)
+                                            <optgroup label="Valeur par defaut">
+                                                @if ($update)
                                             <option selected value="{{ $get_gp->id }}">{{ $get_gp->getCycle->libelle }}
                                                 {{ $get_gp->getPole->libelle }} {{ $get_gp->getFiliere->libelle }}
                                                     {{ $get_gp->libelle_classe }} {{ $get_gp->libelle_secondaire }}
                                             </option>
                                             @else
                                             <option value="">--- Choisissez une valeur ---</option>
+                                            </optgroup>
                                             @endif
-
-                                            @foreach ($gp as $item)
-                                                <option value="{{ $item->id }}">{{ $item->getCycle->libelle }}
-                                                    {{ $item->getPole->libelle }} {{ $item->getFiliere->libelle }}
-                                                    {{ $item->libelle_classe }} {{ $item->libelle_secondaire }}</option>
-                                            @endforeach
+                                            <optgroup label="liste disponible">
+                                                @foreach ($gp as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->getCycle->libelle }}
+                                                        {{ $item->getPole->libelle }} {{ $item->getFiliere->libelle }}
+                                                        {{ $item->libelle_classe }} {{ $item->libelle_secondaire }}</option>
+                                                @endforeach
+                                            </optgroup>
                                         </select>
                                     </div>
                                 </div>
@@ -53,16 +56,20 @@
                                     <div class="form-group">
                                         <label for="label fw-bold">Bulletin</label>
                                         <select name="bulletin" id="bulletin" class="form-select">
-                                            @if ($update)
-                                            <option selected value="{{ $get_bulletin->code }}">{{ $get_bulletin->code }} {{ $get_bulletin->libelle_primaire }}</option>
+                                            <optgroup label="Valeur par defaut">
+                                                @if ($update)
+                                            <option selected value="{{ $get_bulletin->code }}">{{ $get_bulletin->code }} {{ $get_bulletin->libelle_primaire }} {{ $item->annee }}</option>
                                             @else
                                             <option value="">--- Choisissez une valeur ---</option>                                            
                                             @endif
+                                            </optgroup>
 
-                                            @foreach ($bulletins as $item)
+                                            <optgroup label="Liste disponible">
+                                                @foreach ($bulletins as $item)
                                                 <option value="{{ $item->code }}">{{ $item->code }}
-                                                    {{ $item->libelle_primaire }}</option>
+                                                    {{ $item->libelle_primaire }} {{ $item->annee }}</option>
                                             @endforeach
+                                            </optgroup>
                                         </select>
                                     </div>
                                 </div>
@@ -90,7 +97,7 @@
                                 Classe : {{ $get_gp->getCycle->libelle }} {{ $get_gp->getPole->libelle }}
                                 {{ $get_gp->getFiliere->libelle }} {{ $get_gp->libelle_classe }}
                                 {{ $get_gp->libelle_secondaire }} &nbsp;&nbsp;&nbsp;
-                                Bulletin : {{ $get_bulletin->code_bulletin }} {{ $get_bulletin->libelle_primaire }}
+                                Bulletin : {{ $get_bulletin->code_bulletin }} {{ $get_bulletin->libelle_primaire }} {{ $get_bulletin->annee }}
                             @else
                             
                             Classe................ Bulletin ................

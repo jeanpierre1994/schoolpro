@@ -9,7 +9,7 @@
 </head>
 
 <body style="font-size:95%; font-family: 'Work Sans', sans-serif;">
-<header style="background: none; color:#000;">
+<header style="background: none; color:#000;padding:0px;">
 
     <div class="row">
         <table style="width: 100%; border:none; background: transparent">
@@ -93,12 +93,12 @@
         </div>
     </section>--}}
     <section class="notes" style="padding: 0px;">
-        <h3>ENGLISH || {{ $bulletin_info->libelle_secondaire}}</h3>
+        <h3>ENGLISH | {{ $bulletin_info->libelle_secondaire}}</h3>
         <div class="data-table">
             <div class="details"></div>
-            <table style="font-family: 'Poppins'">
-                <thead>
-                <tr>
+            <table style="font-family: 'Poppins'; padding:0px;">
+                <thead style="padding:0px;">
+                <tr style="padding:0px;">
                     <th>Subject</th>
                     <th>TEST1 (20)</th>
                     <th>TEST2 (20)</th>
@@ -107,7 +107,7 @@
                     <th>REMARKS</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody style="padding:0px;">
                 @php
                     $count_en = 0; $total_en = 0;
                     $somme_moyenne = 0; $somme_coef = 0;
@@ -121,7 +121,7 @@
                          $count_en = $count_en + 1; $total_en = $total_en + $my;
                            // $my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
                     @endphp
-                    <tr>
+                    <tr style="padding:0px;">
                         <td style="text-align: left">{{ $data->getExamenprog->getMatiere->libelle }}</td>
                         <td>{{ $data->note_first }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
                         <td>{{ $data->note_second }}/{{ $data->getExamenprog->getMatiere->note_max }}</td>
@@ -145,21 +145,21 @@
                     </tr>
 
                 @endforeach
-                <tr>
+                <tr style="padding:0px;">
                     <td>TOTAL MARK /(N):</td>
                     <td colspan="5" style="text-align: left"><b>{{$total_en}}</b></td>
                 </tr>
-                <tr>
+                <tr style="padding:0px;">
                     <td>AVERAGE MARK (%):</td>
                     <td colspan="2" style="text-align: left"><b>{{ceil(($total_en*100)/(100*$count_en))}}%</b></td>
                     <td>SCORING KEY :</td>
                     <td colspan="2"></td>
                 </tr>
-                <tr>
+                <tr style="padding:0px;">
                     <td>MARK /(20):</td>
                     <td colspan="5"><b>{{round($somme_moyenne/$somme_coef,2)}}</b></td>
                 </tr>
-                <tr>
+                <tr style="padding:0px;">
                     <td>CLASS TEACHER'S REMARK(S):</td>
                     <td colspan="5"><b>{{$synt_bulletin->appreciation_en ? $synt_bulletin->appreciation_en : ''}}</b>
                     </td>
@@ -168,14 +168,13 @@
                 </tbody>
             </table>
         </div>
-    </section>
-    <br><br>
+    </section> 
     @if($notesSectionFrench != null)
         <section class="notes">
-            <h3>FRANCAIS || {{ $bulletin_info->libelle_secondaire}}</h3>
-            <table style="font-family: 'Poppins'">
-                <thead>
-                <tr>
+            <h3>FRANCAIS | {{ $bulletin_info->libelle_secondaire}}</h3>
+            <table style="font-family: 'Poppins';padding:0px;">
+                <thead style="padding:0px;">
+                <tr style="padding:0px;">
                     <th>MATIERE</th>
                     <th>DEVOIRS_1 /20</th>
                     <th>DEVOIRS_2 /20</th>
@@ -185,7 +184,7 @@
                     <th>APPRECIATION</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody style="padding:0px;">
                 @php
                     $count_fr = 0; $total_fr = 0;
                             $somme_moyenne = 0; $somme_coef = 0;
@@ -203,7 +202,7 @@
                                  $count_fr = $count_fr + 1; $total_fr = $total_fr + $my;
                                 //$my = ceil((($data->note_first + $data->note_second) / 2 + $data->devoir * $data->getExamenprog->getMatiere->coef) / 2);
                         @endphp
-                        <tr>
+                        <tr style="padding:0px;">
                             <td style="text-align: left;">{{ $data->getExamenprog->getMatiere->libelle }}</td>
                             <td>{{ $data->note_first }}</td>
                             <td>{{ $data->note_second }}</td>
@@ -223,23 +222,24 @@
                             </td>
                         </tr>
                     @endforeach
-                    <tr>
+                    <tr style="padding:0px;">
                         <td>TOTAUX :</td>
                         <td colspan="6" style="text-align: left"><b>{{$total_fr}}</b></td>
                     </tr>
-                    <tr>
+                    <tr style="padding:0px;">
                         <td>MOYENNE GENERALE (/20):</td>
                         <td colspan="6" style="text-align: left"><b>{{round($somme_moyenne/$somme_coef,2)}} </b></td>
+                    </tr>
+                    <tr style="padding:0px;">
+                        <td>Observation :</td>
+                        <td colspan="6"><b>{{$synt_bulletin->appreciation_fr ? $synt_bulletin->appreciation_fr : ''}}</b>
+                        </td>
                     </tr>
                 @endif
 
                 </tbody>
             </table>
-        </section>
-        <section class="comportement">
-            <h3>Observation</h3>
-            <p>{{$synt_bulletin->appreciation_fr ? $synt_bulletin->appreciation_fr : ''}}</p>
-        </section>
+        </section> 
     @endif
 
 </main>
