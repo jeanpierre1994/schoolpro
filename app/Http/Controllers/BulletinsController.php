@@ -28,7 +28,7 @@ class BulletinsController extends Controller
         $notesSectionFrench = [];
         $notesSectionEng = [];
         foreach( $bulletinData as $data )
-        { 
+        {
             if (!empty($data) || !empty($data->examen_prog_id)) {
                 # code...
             $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
@@ -37,12 +37,12 @@ class BulletinsController extends Controller
             {
                 $notesSectionFrench[] = $data;
             }else{
-                $notesSectionEng[] = $data;            
+                $notesSectionEng[] = $data;
             }
 
             }
         }
-        
+
         $synt_bulletin = Synthesebulletins::where("code_bulletin",$codeBulletin)
         ->where("etudiant_id",$etudiant_id)
         ->first();
@@ -74,9 +74,9 @@ class BulletinsController extends Controller
         ->orderBy("rang","ASC")
         ->get();
 
-        $update = true; 
+        $update = true;
         $get_etudiant = Etudiants::find($etudiant);
-        return view("frontend.bulletins.consultation_note",compact("get_bulletin","get_gp","liste_notes","liste_moyennes","get_etudiant")); 
+        return view("frontend.bulletins.consultation_note",compact("get_bulletin","get_gp","liste_notes","liste_moyennes","get_etudiant"));
 
     }
 
@@ -85,22 +85,22 @@ class BulletinsController extends Controller
         $this->validate($request, [
            // 'bulletin' => 'required',
            // 'classe' => 'required',
-        ]); 
- 
+        ]);
+
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
- 
-        
+
+
             // enregistrement
             $data = $request->bulletin_id;
             $appreciation_fr = $request->appreciation_fr;
-            $appreciation_en = $request->appreciation_en; 
+            $appreciation_en = $request->appreciation_en;
 
             foreach ($data as $key => $bulletin_id) {
                 # code...
                 if (!empty($bulletin_id)) {
                     # code...
-                $synt_bulletin = Synthesebulletins::find($bulletin_id); 
+                $synt_bulletin = Synthesebulletins::find($bulletin_id);
                 $synt_bulletin->setAttribute("appreciation_fr",$appreciation_fr[$key]);
                 $synt_bulletin->setAttribute("appreciation_en",$appreciation_en[$key]);
                 $synt_bulletin->save();
@@ -118,9 +118,9 @@ class BulletinsController extends Controller
             ->where("code_bulletin",$request->bulletin)
             ->orderBy("rang","ASC")
             ->get();
-            $update = true; 
-            
-            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectue avec succes."); 
+            $update = true;
+
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectue avec succes.");
         */
     }
 
@@ -129,7 +129,7 @@ class BulletinsController extends Controller
             'bulletin' => 'required',
             'classe' => 'required',
         ]);
- 
+
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
 
@@ -145,21 +145,21 @@ class BulletinsController extends Controller
         ->where("code_bulletin",$request->bulletin)
         ->orderBy("rang","ASC")
         ->get();
-            $update = true; 
-            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes")); 
+            $update = true;
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"));
         }
         // save appreciation
         if (isset($_POST['valider_appreciation'])) {
             // enregistrement
             $data = $request->bulletin_id;
             $appreciation_fr = $request->appreciation_fr;
-            $appreciation_en = $request->appreciation_en; 
+            $appreciation_en = $request->appreciation_en;
 
             foreach ($data as $key => $bulletin_id) {
                 # code...
                 if (!empty($bulletin_id)) {
                     # code...
-                $synt_bulletin = Synthesebulletins::find($bulletin_id); 
+                $synt_bulletin = Synthesebulletins::find($bulletin_id);
                 $synt_bulletin->setAttribute("appreciation_fr",$appreciation_fr[$key]);
                 $synt_bulletin->setAttribute("appreciation_en",$appreciation_en[$key]);
                 $synt_bulletin->save();
@@ -177,16 +177,16 @@ class BulletinsController extends Controller
             ->where("code_bulletin",$request->bulletin)
             ->orderBy("rang","ASC")
             ->get();
-            $update = true; 
-            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectué avec succès."); 
+            $update = true;
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectué avec succès.");
         }
 
         if ($count_notes > 0) {
             $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
-            ->where("code_bulletin",$request->bulletin)->delete(); 
+            ->where("code_bulletin",$request->bulletin)->delete();
             // delete synthese note for this class
             $delete_bulletin = $count_notes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
-            ->where("code_bulletin",$request->bulletin)->delete(); 
+            ->where("code_bulletin",$request->bulletin)->delete();
         }
 
         // liste des examens
@@ -197,15 +197,15 @@ class BulletinsController extends Controller
         } else {
             # code...
             return redirect()->route("bulletins.generer-note")->with('error', "Nombre d'examen superieur a 3, impossible de traiter la demande pour l'instant");
-        
+
         }
-        
+
 
         // enregistrement des donnees dans la premiere colonne
         $notes_one = Notes::join("sessioncorrections","sessioncorrections.id","=","notes.sessioncorrection_id")
         ->join("examenprogs","examenprogs.id","=","sessioncorrections.examen_prog_id")
-        ->join("examens","examens.id","=","examenprogs.examen_id") 
-        ->join("matieres","matieres.id","=","examenprogs.matiere_id") 
+        ->join("examens","examens.id","=","examenprogs.examen_id")
+        ->join("matieres","matieres.id","=","examenprogs.matiere_id")
         ->where("notes.groupepedagogique_id",$request->classe)
         ->where("matieres.groupepedagogique_id",$request->classe)
         ->where("examens.colonnes",1)
@@ -222,12 +222,12 @@ class BulletinsController extends Controller
                 $note = $value->note_examen ? $value->note_examen : 0;
                 $synthese_note->setAttribute("note_first",$note);
                 $synthese_note->setAttribute("code_bulletin",$request->bulletin);
-                $synthese_note->save(); 
+                $synthese_note->save();
             }
         }
 
 
-       
+
 
         // enregistrement des donnees dans la deuxieme colonne...
         $get_synthese_note = Synthesenotes::where("groupepedagogique_id",$request->classe)
@@ -235,8 +235,8 @@ class BulletinsController extends Controller
         ->get();
         $notes_two = Notes::join("sessioncorrections","sessioncorrections.id","=","notes.sessioncorrection_id")
         ->join("examenprogs","examenprogs.id","=","sessioncorrections.examen_prog_id")
-        ->join("examens","examens.id","=","examenprogs.examen_id") 
-        ->join("matieres","matieres.id","=","examenprogs.matiere_id") 
+        ->join("examens","examens.id","=","examenprogs.examen_id")
+        ->join("matieres","matieres.id","=","examenprogs.matiere_id")
         ->where("notes.groupepedagogique_id",$request->classe)
         ->where("matieres.groupepedagogique_id",$request->classe)
         ->where("examens.colonnes",2)
@@ -252,21 +252,21 @@ class BulletinsController extends Controller
                     if ($notes_tw->etudiant_id == $data->etudiant_id && $notes_tw->groupepedagogique_id == $data->groupepedagogique_id && $notes_tw->matiere_id == $data->getExamenprog->matiere_id ) {
                         # code...
 
-                        $synthese_note = Synthesenotes::find($data->id); 
+                        $synthese_note = Synthesenotes::find($data->id);
                         $note = $notes_tw->note_examen ? $notes_tw->note_examen : 0;
                         $synthese_note->setAttribute("note_second",$note);
-                        $synthese_note->update(); 
+                        $synthese_note->update();
                     }
                 }
             }
         }
-    
+
 
         // enregistrement des donnees dans la premiere colonne
         $notes_tree = Notes::join("sessioncorrections","sessioncorrections.id","=","notes.sessioncorrection_id")
         ->join("examenprogs","examenprogs.id","=","sessioncorrections.examen_prog_id")
-        ->join("examens","examens.id","=","examenprogs.examen_id") 
-        ->join("matieres","matieres.id","=","examenprogs.matiere_id") 
+        ->join("examens","examens.id","=","examenprogs.examen_id")
+        ->join("matieres","matieres.id","=","examenprogs.matiere_id")
         ->where("notes.groupepedagogique_id",$request->classe)
         ->where("matieres.groupepedagogique_id",$request->classe)
         ->where("examens.colonnes",3)
@@ -281,10 +281,10 @@ class BulletinsController extends Controller
                     # code...
                     if ($notes_tre->etudiant_id == $value->etudiant_id && $notes_tre->groupepedagogique_id == $value->groupepedagogique_id && $notes_tre->matiere_id == $value->getExamenprog->matiere_id  ) {
                         # code...
-                        $synthese_note = Synthesenotes::find($value->id); 
+                        $synthese_note = Synthesenotes::find($value->id);
                         $note = $notes_tre->note_examen ? $notes_tre->note_examen : 0;
                         $synthese_note->setAttribute("devoir",$note);
-                        $synthese_note->update(); 
+                        $synthese_note->update();
                     }
                 }
             }
@@ -295,7 +295,7 @@ class BulletinsController extends Controller
         // calcul des moyennes par matiere
         $get_current_liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)
-        ->get(); 
+        ->get();
         $test = 0;
         foreach ($liste_eleves as $key => $eleve) {
             # code...
@@ -307,20 +307,20 @@ class BulletinsController extends Controller
                     $test++;
                     # code... my = ( n1*coef + n2*coef + n3*coef ) / 5 / coef
                     $my = round(($g_note->note_first*$g_note->getExamenprog->getMatiere->coef + $g_note->note_second*$g_note->getExamenprog->getMatiere->coef + $g_note->devoir*$g_note->getExamenprog->getMatiere->coef)/5/$g_note->getExamenprog->getMatiere->coef,2);
-                    $my_devoir = $g_note->note_first + $g_note->note_second; 
-                    $count = $count + 1; 
+                    $my_devoir = $g_note->note_first + $g_note->note_second;
+                    $count = $count + 1;
                     $somme_moyenne = $somme_moyenne + $my;
                     $somme_coef = $somme_coef + $g_note->getExamenprog->getMatiere->coef;
                     $update_note = Synthesenotes::find($g_note->id);
                     $update_note->setAttribute("moyenne",$my);
                     $update_note->update();
                 }
-    
-            } 
-            
+
+            }
+
             // check if eleve have the note
             if($count > 0 && $somme_moyenne > 0){
-                
+
                 // insert data int table synthese bulletin
                 $insert_synthesebulletin = new Synthesebulletins();
                 $insert_synthesebulletin->setAttribute("groupepedagogique_id",$request->classe);
@@ -331,8 +331,8 @@ class BulletinsController extends Controller
             }
 
         }
-        
-        // update rang 
+
+        // update rang
         $get_current_liste_notes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)
         ->orderBy("moyenne","DESC")
@@ -346,8 +346,8 @@ class BulletinsController extends Controller
             $up->setAttribute("rang",$rang);
             $up->update();
         }
-        
- 
+
+
         $gp = Groupepedagogiques::all();
         $bulletins = Bulletinprog::all();
         $get_gp = Groupepedagogiques::find($request->classe);
@@ -360,9 +360,46 @@ class BulletinsController extends Controller
         ->where("code_bulletin",$request->bulletin)
         ->orderBy("rang","ASC")
         ->get();
-        $update = true; 
+        $update = true;
         return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"));
     }
 
+    public function synthese($id, $codeBulletin)
+    {
+        $etudiant_id = \Crypt::decrypt($id);
+        $etudiant = Etudiants::find($etudiant_id);
+        $bulletinData = Synthesenotes::get()->where('etudiant_id', $etudiant_id)->where('code_bulletin', $codeBulletin);
+        $bulletinSyn = Synthesebulletins::get()->where('etudiant_id', $etudiant_id)->where('code_bulletin', $codeBulletin);
+        $personne = Personnes::where('id', $etudiant->getDossier->personne_id)->get()->first() ;
+
+        $notesSectionFrench = [];
+        $notesSectionEng = [];
+        $liste_etudiants = Synthesebulletins::where("groupepedagogique_id",$etudiant->groupepedagogique_id)
+            ->where("code_bulletin",$codeBulletin)
+            ->orderBy("rang","ASC")
+            ->get();
+        foreach( $bulletinData as $data )
+        {
+            if (!empty($data) || !empty($data->examen_prog_id)) {
+                # code...
+                $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
+
+                if($matiere->section_id == 1)
+                {
+                    $notesSectionFrench[] = $data;
+                }else{
+                    $notesSectionEng[] = $data;
+                }
+
+            }
+        }
+
+        $synt_bulletin = Synthesebulletins::where("code_bulletin",$codeBulletin)
+            ->where("etudiant_id",$etudiant_id)
+            ->first();
+        $bulletin_info = Bulletinprog::where("code",$codeBulletin)->first();
+        $pdf = Pdf::loadView('frontend.bulletins.synthese', compact('bulletin_info','etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng', 'bulletinSyn', 'synt_bulletin', 'liste_etudiants'));
+        return $pdf->stream();
+    }
 
 }
