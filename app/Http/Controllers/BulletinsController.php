@@ -196,7 +196,7 @@ class BulletinsController extends Controller
 
         } else {
             # code...
-            return redirect()->route("bulletins.generer-note")->with('error', "Nombre d'examen superieur a 3, impossible de traiter la demande pour l'instant");
+          //  return redirect()->route("bulletins.generer-note")->with('error', "Nombre d'examen superieur a 3, impossible de traiter la demande pour l'instant");
 
         }
 

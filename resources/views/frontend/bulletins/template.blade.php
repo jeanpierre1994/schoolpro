@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body style="font-size:95%; font-family: 'Work Sans', sans-serif;">
+<body style="font-size:90%; font-family: 'Work Sans', sans-serif;">
 <header style="background: none; color:#000;padding:0px;">
 
     <div class="row">
@@ -86,7 +86,7 @@
 
     </div>
 </header>
-<main>
+<main style="font-size:80%; font-family: 'Work Sans', sans-serif;">
     {{--<section class="infos-generales">
         <div class="infos-gen">
             <h3 style="font-family: 'Poppins'; pading:0px">Student Transcription Report</h3>
@@ -153,7 +153,26 @@
                     <td>AVERAGE MARK (%):</td>
                     <td colspan="2" style="text-align: left"><b>{{ceil(($total_en*100)/(100*$count_en))}}%</b></td>
                     <td>SCORING KEY :</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">
+                        <b style="text-align: center;">
+                        @php
+                            $skey = ceil(($total_en*100)/(100*$count_en));
+                        @endphp
+                           @if ($skey < 50)
+                                F
+                            @elseif ($skey < 60)
+                                E
+                            @elseif ($skey < 70)
+                                D
+                            @elseif ($skey < 80)
+                                C
+                            @elseif ($skey <90)
+                                B
+                            @elseif ($skey <= 100)
+                                E
+                            @endif
+                        </b>
+                    </td>
                 </tr>
                 <tr style="padding:0px;">
                     <td>MARK /(20):</td>
@@ -171,7 +190,7 @@
     </section> 
     @if($notesSectionFrench != null)
         <section class="notes">
-            <h3>FRANCAIS | {{ $bulletin_info->libelle_secondaire}}</h3>
+            <h3>FRANCAIS | {{ $bulletin_info->libelle_primaire}}</h3>
             <table style="font-family: 'Poppins';padding:0px;">
                 <thead style="padding:0px;">
                 <tr style="padding:0px;">
@@ -248,8 +267,8 @@
     <table style="width: 100%; border:none; background: transparent; ">
         <tr style="background: transparent;">
             <td style="width: 30%; border:none; margin-right: 0; ">
-                <img src="nice/assets/img/badgeBritish.png" alt="badge" class="img-responsive" width="auto" height="50px"
-                     style="width: auto; height:150px;">
+                <img src="nice/assets/img/badgeBritish.png" alt="badge" class="img-responsive" width="auto" height="100px"
+                     style="width: auto; height:;150px;">
 
             </td>
             <td style="border: none; margin-left: 0; padding-left: 0">
@@ -268,9 +287,17 @@
                     </i>
                 </p>
             </td>
+            <td style="width: 30%; border:none; margin-right: 0; ">
+                <img src="frontpage/assets/images/signature_directrice.jpg" alt="badge" class="img-responsive" width="auto" height="100px"
+                     style="width: auto; height:;150px;">
+
+            </td>
         </tr>
     </table>
 </div>
+<footer style="text-align: center">
+    Copyright Schoolpro
+</footer>
 </body>
 <style>
     body {
@@ -369,6 +396,19 @@
         justify-content: space-evenly;
         justify-items: start;
     }
+
+        /* Define the footer rules*/
+        footer {
+      position: fixed;
+      display: block;
+      bottom: 0cm;
+      left: 0cm;
+      right: 0cm;
+      min-height: 2.5cm;
+      width: 100%; 
+      font-size: 8pt;
+    }
+
 </style>
 
 </html>

@@ -28,7 +28,7 @@
                     <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: inherit; font-size: 18px; margin-top: 0 ; margin-bottom: 0">
                         Quartier JAK, Lot 209 A | 06 BP 129 COTONOU | Tel. 97 20 95 88 | 97 46 45 70</p>
 
-                    <p style="font-weight: bold; margin-top: 0">BRITISH <span style="color: red">&</span> FRENCH ACADEMY
+                    <p style="font-weight: bold; margin-top: 0">British <span style="color: red">&</span> French Academy
                         Int'l</p>
                     <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: bold; font-size: 30px ; margin-bottom: 0">
                         REPORT CARD</p>
@@ -184,6 +184,7 @@
                             <th>NOTES /20</th>
                             <th>COEFFICIENT</th>
                             <th>NOTES COEFFICIEES</th>
+                            <th>OBSERVATION</th>
 
                         </tr>
                         </thead>
@@ -207,7 +208,7 @@
                                 @endphp
                                 <tr>
                                     <td style="text-align: left;">{{ $data->getExamenprog->getMatiere->libelle }}</td>
-                                    <td>{{ $my }}</td>
+                                    <td>{{ $my_ok }}</td>
                                     <td>{{$data->getExamenprog->getMatiere->coef}}</td>
                                     <td>{{ $my * $data->getExamenprog->getMatiere->coef }}</td>
                                     <td>
@@ -291,9 +292,17 @@
                     </i>
                 </p>
             </td>
+            <td style="width: 30%; border:none; margin-right: 0; ">
+                <img src="frontpage/assets/images/signature_directrice.jpg" alt="badge" class="img-responsive" width="auto" height="100px"
+                     style="width: auto; height:;150px;">
+
+            </td>
         </tr>
     </table>
 </div>
+<footer style="text-align: center">
+    Copyright Schoolpro
+</footer>
 </body>
 <style>
     body {
@@ -392,6 +401,19 @@
         justify-content: space-evenly;
         justify-items: start;
     }
+
+      /* Define the footer rules*/
+      footer {
+      position: fixed;
+      display: block;
+      bottom: 0cm;
+      left: 0cm;
+      right: 0cm;
+      min-height: 2.5cm;
+      width: 100%; 
+      font-size: 8pt;
+    }
+
 </style>
 
 </html>
