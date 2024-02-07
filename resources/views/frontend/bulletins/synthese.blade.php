@@ -28,7 +28,7 @@
                     <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: inherit; font-size: 18px; margin-top: 0 ; margin-bottom: 0">
                         Quartier JAK, Lot 209 A | 06 BP 129 COTONOU | Tel. 97 20 95 88 | 97 46 45 70</p>
 
-                    <p style="font-weight: bold; margin-top: 0">British <span style="color: red">&</span> French Academy
+                    <p style="font-weight: bold; margin-top: 0">BRITISH <span style="color: red">&</span> FRENCH ACADEMY
                         Int'l</p>
                     <p style="color: #6d4c41;font-family: 'Poppins'; font-weight: bold; font-size: 30px ; margin-bottom: 0">
                         REPORT CARD</p>
