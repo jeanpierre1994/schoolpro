@@ -288,7 +288,7 @@
                 </p>
             </td>
             <td style="width: 30%; border:none; margin-right: 0; ">
-                <img src="frontpage/assets/images/signature_directrice.jpg" alt="badge" class="img-responsive" width="auto" height="100px"
+                <img src="frontpage/assets/images/signature_directrice.jpg" alt="badge" class="img-responsive" width="auto" height="60px"
                      style="width: auto; height:;150px;">
 
             </td>
