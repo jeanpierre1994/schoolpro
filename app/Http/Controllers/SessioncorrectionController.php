@@ -13,6 +13,7 @@ use App\Models\Sessioncorrections;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 
 class SessioncorrectionController extends Controller
 {
@@ -421,6 +422,221 @@ class SessioncorrectionController extends Controller
     }
 
     public function indexNew(Request $request){
-        return view("backend.administrations.sessioncorrections.new_index");
+        $examens = Examens::all(); 
+        $send_form = false; 
+
+
+        //check if form is submit 
+        if( isset($_POST['examen']) && !empty($_POST['examen']) && isset($_POST['classe']) && !empty($_POST['classe']) && isset($_POST['matiere']) && !empty($_POST['matiere']) ){
+          $id = $_POST['matiere'];
+          $gp_id = $_POST['classe'];
+            $examenprog = Examenprog::find($id);
+        $prof = Auth()->user();
+        $gp = Groupepedagogiques::all();
+        $get_examen = Examens::find($_POST['examen']);
+        $send_form = true;
+       
+        $check_data = Sessioncorrections::where("examen_prog_id", $id)->exists();
+        if ($check_data) {
+            # code...
+             // get note
+             $get_note = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$gp_id)->first();
+             if($get_note){
+                 $session = Sessioncorrections::find($get_note->sessioncorrection_id );
+
+                 $notes_etudiants_valide = Notes::where("examen_prog_id", $id)->where("statutvalidation_id", 2)->where("groupepedagogique_id",$gp_id)->count();
+                 $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$gp_id)->get();
+                  
+
+             }else{
+
+                 return redirect()->back()->with("error","Pas de liste disponible.");
+             }
+             
+            return view("backend.administrations.sessioncorrections.new_index", compact("session", "notes_etudiants_valide", "notes_etudiants_encours", "gp","examens","get_examen","examenprog","send_form"));
+      
+        } else {
+ 
+            // récupérer la liste des étudiants/élèves du groupe pédagogique en cours
+            $etudiants = Etudiants::where("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id)->get();
+            if ($etudiants->count() > 0) {
+                
+                # code...
+                $session = new Sessioncorrections();
+                $session->setAttribute("examen_prog_id", $id);
+                //$session->setAttribute("professeur_id", $prof->id);
+                $session->setAttribute("generer_par", $prof->id);
+                $session->setAttribute("nbre_etudiant", 0);
+                $session->setAttribute("statutvalidation_id", 1);
+                $session->setAttribute("created_by", $prof->id);
+                $session->setAttribute("updated_by", $prof->id);
+                $session->save();
+
+                # code...
+                foreach ($etudiants as $etudiant) {
+                    # code...
+                    $note = new Notes();
+                    $note->setAttribute("sessioncorrection_id", $session->id);
+                    $note->setAttribute("examen_prog_id", $id);
+                    $note->setAttribute("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id);
+                    $note->setAttribute("etudiant_id", $etudiant->id);
+                    //$note->setAttribute("professeur_id", $prof->id);
+                    $note->setAttribute("statutvalidation_id", 1);
+                    $note->setAttribute("enregistrer_par", $prof->id);
+                    $note->setAttribute("created_by", $prof->id);
+                    $note->save();
+                }
+            } else {
+                # code...
+                return redirect()->back()->with("error", "Ce groupe pédagogique ne possède pas encore d'étudiant.");
+            }
+
+            $notes_etudiants_valide = 0;
+            $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->get();
+            return view("backend.administrations.sessioncorrections.new_index", compact("session", "notes_etudiants_valide", "notes_etudiants_encours", "gp","examens","get_examen","examenprog","send_form"));
+
+        } 
     }
+
+
+
+    // if save note is submited 
+        if(Session::has('examen') && Session::has('classe') && Session::has('matiere')){
+            $id = Session::get('matiere');
+            $gp_id = Session::get('classe');
+              $examenprog = Examenprog::find($id);
+          $prof = Auth()->user();
+          $gp = Groupepedagogiques::all();
+          $get_examen = Examens::find(Session::get('examen'));
+          $send_form = true;
+
+          // delete session variable
+            Session::forget('classe'); // Removes a specific variable
+            Session::forget('matiere'); // Removes a specific variable
+            Session::forget('examen'); // Removes a specific variable
+         
+          $check_data = Sessioncorrections::where("examen_prog_id", $id)->exists();
+          if ($check_data) {
+              # code...
+               // get note
+               $get_note = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$gp_id)->first();
+               if($get_note){
+                   $session = Sessioncorrections::find($get_note->sessioncorrection_id );
+  
+                   $notes_etudiants_valide = Notes::where("examen_prog_id", $id)->where("statutvalidation_id", 2)->where("groupepedagogique_id",$gp_id)->count();
+                   $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->where("groupepedagogique_id",$gp_id)->get();
+                    
+  
+               }else{
+  
+                   return redirect()->back()->with("error","Pas de liste disponible.");
+               }
+               
+              return view("backend.administrations.sessioncorrections.new_index", compact("session", "notes_etudiants_valide", "notes_etudiants_encours", "gp","examens","get_examen","examenprog","send_form"));
+        
+          } else {
+   
+              // récupérer la liste des étudiants/élèves du groupe pédagogique en cours
+              $etudiants = Etudiants::where("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id)->get();
+              if ($etudiants->count() > 0) {
+                  
+                  # code...
+                  $session = new Sessioncorrections();
+                  $session->setAttribute("examen_prog_id", $id);
+                  //$session->setAttribute("professeur_id", $prof->id);
+                  $session->setAttribute("generer_par", $prof->id);
+                  $session->setAttribute("nbre_etudiant", 0);
+                  $session->setAttribute("statutvalidation_id", 1);
+                  $session->setAttribute("created_by", $prof->id);
+                  $session->setAttribute("updated_by", $prof->id);
+                  $session->save();
+  
+                  # code...
+                  foreach ($etudiants as $etudiant) {
+                      # code...
+                      $note = new Notes();
+                      $note->setAttribute("sessioncorrection_id", $session->id);
+                      $note->setAttribute("examen_prog_id", $id);
+                      $note->setAttribute("groupepedagogique_id", $examenprog->getMatiere->groupepedagogique_id);
+                      $note->setAttribute("etudiant_id", $etudiant->id);
+                      //$note->setAttribute("professeur_id", $prof->id);
+                      $note->setAttribute("statutvalidation_id", 1);
+                      $note->setAttribute("enregistrer_par", $prof->id);
+                      $note->setAttribute("created_by", $prof->id);
+                      $note->save();
+                  }
+              } else {
+                  # code...
+                  return redirect()->back()->with("error", "Ce groupe pédagogique ne possède pas encore d'étudiant.");
+              }
+  
+              $notes_etudiants_valide = 0;
+              $notes_etudiants_encours = Notes::where("examen_prog_id", $id)->get();
+              return view("backend.administrations.sessioncorrections.new_index", compact("session", "notes_etudiants_valide", "notes_etudiants_encours", "gp","examens","get_examen","examenprog","send_form"));
+  
+          } 
+      }
+
+
+    return view("backend.administrations.sessioncorrections.new_index",compact("examens","send_form"));
+
+}
+
+
+/**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeNoteNew(Request $request)
+    {
+        //Enrégistrements du statuts
+        $this->validate($request, [
+            'note' => 'required',
+            'note_id' => 'required',
+            'gp_id' => 'required', 
+            'examen_id' => 'required',
+        ]);
+
+        // enregistrement des donnees dans session
+        $request->session()->put('matiere',$request->examenprog_id);
+        $request->session()->put('examen',$request->examen_id);
+        $request->session()->put('classe',$request->gp_id);
+
+        try {
+            $notes = $request->note;
+            $notes_id = $request->note_id;
+            $commentaires = $request->commentaire; 
+
+            foreach ($notes as $key => $note) { 
+                    # code...
+                    // initialisation des variables
+                    $note_etudiant = $notes[$key];
+                    $note_id = $notes_id[$key];
+                    $commentaire = $commentaires[$key];
+                    if (!empty($notes_id[$key]) && $notes_id[$key] != null  && !empty($notes[$key]) && $notes[$key] != null ) {
+                        # code...
+                       // dd($note_etudiant);
+                        // mise à jour des informations
+                    $note_objet = Notes::find($note_id);
+                    $note_objet->setAttribute("note_examen", $note_etudiant);
+                    $note_objet->setAttribute("note", $note_etudiant);
+                    $note_objet->setAttribute("commentaire", $commentaire);
+                    $note_objet->setAttribute("statutvalidation_id", 2);
+                    $note_objet->update();
+                    } 
+
+                   
+            }  
+
+            return redirect()->route("sessionscorrections.new-index")->with("success", "Note enregistré avec succès");
+        
+        } catch (\Throwable $th) {
+            
+            return redirect()->route("sessionscorrections.new-index")->with("error", "Echec lors de l'enregistrement des donnéees. ".$th);
+        }
+    }
+
+
 }

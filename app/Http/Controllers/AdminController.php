@@ -23,6 +23,7 @@ use App\Models\Typesponsors;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
 use App\Models\Etudiants;
+use App\Models\Examenprog;
 use App\Models\Statutjuridiques;
 use App\Models\Groupepedagogiques;
 use App\Models\Matiereprofesseurs;
@@ -304,6 +305,34 @@ class AdminController extends Controller
             ->where("groupepedagogiques.cycle_id",$cycle_id)  
             ->get(["groupepedagogiques.id","groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire","poles.libelle as pole","filieres.libelle as filiere","cycles.libelle as cycle"]);
             return json_encode($gp,true);          
+        }
+
+
+        // examen change 
+        if (isset($_POST['change_examen'])) { 
+            $examen_id = $_POST["change_examen"];
+            $listeExamenProg = Examenprog::join("matieres", "matieres.id", "=", "examenprogs.matiere_id")
+            ->join("groupepedagogiques", "matieres.groupepedagogique_id", "=", "groupepedagogiques.id")
+            ->leftjoin("poles","groupepedagogiques.pole_id","=","poles.id")  
+                    ->leftjoin("filieres","groupepedagogiques.filiere_id","=","filieres.id")
+            ->where("examenprogs.examen_id", $examen_id)
+            ->distinct() 
+            ->get(["groupepedagogiques.id","groupepedagogiques.libelle_classe","groupepedagogiques.libelle_secondaire","poles.libelle as pole","filieres.libelle as filiere"]);
+ 
+            return json_encode($listeExamenProg,true);          
+        }
+
+        // classe change 
+        if (isset($_POST['change_classe'])) { 
+            $classe_id = $_POST["change_classe"];
+            $examen_id = $_POST["examen"];
+            $matieres = Examenprog::join("matieres", "matieres.id", "=", "examenprogs.matiere_id") 
+            ->where("examenprogs.examen_id", $examen_id)
+            ->where("matieres.groupepedagogique_id", $classe_id)
+            ->distinct() 
+            ->get(["examenprogs.id","matieres.libelle as matiere"]);
+ 
+            return json_encode($matieres,true);          
         }
        
     }

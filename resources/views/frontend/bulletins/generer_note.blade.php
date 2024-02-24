@@ -105,7 +105,7 @@
 
                             @endif
                         </h5>
-                        <!-- Bordered Table -->
+                        <!-- Bordered Table --> 
                         <div class="table-responsive">
                             <form action="{{ route('bulletins.save-note') }}" method="post">
                                 @csrf
@@ -116,13 +116,25 @@
                                     <button style="float: right" type="submit"
                                             class="btn btn-warning btn-sm text-white mb-2" name="valider_appreciation">
                                         Valider appreciation
-                                    </button>
+                                    </button>&nbsp;&nbsp;
+                                    <button style="float: right;margin-left: 2px; margin-right:2px;" type="submit"
+                                            class="btn btn-success btn-sm text-white mb-2" name="valider_appreciation">
+                                        Transmission par mail
+                                    </button>&nbsp;&nbsp;
+                                    <a style="margin-left: 2px; margin-right:2px;" target="_blank" href="{{route('bulletins.impression_masse',['codeBulletin'=>$get_bulletin->code,'gp'=>$get_gp->id])}}" style="float: right" type="submit"
+                                            class="btn btn-dark btn-sm text-white mb-2" name="impression_masse">
+                                        Impression en masse
+                                </a> &nbsp;&nbsp;
                                 @endif
                                 <table id="tableHead"
                                        class="table table-striped table-hover table-bordered data-tables">
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        {{--<th> 
+                                            <input type="checkbox" class="form-check-input" id="cocher"
+                                                onClick="updateCheckbox(this.checked);"> Cocher 
+                                            </th> --}}
                                         <th scope="col">Matricule</th>
                                         <th scope="col">Nom</th>
                                         <th scope="col">Prenoms</th>
@@ -142,6 +154,11 @@
                                         @foreach ($liste_moyennes as $datas)
                                             <tr>
                                                 <td><b>{{ $i++ }}</b></td>
+                                               
+                                                    {{-- <td>
+                                                    <input type='checkbox' name="send_bulletin[]" value="{{$datas->id}}" class='form-check-input multiple_send'>
+                                                 
+                                                </td>--}}
                                                 <td>{{ $datas->etudiant_id ? $datas->getEtudiant->matricule : '' }}</td>
                                                 <td>{{ $datas->etudiant_id ? $datas->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
                                                 <td>{{ $datas->etudiant_id ? $datas->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
@@ -183,7 +200,7 @@
 
                                                     <a target="_blank"
                                                        href="{{ route('show-bulletinSynthese', ['id' => \Crypt::encrypt($datas->etudiant_id), 'codeBulletin'=>$datas->code_bulletin]) }}"
-                                                       title="Bulletin synnthèse">
+                                                       title="Bulletin synthèse">
                                                         <button type="button"
                                                                 class="btn btn-sm btn-secondary"><i
                                                                 class="bi bi-file-earmark-pdf text-white"
@@ -358,5 +375,19 @@
 
 
         });
+
+        function updateCheckbox(isChecked) {
+
+if (isChecked) {
+    $.each($('.multiple_send'), function() {
+        $(this).prop('checked', true);
+    });
+} else {
+    $.each($('.multiple_send'), function() {
+        $(this).prop('checked', false);
+    });
+
+}
+}
     </script>
 @endsection

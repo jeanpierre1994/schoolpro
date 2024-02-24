@@ -51,6 +51,20 @@ class BulletinsController extends Controller
         return $pdf->stream();
     }
 
+    public function impressionMasse($codeBulletin,$gp)
+    {     
+        $bulletinData = Synthesebulletins::where('code_bulletin', $codeBulletin)
+        ->where('groupepedagogique_id', $gp)
+        ->get();  
+        $synt_bulletin = Synthesebulletins::where("code_bulletin",$codeBulletin)
+        //->where("etudiant_id",$etudiant_id)
+        ->get();
+        $bulletin_info = Bulletinprog::where("code",$codeBulletin)->first();
+        $pdf = Pdf::loadView('frontend.bulletins.impression_masse', compact('bulletin_info', 'synt_bulletin', 'bulletinData','codeBulletin','gp'));
+        return $pdf->stream();  
+
+    }
+
     public function genereNote(){
 
         $gp = Groupepedagogiques::all();
@@ -60,6 +74,7 @@ class BulletinsController extends Controller
     }
 
     public function consultationNote(Request $request,$etudiant,$gp,$bulletin){
+
         $etudiant = \Crypt::decrypt($etudiant);
         $get_gp = Groupepedagogiques::find($gp);
         $get_bulletin = Bulletinprog::where("code",$bulletin)->first();
@@ -128,7 +143,12 @@ class BulletinsController extends Controller
         $this->validate($request, [
             'bulletin' => 'required',
             'classe' => 'required',
-        ]);
+        ]); 
+
+        if (isset($_POST['impression_masse']) && empty($request->bulletin) && empty($request->classes)) { 
+           return redirect()->route("bulletins.impression_masse",['codeBulletin'=>$request->bulletin,'gp'=>$request->classes]);
+        }
+
 
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
@@ -185,8 +205,8 @@ class BulletinsController extends Controller
             $delete = $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
             ->where("code_bulletin",$request->bulletin)->delete();
             // delete synthese note for this class
-            $delete_bulletin = $count_notes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
-            ->where("code_bulletin",$request->bulletin)->delete();
+            //$delete_bulletin = $count_notes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
+            //->where("code_bulletin",$request->bulletin)->delete();
         }
 
         // liste des examens
@@ -320,7 +340,22 @@ class BulletinsController extends Controller
 
             // check if eleve have the note
             if($count > 0 && $somme_moyenne > 0){
+                // check if data exist
+                $check_synthese_bulletin = Synthesebulletins::where("groupepedagogique_id",$request->classe)
+                ->where("code_bulletin",$request->bulletin)
+                ->where("etudiant_id",$eleve->id)
+                ->first();
 
+                if ($check_synthese_bulletin) {
+                    # code...
+                
+                // update data int table synthese bulletin  
+                $check_synthese_bulletin->setAttribute("moyenne",round($somme_moyenne/$somme_coef,2)); 
+                $check_synthese_bulletin->update();
+
+                } else {
+                    # code...
+                
                 // insert data int table synthese bulletin
                 $insert_synthesebulletin = new Synthesebulletins();
                 $insert_synthesebulletin->setAttribute("groupepedagogique_id",$request->classe);
@@ -328,6 +363,7 @@ class BulletinsController extends Controller
                 $insert_synthesebulletin->setAttribute("moyenne",round($somme_moyenne/$somme_coef,2));
                 $insert_synthesebulletin->setAttribute("code_bulletin",$request->bulletin);
                 $insert_synthesebulletin->save();
+                }
             }
 
         }

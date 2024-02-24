@@ -90,7 +90,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.anc_sessioncorrections') }}" id="dossier-valide"
+                        <a href="{{ route('sessionscorrections.new-index') }}" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Session de correction</span>
                         </a>
@@ -233,7 +233,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.anc_sessioncorrections') }}" id="dossier-valide"
+                        <a href="{{ route('sessionscorrections.new-index') }}" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Session de correction</span>
                         </a>
@@ -639,7 +639,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.anc_sessioncorrections') }}" id="dossier-valide"
+                        <a href="{{ route('sessionscorrections.new-index') }}" id="dossier-valide"
                             style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Session de correction</span>
                         </a>

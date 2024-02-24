@@ -7,6 +7,7 @@ use App\Models\Matiereprofesseurs;
 use App\Models\Matieres;
 use App\Models\Personnes;
 use App\Models\Sessioncorrections;
+use App\Models\Synthesenotes;
 
 if (!function_exists('getPersonne')) {
     # code...
@@ -118,6 +119,44 @@ if (!function_exists('getHistoriquePaiement')) {
        return $details = historiquepaiementecheanciers::where("echeancier_id",$echeancier_id)->where("montant_payer",">",0)->get();    
     }
 
+}
+
+if (!function_exists('getListeNoteEleves')) {
+    # code...
+    function getListeNoteEleves($code_bulletin,$gp,$etudiant_id){ 
+
+        $bulletinData = Synthesenotes::where('code_bulletin', $code_bulletin)
+        ->where('code_bulletin', $code_bulletin)
+        ->where('etudiant_id', $etudiant_id)
+        ->get();
+        //$personne = Personnes::where('id', $etudiant->getDossier->personne_id)->get()->first() ;
+
+        $notesSectionFrench = [];
+        $notesSectionEng = [];
+        $liste = [];
+
+        foreach( $bulletinData as $data )
+        {
+            if (!empty($data) || !empty($data->examen_prog_id)) {
+                # code...
+            $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
+
+            if($matiere->section_id == 1)
+            {
+                $notesSectionFrench[] = $data;
+            }else{
+                $notesSectionEng[] = $data;
+            }
+
+            }
+        }
+
+        $liste[0] = $notesSectionFrench; // french
+        $liste[1] = $notesSectionEng; // english
+
+        return $liste;
+         
+    }
 }
 
 // 

@@ -394,10 +394,14 @@ Route::get('admin/anc/sessions/corrections', [SessioncorrectionController::class
 //
 Route::post('admin/anc/sessions/corrections/store', [SessioncorrectionController::class, 'storeOld'])->name('sessionscorrections.anc_store')->middleware("auth");
 // update session correction
-Route::get('admin/new/sessions/corrections', [SessioncorrectionController::class, 'indexNew'])->name('sessionscorrections.new-index')->middleware("auth");
+Route::any('admin/new/sessions/corrections', [SessioncorrectionController::class, 'indexNew'])->name('sessionscorrections.new-index')->middleware("auth");
 Route::get('admin/bulletins/template/{id}/{codeBulletin}/afficher', [BulletinsController::class, 'index'])->name('show-bulletin');//->middleware('auth');
 Route::get('admin/bulletins/genere/note', [BulletinsController::class, 'genereNote'])->name('bulletins.generer-note')->middleware('auth');
 Route::post('admin/bulletins/save/note', [BulletinsController::class, 'saveNote'])->name('bulletins.save-note')->middleware('auth');
 Route::get('admin/consultation/{etudiant}/{gp}/{bulletin}/note', [BulletinsController::class, 'consultationNote'])->name('bulletins.consultation-note')->middleware('auth');
 Route::get('admin/bulletins/synthese/{id}/{codeBulletin}/afficher', [BulletinsController::class, 'synthese'])->name('show-bulletinSynthese');
 //Route::post('admin/bulletins/save/appreciation', [BulletinsController::class, 'saveAppreciation'])->name('bulletins.save-appreciation')->middleware('auth');
+
+Route::post('admin/sessions/corrections/store/note', [SessioncorrectionController::class, 'storeNoteNew'])->name('sessionscorrections.note_store')->middleware("auth");
+// impression en masse
+Route::get('admin/bulletins/impression/{codeBulletin}/{gp}/masse', [BulletinsController::class, 'impressionMasse'])->name('bulletins.impression_masse');

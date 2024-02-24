@@ -9,6 +9,19 @@
 </head>
 
 <body style="font-size:90%; font-family: 'Work Sans', sans-serif;">
+
+    @foreach ($bulletinData as $item)
+       
+ <!-- debut bulletin -->   
+
+ @php
+ $listenote = getListeNoteEleves($codeBulletin,$gp,$item->etudiant_id);
+ $notesSectionEng = $listenote[1];
+ $notesSectionFrench = $listenote[0];
+ $etudiant = $item->getEtudiant;
+ $personne = $item->getEtudiant->getDossier->getPersonne;
+@endphp
+
 <header style="background: none; color:#000;padding:0px;">
 
     <div class="row">
@@ -180,7 +193,7 @@
                 </tr>
                 <tr style="padding:0px;line-height:0px;font-size:11;text-align:left">
                     <td style="text-align:left"><b>CLASS TEACHER'S REMARK(S):</b></td>
-                    <td colspan="5" style="text-align:left">{{$synt_bulletin->appreciation_en ? $synt_bulletin->appreciation_en : ''}}
+                    <td colspan="5" style="text-align:left">{{$item->appreciation_en ? $item->appreciation_en : ''}}
                     </td>
                 </tr>
 
@@ -255,7 +268,7 @@
                     </tr>
                     <tr style="padding:0px;line-height:0px;font-size:11;text-align:left">
                         <td style="text-align:left"><b>Observation :</b></td>
-                        <td colspan="6" style="text-align:left">{{$synt_bulletin->appreciation_fr ? $synt_bulletin->appreciation_fr : ''}}</td>
+                        <td colspan="6" style="text-align:left">{{$item->appreciation_fr ? $item->appreciation_fr : ''}}</td>
                     </tr>
                 @endif
 
@@ -334,6 +347,20 @@
 <footer style="text-align: center">
     Copyright Schoolpro
 </footer>
+
+  <!-- saut de page -->
+  @if($loop->last)
+
+  @else 
+  <div style="page-break-after: always;" ></div>
+  @endif
+  
+     @endforeach
+<!-- fin bulletin  -->
+
+
+
+
 </body>
 <style>
     body {
