@@ -17,28 +17,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $checkUser = User::where("email","admin@gmail.com")->exists();
-        if (!$checkUser) {
-            # code... 
-        User::create([ 
-           // 'id' => '1',
-            'name' => 'Administrateur',
-            'email' => 'admin@gmail.com', 
-            'password' => bcrypt('school@2022'), 
-            //'role_id' => '1',
-            'enable' => 1
-        ]); 
-        }
 
-        $checkData = Statutpaiements::where("libelle","EN ATTENTE")->exists();
-        if (!$checkData) {
-            # code... 
-            Statutpaiements::create([ 
-           // 'id' => '1',
-            'libelle' => 'EN ATTENTE',
-            'created_by' => 1, 
-            'updated_by' => 1
-        ]); 
-        }
+//        $checkUser = User::where("email","admin@gmail.com")->exists();
+//        if (!$checkUser) {
+//            # code...
+//        User::create([
+//           // 'id' => '1',
+//            'name' => 'Administrateur',
+//            'email' => 'admin@gmail.com',
+//            'password' => bcrypt('school@2022'),
+//            //'role_id' => '1',
+//            'enable' => 1
+//        ]);
+//        }
+//
+//        $checkData = Statutpaiements::where("libelle","EN ATTENTE")->exists();
+//        if (!$checkData) {
+//            # code...
+//            Statutpaiements::create([
+//           // 'id' => '1',
+//            'libelle' => 'EN ATTENTE',
+//            'created_by' => 1,
+//            'updated_by' => 1
+//        ]);
+//        }
+
+        $this->call(PermissionSeeder::class);
     }
 }

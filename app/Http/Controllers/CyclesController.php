@@ -12,6 +12,10 @@ class CyclesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function construct()
+    {
+        $this->authorizeResource(Cycles::class, 'cycle');
+    }
     public function index()
     {
         $cycles = Cycles::orderBy("id", "desc")->get();
@@ -77,7 +81,7 @@ class CyclesController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        // modification 
+        // modification
         $cycle = Cycles::where("id", $id)->get()->first();
         return view("backend.cycles.edit", compact("cycle"));
     }
@@ -103,13 +107,13 @@ class CyclesController extends Controller
             redirect()->back()->with("error","Le cycle existe déjà.");
         }
         // get current user id
-        $user = auth()->user(); 
+        $user = auth()->user();
         $cycle->setAttribute('libelle', $request->libelle);
         $cycle->setAttribute('libelle_secondaire', $request->libelle_secondaire);
         $cycle->setAttribute('description', $request->description);
         $cycle->setAttribute('updated_at', new \DateTime());
         $cycle->setAttribute('updated_by', $user->id);
-        $cycle->update(); 
+        $cycle->update();
 
         return redirect()->route('cycles.index')->with('success', 'Modification effectuée avec succès');
     }
@@ -128,7 +132,7 @@ class CyclesController extends Controller
             $value = $cycle->libelle;
             $cycle->delete();
             // get current user id
-            $user = auth()->user(); 
+            $user = auth()->user();
             return redirect()->route('cycles.index')->with('success', 'Opération effectuée avec succès.');
         } catch (\Throwable $th) {
             //throw $th;
