@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Sendbulletinsmail;
 use App\Models\Notes;
 use App\Models\Examens;
 use App\Models\Matieres;
@@ -14,9 +15,11 @@ use App\Models\Synthesenotes;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Groupepedagogiques;
 use App\Models\Synthesebulletins;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 
 class BulletinsController extends Controller
-{
+{ 
     public function index($id, $codeBulletin)
     {
 
@@ -63,6 +66,42 @@ class BulletinsController extends Controller
         $pdf = Pdf::loadView('frontend.bulletins.impression_masse', compact('bulletin_info', 'synt_bulletin', 'bulletinData','codeBulletin','gp'));
         return $pdf->stream();  
 
+    }
+
+    // telechargerBulletin 
+    
+    public function telechargerBulletin($codeBulletin,$etudiant_id)
+    {
+
+        $etudiant_id = \Crypt::decrypt($etudiant_id);
+        $etudiant = Etudiants::find($etudiant_id);
+        $bulletinData = Synthesenotes::get()->where('etudiant_id', $etudiant_id)->where('code_bulletin', $codeBulletin);
+        $personne = Personnes::where('id', $etudiant->getDossier->personne_id)->get()->first() ;
+
+        $notesSectionFrench = [];
+        $notesSectionEng = [];
+        foreach( $bulletinData as $data )
+        {
+            if (!empty($data) || !empty($data->examen_prog_id)) {
+                # code...
+            $matiere = Matieres::findOrFail($data->getExamenprog->matiere_id);
+
+            if($matiere->section_id == 1)
+            {
+                $notesSectionFrench[] = $data;
+            }else{
+                $notesSectionEng[] = $data;
+            }
+
+            }
+        }
+
+        $synt_bulletin = Synthesebulletins::where("code_bulletin",$codeBulletin)
+        ->where("etudiant_id",$etudiant_id)
+        ->first();
+        $bulletin_info = Bulletinprog::where("code",$codeBulletin)->first();
+        $pdf = Pdf::loadView('frontend.bulletins.template', compact('bulletin_info', 'synt_bulletin', 'etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng'));
+        return $pdf->stream();
     }
 
     public function genereNote(){
@@ -145,10 +184,65 @@ class BulletinsController extends Controller
             'classe' => 'required',
         ]); 
 
-        if (isset($_POST['impression_masse']) && empty($request->bulletin) && empty($request->classes)) { 
-           return redirect()->route("bulletins.impression_masse",['codeBulletin'=>$request->bulletin,'gp'=>$request->classes]);
-        }
+        // send bulletin by email
+        if (isset($_POST['transmission_bulletin'])) { 
+ 
+    if (!empty($request->send_bulletin)) {
+      $bulletins = $request->send_bulletin;
 
+      foreach ($bulletins as $key => $value) {
+
+      $synthese_bulletin = Synthesebulletins::find($value); 
+  
+          $code_etudiant = Crypt::encrypt($synthese_bulletin->etudiant_id);
+          $code_bulletin = $synthese_bulletin->code_bulletin;
+          $cb = Bulletinprog::where('code',$code_bulletin)->first();
+          $gp = $synthese_bulletin->groupepedagogique_id;
+          $email = $synthese_bulletin->getEtudiant->getDossier->getPersonne->email;
+          // enregistrer les infos dans une table pour passer la views
+          $contenu = [
+            'nom_prenoms' => $synthese_bulletin->getEtudiant->getDossier->getPersonne->prenoms . ' ' . $synthese_bulletin->getEtudiant->getDossier->getPersonne->nom,
+            'email' => $email,
+            'code_etudiant' => $code_etudiant,
+            'code_bulletin' => $code_bulletin,
+            'annee' => $cb->annee,
+            'titre' => 'Bulletin du '. $cb->libelle_primaire,
+            'subject' => 'Transmission de Bulletin Scolaire '.date('YmdHis'),
+            'gp' => $gp
+          ];
+          // send mail
+          if($email){  
+            Mail::to(trim($email))->queue(new Sendbulletinsmail($contenu));
+            $synthese_bulletin->setAttribute('send_bulletin',true);
+            $synthese_bulletin->update();
+           // dd($synthese_bulletin);
+
+          }
+       
+      }
+    }
+
+            $gp = Groupepedagogiques::all();
+            $bulletins = Bulletinprog::all();
+            $get_gp = Groupepedagogiques::find($request->classe);
+            $get_bulletin = Bulletinprog::where("code",$request->bulletin)->first();
+            $liste_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)
+            ->get();
+            $liste_moyennes = Synthesebulletins::where("groupepedagogique_id",$request->classe)
+            ->where("code_bulletin",$request->bulletin)
+            ->orderBy("rang","ASC")
+            ->get();
+            $update = true;
+            return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))
+            ->with("success","Bulletin(s) envoyé(s) avec succès.");
+        
+
+    // return redirect()->route('bulletins.save-note')->with('success', 'Bulletin envoyé avec succès');
+
+         }
+
+          
 
         $count_notes = Synthesenotes::where("groupepedagogique_id",$request->classe)
         ->where("code_bulletin",$request->bulletin)->count();
@@ -167,6 +261,7 @@ class BulletinsController extends Controller
         ->get();
             $update = true;
             return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"));
+       
         }
         // save appreciation
         if (isset($_POST['valider_appreciation'])) {
@@ -199,6 +294,7 @@ class BulletinsController extends Controller
             ->get();
             $update = true;
             return view("frontend.bulletins.generer_note",compact("gp","bulletins","update","get_bulletin","get_gp","liste_notes","liste_moyennes"))->with("success","Enregistrement effectué avec succès.");
+        
         }
 
         if ($count_notes > 0) {
@@ -437,5 +533,7 @@ class BulletinsController extends Controller
         $pdf = Pdf::loadView('frontend.bulletins.synthese', compact('bulletin_info','etudiant', 'bulletinData', 'personne', 'notesSectionFrench', 'notesSectionEng', 'bulletinSyn', 'synt_bulletin', 'liste_etudiants'));
         return $pdf->stream();
     }
+
+     
 
 }

@@ -404,6 +404,9 @@ Route::get('admin/bulletins/synthese/{id}/{codeBulletin}/afficher', [BulletinsCo
 
 Route::post('admin/sessions/corrections/store/note', [SessioncorrectionController::class, 'storeNoteNew'])->name('sessionscorrections.note_store')->middleware("auth");
 // impression en masse
+Route::get('admin/bulletins/impression/{codeBulletin}/{gp}/masse', [BulletinsController::class, 'impressionMasse'])->name('bulletins.impression_masse')->middleware("auth");
+// bulletins.telecharger
+Route::get('admin/telecharger/{codeBulletin}/bulletins/impression/{etudiant_id}', [BulletinsController::class, 'telechargerBulletin'])->name('bulletins.telecharger');
 Route::get('admin/bulletins/impression/{codeBulletin}/{gp}/masse', [BulletinsController::class, 'impressionMasse'])->name('bulletins.impression_masse');
 
 require __DIR__ . '/auth.php';

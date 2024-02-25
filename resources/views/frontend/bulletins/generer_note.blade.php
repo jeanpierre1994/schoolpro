@@ -118,7 +118,7 @@
                                         Valider appreciation
                                     </button>&nbsp;&nbsp;
                                     <button style="float: right;margin-left: 2px; margin-right:2px;" type="submit"
-                                            class="btn btn-success btn-sm text-white mb-2" name="valider_appreciation">
+                                            class="btn btn-success btn-sm text-white mb-2" name="transmission_bulletin" id="transmission_bulletin">
                                         Transmission par mail
                                     </button>&nbsp;&nbsp;
                                     <a style="margin-left: 2px; margin-right:2px;" target="_blank" href="{{route('bulletins.impression_masse',['codeBulletin'=>$get_bulletin->code,'gp'=>$get_gp->id])}}" style="float: right" type="submit"
@@ -127,14 +127,13 @@
                                 </a> &nbsp;&nbsp;
                                 @endif
                                 <table id="tableHead"
-                                       class="table table-striped table-hover table-bordered data-tables">
+                                       class="table table-striped table-hover table-bordered data-tables-bulletin">
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        {{--<th> 
-                                            <input type="checkbox" class="form-check-input" id="cocher"
-                                                onClick="updateCheckbox(this.checked);"> Cocher 
-                                            </th> --}}
+                                        <th>
+                                            Cocher 
+                                        </th>
                                         <th scope="col">Matricule</th>
                                         <th scope="col">Nom</th>
                                         <th scope="col">Prenoms</th>
@@ -142,6 +141,7 @@
                                         <th scope="col">Moyenne</th>
                                         <th scope="col">Appreciation 1</th>
                                         <th scope="col">Appreciation 2</th>
+                                        <th scope="col">Envoyé</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
@@ -152,13 +152,12 @@
                                             $i=1;
                                         @endphp
                                         @foreach ($liste_moyennes as $datas)
-                                            <tr>
-                                                <td><b>{{ $i++ }}</b></td>
-                                               
-                                                    {{-- <td>
-                                                    <input type='checkbox' name="send_bulletin[]" value="{{$datas->id}}" class='form-check-input multiple_send'>
+                                            <tr class="{{ $datas->send_bulletin ? 'table-info' : '' }}">
+                                                <td><b>{{ $i++ }} </b></td>
+                                                <td>
+                                                   <input style="margin-left: 2px;" type='checkbox' name="send_bulletin[]" value="{{$datas->id}}" class='form-check-input multiple_send check_nbre'/>
                                                  
-                                                </td>--}}
+                                                </td>
                                                 <td>{{ $datas->etudiant_id ? $datas->getEtudiant->matricule : '' }}</td>
                                                 <td>{{ $datas->etudiant_id ? $datas->getEtudiant->getDossier->getPersonne->nom : '' }}</td>
                                                 <td>{{ $datas->etudiant_id ? $datas->getEtudiant->getDossier->getPersonne->prenoms : '' }}</td>
@@ -188,6 +187,7 @@
                                                            value="{{$datas->appreciation_en}}" id=""
                                                            class="form-control">
                                                 </td>
+                                                <td>{{ $datas->send_bulletin ? 'OUI' : 'NON' }}</td>
                                                 <td>
                                                     <a target="_blank"
                                                        href="{{ route('show-bulletin', ['id' => \Crypt::encrypt($datas->etudiant_id), 'codeBulletin'=>$datas->code_bulletin]) }}"
@@ -389,5 +389,28 @@ if (isChecked) {
 
 }
 }
+
+
+
+$('#transmission_bulletin').prop('disabled', true);
+            var number_check_nbre = 1;
+            $('.check_nbre').on('change', function() {
+                var noChecked = 0;  
+                // count number checked
+                $.each($('.check_nbre'), function() {
+                    if ($(this).is(':checked')) {
+                        noChecked++;
+                        $('#transmission_bulletin').prop('disabled', false);
+                    }
+                });
+                
+                if (noChecked >= number_check_nbre) {
+                    $('#transmission_bulletin').prop('disabled', false);
+                } else {
+                    noChecked--;
+                    $('#transmission_bulletin').prop('disabled', true);
+                };
+            });
+
     </script>
 @endsection

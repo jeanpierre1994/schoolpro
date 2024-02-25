@@ -109,6 +109,59 @@
                 processing: true,
                 serverSide: false
     });
+
+    $('.data-tables-bulletin').DataTable({ 
+        initComplete: function () {
+            // Apply the search
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+ 
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
+        "ordering": true,
+             "language": {
+                 "sProcessing": "Traitement en cours ...",
+                 "sLengthMenu": "Afficher _MENU_ lignes",
+                 "sZeroRecords": "Aucun résultat trouvé",
+                 "sEmptyTable": "Aucune donnée disponible",
+                 "sLengthMenu": "Afficher &nbsp; _MENU_ &nbsp;",
+                 "sInfo": "_START_ ... _END_/_TOTAL_ &eacute;l&eacute;ments",
+                 "sInfoEmpty": "Aucune ligne affichée",
+                 "sInfoFiltered": "(Filtrer un maximum de _MAX_)",
+                 "sInfoPostFix": "",
+                 "sSearch": "Recherche",
+                 "sUrl": "",
+                 "sInfoThousands": ",",
+                 "sLoadingRecords": "Chargement...",
+                 "oPaginate": {
+                     "sFirst": "Premier",
+                     "sLast": "Dernier",
+                     "sNext": "Suivant",
+                     "sPrevious": "Précédent"
+                 },
+                 "oAria": {
+                     "sSortAscending": ": Trier par ordre croissant",
+                     "sSortDescending": ": Trier par ordre décroissant"
+                 }
+ 
+             },
+             dom: '<"float-left"l><"float-right"f>Brti<"float-right"p>',
+             lengthMenu: [
+              [50, 100, 250, 300, -1],
+              ['50', '100', '250', '300', 'Tout afficher'],
+            ],
+             stateSave : false, 
+             order : [[ 0, "asc" ]], 
+                processing: false,
+                serverSide: false
+    });
     });
 </script>
 </body>

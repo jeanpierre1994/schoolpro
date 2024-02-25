@@ -93,7 +93,7 @@ class AdminEtudiantController extends Controller
         $etudiant_id = \Crypt::decrypt(request()->etudiant_id);
         $etudiant = Etudiants::find($etudiant_id);
         $parentEmail = $etudiant->getDossier->getUserCreated->email;
-        Mail::to($parentEmail)->send(new ReleveNotes($etudiant, $examen ));
+        Mail::to($parentEmail)->send(new ReleveNotes($etudiant, $examen )); 
 
         return redirect()->back()->with('success', 'Mail Envoyé avec succès');
     }
