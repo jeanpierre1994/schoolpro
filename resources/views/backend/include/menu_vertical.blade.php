@@ -688,7 +688,7 @@
                             <i class="bi bi-circle"></i><span>Portefeuilles</span>
                         </a>
                     </li>
-                    
+
                     <li>
                         <a href="{{ route('admin.paiements') }}" id="import-personnes" style="text-decoration: none;">
                             <i class="bi bi-circle"></i><span>Etat des Paiements</span>
@@ -893,7 +893,7 @@
             </ul>
         </li>
         <!-- End Frais & Finances -->
- 
+
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('signout') }}" style="text-decoration: none;">

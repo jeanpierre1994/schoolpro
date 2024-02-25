@@ -34,9 +34,9 @@ class ExamensController extends Controller
     public function create()
     {
         $gp = Groupepedagogiques::all();
-        $examentypes = Examentypes::where("statut_id", 1)->get();  
+        $examentypes = Examentypes::where("statut_id", 1)->get();
         $poles = Poles::where("statut_id", 1)->get();
-        $cycles = Cycles::where("statut_id", 1)->get();  
+        $cycles = Cycles::where("statut_id", 1)->get();
         $bulletins = Bulletinprog::all();
         return view("backend.examens.create", compact("gp","examentypes","poles","cycles","bulletins"));
     }
@@ -49,17 +49,17 @@ class ExamensController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [ 
+        $this->validate($request, [
             //'gp_id' => 'required',
             'examentype_id' => 'required',
-            'libelle' => 'required', 
-            'note_max' => 'required',  
-            'date_debut'=> 'required',  
-            'date_fin'=> 'required',   
-            'ponderation'=> 'required', 
-            'min_moyenne'=> 'required', 
-            'max_moyenne'=> 'required', 
-            'annee_academique'=> 'required',  
+            'libelle' => 'required',
+            'note_max' => 'required',
+            'date_debut'=> 'required',
+            'date_fin'=> 'required',
+            'ponderation'=> 'required',
+            'min_moyenne'=> 'required',
+            'max_moyenne'=> 'required',
+            'annee_academique'=> 'required',
         ]);
 
         // vérifier si le données existe déjà
@@ -72,10 +72,10 @@ class ExamensController extends Controller
         if($check_data){
            // if categorie exist redirect to form with error message
             return redirect()->back()->with('error', "Cet examen existe déjà.");
-        } 
+        }
 
-        $user = Auth()->user(); 
- 
+        $user = Auth()->user();
+
 
         //##################### générer le code  ###########################
         // procédure d'incrémentation du code
@@ -84,7 +84,7 @@ class ExamensController extends Controller
         $id_1 = "";
         // récupérer le dernier enregistrement
         $last_numero = Examens::orderBy('id', 'desc')->first();
- 
+
         if ($last_numero == NULL) {
             $last_id = "";
         } else {
@@ -92,9 +92,9 @@ class ExamensController extends Controller
         }
 
         if (!empty($last_id)) {
-            //$str = "DS11111122"; 
+            //$str = "DS11111122";
             // delete DS
-            $delete_bu = substr($last_id, -8); 
+            $delete_bu = substr($last_id, -8);
             // delete YEAR
             $correct_code = substr($delete_bu,0, 6);
             $id_1 = $correct_code;
@@ -111,43 +111,43 @@ class ExamensController extends Controller
                 $numero = '000000';
             } else {
                 # code...
-                //$str = "BU111111122"; 
+                //$str = "BU111111122";
                 // delete BU
-                $delete_bu = substr($last_id, -8); 
+                $delete_bu = substr($last_id, -8);
                 // delete YEAR
-                $correct_code = substr($delete_bu,0, 6); 
+                $correct_code = substr($delete_bu,0, 6);
                 $numero = $correct_code;
-            } 
+            }
         } else {
             $numero = '000000';
         }
 
-         
+
 
         $numero_user = $numero + 1;
 
         $numero_user_formatted = str_pad($numero_user, 6, "0", STR_PAD_LEFT);
         $code_examen = $indicatif.$numero_user_formatted.$annee_actuelle;
-       
+
         //################################### end générer le code  ###################
-          
-        $examen = new Examens();    
+
+        $examen = new Examens();
         $examen->setAttribute('code_examen', trim($code_examen));
         $examen->setAttribute('libelle', trim($request->libelle));
         $examen->setAttribute('date_debut', trim($request->date_debut));
         $examen->setAttribute('date_fin', trim($request->date_fin));
-        $examen->setAttribute('examentype_id', $request->examentype_id);  
+        $examen->setAttribute('examentype_id', $request->examentype_id);
         $examen->setAttribute('min_moyenne', trim($request->min_moyenne));
-        $examen->setAttribute('max_moyenne', trim($request->max_moyenne)); 
-        $examen->setAttribute('ponderation', trim($request->ponderation));  
-        $examen->setAttribute('colonnes', trim($request->colonne));  
-        $examen->setAttribute('code_bulletin', trim($request->bulletin));  
-        $examen->setAttribute('note_max', trim($request->note_max)); 
-        $examen->setAttribute('commentaire', trim($request->commentaire)); 
-        $examen->setAttribute('annee_academique', trim($request->annee_academique)); 
-        $examen->setAttribute('statut_id', 1); 
-        $examen->setAttribute('created_by', $user->id); 
-        $examen->setAttribute('updated_by', $user->id); 
+        $examen->setAttribute('max_moyenne', trim($request->max_moyenne));
+        $examen->setAttribute('ponderation', trim($request->ponderation));
+        $examen->setAttribute('colonnes', trim($request->colonne));
+        $examen->setAttribute('code_bulletin', trim($request->bulletin));
+        $examen->setAttribute('note_max', trim($request->note_max));
+        $examen->setAttribute('commentaire', trim($request->commentaire));
+        $examen->setAttribute('annee_academique', trim($request->annee_academique));
+        $examen->setAttribute('statut_id', 1);
+        $examen->setAttribute('created_by', $user->id);
+        $examen->setAttribute('updated_by', $user->id);
         $examen->save();
 
         // générer le calendrier scolaire par défaut
@@ -176,7 +176,7 @@ class ExamensController extends Controller
             $liste_matieres = Matieres::all();
 
         }
-        
+
          foreach ($liste_matieres as $matiere) {
             # code...
         $examenprog = new Examenprog();
@@ -189,10 +189,10 @@ class ExamensController extends Controller
         $examenprog->setAttribute('created_by', $user->id);
         $examenprog->setAttribute('created_at', new \DateTime());
         $examenprog->setAttribute('updated_at', new \DateTime());
-        $examenprog->setAttribute('updated_by', $user->id); 
-        $examenprog->save(); 
+        $examenprog->setAttribute('updated_by', $user->id);
+        $examenprog->save();
         }
- 
+
         return redirect()->route("examens.index") ->with('success', 'Enregistrement effectué avec succès');
     }
 
@@ -204,7 +204,7 @@ class ExamensController extends Controller
      */
     public function show(Examens $examen)
     {
-        $listeGP = Groupepedagogiques::all(); 
+        $listeGP = Groupepedagogiques::all();
         return view("backend.examenprog.list-gp", compact("listeGP", "examen"));
     }
 
@@ -215,13 +215,13 @@ class ExamensController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showMatieres(Request $request)
-    { 
-        $examen = Examens::find($request->id); 
+    {
+        $examen = Examens::find($request->id);
         $matieres = Matieres::all(); // where("groupepedagogique_id",$request->gp_id)->where("statut_id",1)->get();
-        $gp = Groupepedagogiques::find($request->gp_id); 
-        $examenprogs = Examenprog:: 
+        $gp = Groupepedagogiques::find($request->gp_id);
+        $examenprogs = Examenprog::
         where("examenprogs.examen_id",$examen->id)
-        //join("examens","examens.id","=","examenprogs.examen_id") 
+        //join("examens","examens.id","=","examenprogs.examen_id")
         ->join("matieres","examenprogs.matiere_id","=","matieres.id")
         ->where("matieres.groupepedagogique_id",$request->gp_id)
         ->get();

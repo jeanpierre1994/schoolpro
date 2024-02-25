@@ -26,9 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['index','frontend.inc.user_footer','frontend.inscriptions.form',"auth.login"], function ($view) {
+        View::composer(['index', 'frontend.inc.user_footer', 'frontend.inscriptions.form', "auth.login"], function ($view) {
             $view->with([
-                'etablissement' => getEtablissement(),  
+                'etablissement' => getEtablissement(),
             ]);
         });
 

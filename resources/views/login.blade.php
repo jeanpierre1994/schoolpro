@@ -4,7 +4,7 @@
 Accueil || {{env('APP_NAME')}}
 @endsection
 
-@section("contenu") 
+@section("contenu")
 
 <section class="w3l-contact-breadcrum">
     <div class="breadcrum-bg py-sm-5 py-4">
@@ -18,12 +18,12 @@ Accueil || {{env('APP_NAME')}}
   <section class="w3l-contacts-12" id="contact">
       <div class="contact-top pt-5">
           <div class="container py-md-3">
-              
+
               <div class="row justify-content-md-center cont-main-top well">
                    <!-- connexion form -->
-                   <div class="contacts12-main col-offset-3 col-lg-8 mt-lg-0 mt-5"> 
+                   <div class="contacts12-main col-offset-3 col-lg-8 mt-lg-0 mt-5">
                       <form action="{{route('dashboard')}}" method="post" class="main-input well">
-                        @csrf   
+                        @csrf
                         <div class="form-group">
                             <label for="email" class="for-label"><b>E-mail <i>*</i></b></label>
                             <input type="email" placeholder="E-mail" name="email" id="email" required="">
@@ -31,7 +31,7 @@ Accueil || {{env('APP_NAME')}}
                            <div class="form-group">
                             <label for="password" class="for-label"><b>Mot de passe <i>*</i></b></label>
                             <input type="password" placeholder="" name="password" id="password" required="">
-                           </div> 
+                           </div>
                           <div class="text-right">
                               <button type="submit" class="btn btn-theme2">Se connecter</button>
                           </div>
@@ -39,7 +39,7 @@ Accueil || {{env('APP_NAME')}}
                   </div>
                   <!-- //connexion form -->
               </div>
-          </div> 
+          </div>
       </div>
   </section>
   <!-- //contact -->
@@ -47,5 +47,5 @@ Accueil || {{env('APP_NAME')}}
 @endsection
 
 @section("js-script")
-  
+
 @endsection
