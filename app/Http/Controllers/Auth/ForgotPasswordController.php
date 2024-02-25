@@ -33,7 +33,7 @@ class ForgotPasswordController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        $email = "jellaltamuzo@gmail.com";
+        $email = "contact@shoolpro.tech";
 
 
         // We will send the password reset link to this user. Once we have attempted
