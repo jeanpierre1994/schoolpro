@@ -18,12 +18,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     public function index()
-    {         
+    {
         /*$users =  Personnes::
             leftjoin("users", "users.id", "=", "personnes.compte_id")
             ->leftjoin("genres", "genres.id", "=", "personnes.genre")
-            ->leftjoin("profils", "profils.id", "=", "users.profil_id") 
+            ->leftjoin("profils", "profils.id", "=", "users.profil_id")
             ->where("users.profil_id","!=",2)->where("users.profil_id","!=",3)->where("users.profil_id","!=",4)
             ->select(["personnes.nom", "personnes.prenoms", "personnes.tel", "personnes.email", "personnes.updated_at", "genres.id as id_genre", "genres.libelle as libelle_genre", "personnes.id","profils.libelle as libelle_profil"])
             ->get(); */
@@ -57,18 +62,18 @@ class UserController extends Controller
             'prenoms' => 'required',
             'telephone' => 'required',
             'profil_id' => 'required',
-            'email' => 'required|email|unique:users', 
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'genre_id' => 'required',
            // 'g-recaptcha-response' => 'required|recaptcha'
         ]);
 
-        $input = $request->all(); 
+        $input = $request->all();
         // générateur de mot de passe complexe
         // $password = $this->genererCodeAlphaNumeric(8);
         $password = $input['password'];
         $password_ok = Hash::make($input['password']);
-        $code_email =  sha1(time()); 
+        $code_email =  sha1(time());
 
         $user = new User();
         $user->setAttribute('name', $input['nom'] . " " . $input['prenoms']);
@@ -115,18 +120,18 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    { 
+    {
         /*$user =   Personnes::join("users", "users.id", "=", "personnes.compte_id")
         ->join("genres", "genres.id", "=", "personnes.genre")
-        ->leftjoin("profils", "profils.id", "=", "users.profil_id") 
+        ->leftjoin("profils", "profils.id", "=", "users.profil_id")
         ->where("users.profil_id","!=",2)->where("users.profil_id","!=",3)->where("users.profil_id","!=",4)
-        ->where("personnes.id", $id)  
+        ->where("personnes.id", $id)
         ->select(["personnes.nom", "personnes.prenoms", "personnes.tel", "personnes.email", "personnes.updated_at", "genres.id as id_genre", "genres.libelle as libelle_genre", "personnes.id","profils.id as profil_id" ,"profils.libelle as libelle_profil"])
-        ->first();*/ 
+        ->first();*/
         $id = \Crypt::decrypt($id);
         $user = Personnes::find($id);
- 
-        $genres = Genres::where("statut_id", 1)->get(); 
+
+        $genres = Genres::where("statut_id", 1)->get();
         $profils = Profil::get(); // statut actif
         return view("backend/users.edit", compact("user","profils","genres"));
     }
@@ -139,7 +144,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    { 
+    {
         $request->validate([
             'nom' => 'required|max:30',
             'prenoms' => 'required|max:30',
@@ -170,7 +175,7 @@ class UserController extends Controller
         $utilisateur->update();
         $update_by = Auth()->user()->id;
         // update data in table personne
-       
+
         $personne->setAttribute('nom', $input['nom']);
         $personne->setAttribute('prenoms', $input['prenoms']);
         $personne->setAttribute('tel', $input['telephone']);
@@ -181,7 +186,7 @@ class UserController extends Controller
         $personne->update();
 
         return redirect()->route("users.index")->with("success", "Enregistrement effectué avec succès.");
-         
+
     }
 
     /**
@@ -203,6 +208,6 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', "Vous ne pouvez pas supprimer cet élément à cause du contrôle d'intégrité.");
         }
-        
+
     }
 }

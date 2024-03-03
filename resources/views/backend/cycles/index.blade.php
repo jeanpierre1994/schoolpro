@@ -11,8 +11,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" style="text-decoration: none;">Accueil</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.parametres') }}"
-                        style="text-decoration: none;">Paramètres</a></li>
-                <li class="breadcrumb-item active">Cyles </li>
+                                               style="text-decoration: none;">Paramètres</a></li>
+                <li class="breadcrumb-item active">Cyles</li>
             </ol>
         </nav>
     </div>
@@ -25,67 +25,80 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Liste des cycles <a href="{{ route('cycles.create') }}"
-                                title="Ajouter"><button style="font-size: 5px;" type="button"
-                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle" aria-hidden="true"
-                                        style="font-size: 10px;"></i></button></a></h5>
+                                                                   title="Ajouter">
+                                <button style="font-size: 5px;" type="button"
+                                        class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle"
+                                                                                  aria-hidden="true"
+                                                                                  style="font-size: 10px;"></i></button>
+                            </a></h5>
                         <!-- Bordered Table -->
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered data-tables">
                                 <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Libellé</th>
-                                        <th scope="col">Libellé secondaire</th>
-                                        <th scope="col">Descripion</th>
-                                        <th scope="col">Statut</th>
-                                        <th scope="col">Date modification</th>
-                                        <th scope="col">Modifié par</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Libellé</th>
+                                    <th scope="col">Libellé secondaire</th>
+                                    <th scope="col">Descripion</th>
+                                    <th scope="col">Statut</th>
+                                    <th scope="col">Date modification</th>
+                                    <th scope="col">Modifié par</th>
+                                    <th scope="col">Action</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                    @foreach ($cycles as $item)
-                                        <tr>
-                                            <td class="text-center"><b>{{ $i++ }}</b></td>
-                                            <td>{{ $item->libelle }}</td>
-                                            <td>{{ $item->libelle_secondaire }}</td>
-                                            <td>{{ $item->description }}</td>
-                                            <td class="text-center">
-                                                @if ($item->getStatut->libelle == 'ACTIF')
-                                                    <span class="badge badge-danger"
-                                                        style="background-color: rgb(13, 155, 238)">{{ $item->getStatut->libelle }}</span>
-                                                @else
-                                                    <span class="badge badge-danger"
-                                                        style="background-color: rgb(233, 29, 29)">{{ $item->getStatut->libelle }}</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
-                                            <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>
-                                            <td class="text-center">
-                                              <div class="d-flex justify-content-evenly">
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($cycles as $item)
+                                    <tr>
+                                        <td class="text-center"><b>{{ $i++ }}</b></td>
+                                        <td>{{ $item->libelle }}</td>
+                                        <td>{{ $item->libelle_secondaire }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        <td class="text-center">
+                                            @if ($item->getStatut->libelle == 'ACTIF')
+                                                <span class="badge badge-danger"
+                                                      style="background-color: rgb(13, 155, 238)">{{ $item->getStatut->libelle }}</span>
+                                            @else
+                                                <span class="badge badge-danger"
+                                                      style="background-color: rgb(233, 29, 29)">{{ $item->getStatut->libelle }}</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->updated_at->format('d-m-Y à H:i:s') }}</td>
+                                        <td>{{ $item->updated_by ? $item->getUserUpdated->name : '' }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-evenly">
                                                 @if ($item->getStatut->libelle == 'ACTIF')
                                                     <a href="{{ route('admin.update-parametre', [$item->id, 'cycles', 'desactivation']) }}"
-                                                        class="confirmation-desactivation" title="désactivation"><button
+                                                       class="confirmation-desactivation" title="désactivation">
+                                                        <button
                                                             type="button" class="btn btn-sm btn-dark"><i
-                                                                class="bi bi-eye-slash" aria-hidden="true"></i></button></a>
+                                                                class="bi bi-eye-slash" aria-hidden="true"></i></button>
+                                                    </a>
                                                 @else
                                                     <a href="{{ route('admin.update-parametre', [$item->id, 'cycles', 'activation']) }}"
-                                                        class="confirmation-activation" title="activation"><button
+                                                       class="confirmation-activation" title="activation">
+                                                        <button
                                                             type="button" class="btn btn-sm btn-success"><i
-                                                                class="bi bi-eye" aria-hidden="true"></i></button></a>
+                                                                class="bi bi-eye" aria-hidden="true"></i></button>
+                                                    </a>
                                                 @endif
-                                                <a href="{{ route('cycles.edit', $item->id) }}" title="Modifier"><button
-                                                        type="button" class="btn btn-sm btn-warning"><i
-                                                            class="bi bi-pencil-square" style="color: white"
-                                                            aria-hidden="true"></i></button></a>
+                                                @can('edit cycle')
+                                                    <a href="{{ route('cycles.edit', $item->id) }}" title="Modifier">
+                                                        <button
+                                                            type="button" class="btn btn-sm btn-warning"><i
+                                                                class="bi bi-pencil-square" style="color: white"
+                                                                aria-hidden="true"></i></button>
+                                                    </a>
+                                                @endcan
                                                 <a href="#" class="page-constructionv" data-bs-toggle="modal"
-                                                    data-bs-target="#myModal_{{ $item->id }}">
+                                                   data-bs-target="#myModal_{{ $item->id }}">
                                                     <button type="button" title="Supprimer"
-                                                        class="btn btn-sm btn-danger"><i class="bi bi-trash"
-                                                            style="color: white" aria-hidden="true"></i></button>
+                                                            class="btn btn-sm btn-danger"><i class="bi bi-trash"
+                                                                                             style="color: white"
+                                                                                             aria-hidden="true"></i>
+                                                    </button>
                                                 </a>
 
                                                 <!-- The Modal -->
@@ -99,7 +112,7 @@
                                                                     style="text-align: center;">Confirmer l'action <i
                                                                         class="bi bi-trash text-danger"></i></h4>
                                                                 <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal"></button>
+                                                                        data-bs-dismiss="modal"></button>
                                                             </div>
 
                                                             <!-- Modal body -->
@@ -116,14 +129,16 @@
                                                             <div class="modal-footer">
 
                                                                 <form action="{{ route('cycles.destroy', $item->id) }}"
-                                                                    method="post">
+                                                                      method="post">
                                                                     @method('DELETE')
                                                                     @csrf
                                                                     <button type="submit" class="btn btn-danger btn-md"
-                                                                        id="" value="">OUI
+                                                                            id="" value="">OUI
                                                                     </button>
-                                                                    <button type="button" class="btn btn-md btn-secondary"
-                                                                        data-bs-dismiss="modal">NON</button>
+                                                                    <button type="button"
+                                                                            class="btn btn-md btn-secondary"
+                                                                            data-bs-dismiss="modal">NON
+                                                                    </button>
                                                                 </form>
                                                             </div>
 
@@ -131,10 +146,10 @@
                                                     </div>
                                                 </div>
                                                 <!-- End modal -->
-                                              </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                                 </tbody>
                             </table>
@@ -152,7 +167,7 @@
 <!-- jsScript -->
 @section('script-js')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             // remove menu active
             $("ul").removeClass('show');
@@ -170,14 +185,14 @@
                 typeAnimated: true,
                 draggable: true,
                 dragWindowBorder: false,
-                fermer: function() {
+                fermer: function () {
 
                 }
             });
 
             $('a.confirmation-desactivation').confirm({
                 buttons: {
-                    hey: function() {
+                    hey: function () {
                         location.href = this.$target.attr('href');
                     }
                 }
@@ -192,13 +207,13 @@
                 typeAnimated: true,
                 draggable: true,
                 dragWindowBorder: false,
-                fermer: function() {
+                fermer: function () {
 
                 }
             });
             $('a.confirmation-activation').confirm({
                 buttons: {
-                    hey: function() {
+                    hey: function () {
                         location.href = this.$target.attr('href');
                     }
                 }

@@ -37,6 +37,22 @@ class PermissionSeeder extends Seeder
             'name' => 'delete cycle'
         ]);
 
+        // Paramétrage utilisateurs
+        Permission::firstOrCreate([
+            'id' => 5000,
+            'name' => 'viewAny user'
+        ]);
+
+        Permission::firstOrCreate([
+            'id' => 5400,
+            'name' => 'filter user'
+        ]);
+
+        Permission::firstOrCreate([
+            'id' => 5300,
+            'name' => 'create cycle'
+        ]);
+
         /**
          * Definition des rôles et assignation des permissions
          */
@@ -55,7 +71,7 @@ class PermissionSeeder extends Seeder
             |--------------------------------------------------------------------------
             */
             $superviseur = Role::firstOrCreate(['name' => 'superviseur']);
-            $superAdmin->givePermissionTo([
+            $superviseur->givePermissionTo([
                 'viewAny cycle', 'view cycle', 'create cycle', 'update cycle', 'delete cycle',
             ]);
 

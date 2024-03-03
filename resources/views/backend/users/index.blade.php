@@ -27,7 +27,6 @@
                         <div class="row mb-3">
 
                             <div class="col-md-4">
-
                                 <h5 class="card-title">Liste des utilisateurs <a href="{{ route('users.create') }}" data-mdb-toggle="tooltip"
                                         data-mdb-placement="right" title="Ajouter" class="btn btn-primary btn-floating btn-sm">
                                         Ajouter
