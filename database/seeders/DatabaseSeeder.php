@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    protected $toTruncate = ['permissions'];
     /**
      * Seed the application's database.
      *

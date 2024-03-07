@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Models\Examenprog;
 use Illuminate\Http\Request;
 use App\Models\Etablissements;
@@ -408,5 +409,8 @@ Route::get('admin/bulletins/impression/{codeBulletin}/{gp}/masse', [BulletinsCon
 // bulletins.telecharger
 Route::get('admin/telecharger/{codeBulletin}/bulletins/impression/{etudiant_id}', [BulletinsController::class, 'telechargerBulletin'])->name('bulletins.telecharger');
 Route::get('admin/bulletins/impression/{codeBulletin}/{gp}/masse', [BulletinsController::class, 'impressionMasse'])->name('bulletins.impression_masse');
+
+//Permissions
+Route::resource('admin/parametres/permissions', PermissionController::class);
 
 require __DIR__ . '/auth.php';

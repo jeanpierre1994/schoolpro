@@ -20,6 +20,36 @@ class PermissionSeeder extends Seeder
         /**
          * Definition de toutes les permissions
          */
+
+        //Menu
+
+        Permission::firstOrCreate([
+            'name' => 'view parametres generaux'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view parametres etablissement'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view configuration classes'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view examens'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view finances'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view dossiers'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view imports'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view annonces'
+        ]);
+        Permission::firstOrCreate([
+            'name' => 'view frais'
+        ]);
         // Cycles
         Permission::firstOrCreate([
             'name' => 'viewAny cycle'
@@ -38,20 +68,7 @@ class PermissionSeeder extends Seeder
         ]);
 
         // Paramétrage utilisateurs
-        Permission::firstOrCreate([
-            'id' => 5000,
-            'name' => 'viewAny user'
-        ]);
 
-        Permission::firstOrCreate([
-            'id' => 5400,
-            'name' => 'filter user'
-        ]);
-
-        Permission::firstOrCreate([
-            'id' => 5300,
-            'name' => 'create cycle'
-        ]);
 
         /**
          * Definition des rôles et assignation des permissions
