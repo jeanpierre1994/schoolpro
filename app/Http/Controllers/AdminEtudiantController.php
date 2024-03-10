@@ -29,7 +29,7 @@ class AdminEtudiantController extends Controller
      */
     public function addEtudiant(Request $request)
     {
-        // redirection sur le formulaire d'inscription 
+        // redirection sur le formulaire d'inscription
         $genres = Genres::where("statut_id", 1)->get();
         $profils = Profil::where("id", "=", 2)->get();
         $etablissements = Etablissements::where("statut_id", 1)->get();
@@ -37,17 +37,17 @@ class AdminEtudiantController extends Controller
         $cycles = Cycles::where("statut_id", 1)->get();
         $typesponsors = Typesponsors::where("statut_id", 1)->get();
         $gp = Groupepedagogiques::all();
-        $pays = Pays::where("nationalite","!=","")->orderBy("nationalite","asc")->get();
+        $pays = Pays::where("nationalite", "!=", "")->orderBy("nationalite", "asc")->get();
 
-        $parents = Personnes::join("users","users.id","=","personnes.compte_id")
-        ->where("users.profil_id",3)
-        ->get(["personnes.id","personnes.nom","personnes.prenoms"]);
+        $parents = Personnes::join("users", "users.id", "=", "personnes.compte_id")
+            ->where("users.profil_id", 3)
+            ->get(["personnes.id", "personnes.nom", "personnes.prenoms"]);
 
-        $etudiants = Personnes::join("users","users.id","=","personnes.compte_id")
-        ->where("users.profil_id",2)
-        ->get(["personnes.id","personnes.nom","personnes.prenoms"]);
+        $etudiants = Personnes::join("users", "users.id", "=", "personnes.compte_id")
+            ->where("users.profil_id", 2)
+            ->get(["personnes.id", "personnes.nom", "personnes.prenoms"]);
 
-        return view("backend.administrations.etudiants.create", compact("pays", "genres", "profils","etablissements","poles","cycles","typesponsors","gp","parents","etudiants"));
+        return view("backend.administrations.etudiants.create", compact("pays", "genres", "profils", "etablissements", "poles", "cycles", "typesponsors", "gp", "parents", "etudiants"));
     }
 
     public function index()
@@ -71,7 +71,7 @@ class AdminEtudiantController extends Controller
         $cycles = Cycles::where("statut_id", 1)->get();
         $typesponsors = Typesponsors::where("statut_id", 1)->get();
         $gp = Groupepedagogiques::all();
-        return view('backend.administrations.etudiants.edit', compact("genres", "profils","etablissements","poles","cycles","typesponsors", "etudiant","gp"));
+        return view('backend.administrations.etudiants.edit', compact("genres", "profils", "etablissements", "poles", "cycles", "typesponsors", "etudiant", "gp"));
     }
 
     public function releve($id)
@@ -81,7 +81,7 @@ class AdminEtudiantController extends Controller
         $gp = Groupepedagogiques::find($etudiant->groupepedagogique_id);
 
         $examens = Examens::all();
-        return view("backend.groupepedagogiques.lise-examens", compact("etudiant","gp","examens"));
+        return view("backend.groupepedagogiques.lise-examens", compact("etudiant", "gp", "examens"));
 
 
     }
@@ -93,7 +93,7 @@ class AdminEtudiantController extends Controller
         $etudiant_id = \Crypt::decrypt(request()->etudiant_id);
         $etudiant = Etudiants::find($etudiant_id);
         $parentEmail = $etudiant->getDossier->getUserCreated->email;
-        Mail::to($parentEmail)->send(new ReleveNotes($etudiant, $examen )); 
+        Mail::to($parentEmail)->send(new ReleveNotes($etudiant, $examen));
 
         return redirect()->back()->with('success', 'Mail Envoyé avec succès');
     }
@@ -111,36 +111,58 @@ class AdminEtudiantController extends Controller
         $user = auth()->user();
         $user_id = $user->id;
         $etudiant = Etudiants::find($request->etudiant_id);
-        // modification des informations de l'étudiant 
+        // modification des informations de l'étudiant
         $dossier = Dossiers::find($etudiant->dossier_id);
         $personne = Personnes::find($dossier->personne_id);
         $compte_etudiant = User::find($personne->compte_id);
         $gp = Groupepedagogiques::find($request->gp_id);
 
-        $etudiant->setAttribute("groupepedagogique_id",$request->gp_id);
+        $etudiant->setAttribute("groupepedagogique_id", $request->gp_id);
         $etudiant->save();
 
-        $dossier->setAttribute("groupepedagogique_id",$request->gp_id);
-        $dossier->setAttribute("pole_id",$gp->pole_id);
-        $dossier->setAttribute("filiere_id",$gp->filiere_id);
-        $dossier->setAttribute("cycle_id",$gp->cycle_id);
-        $dossier->setAttribute("niveau_id",$gp->niveau_id);
+        $dossier->setAttribute("groupepedagogique_id", $request->gp_id);
+        $dossier->setAttribute("pole_id", $gp->pole_id);
+        $dossier->setAttribute("filiere_id", $gp->filiere_id);
+        $dossier->setAttribute("cycle_id", $gp->cycle_id);
+        $dossier->setAttribute("niveau_id", $gp->niveau_id);
         $dossier->save();
 
-        $personne->setAttribute("nom",$request->nom);
-        $personne->setAttribute("prenoms",$request->prenoms);
-        $personne->setAttribute("genre",$request->genre_id);
-        $personne->setAttribute("ddn",$request->ddn);
-        $personne->setAttribute("tel",$request->telephone);
-        $personne->setAttribute("lieunais",$request->lieu_naissance);
+        $personne->setAttribute("nom", $request->nom);
+        $personne->setAttribute("prenoms", $request->prenoms);
+        $personne->setAttribute("genre", $request->genre_id);
+        $personne->setAttribute("ddn", $request->ddn);
+        $personne->setAttribute("tel", $request->telephone);
+        $personne->setAttribute("lieunais", $request->lieu_naissance);
         $personne->save();
 
-        $compte_etudiant->setAttribute("name",$request->nom.' '.$request->prenoms);
-        $compte_etudiant->setAttribute("email",$request->email);
+        $compte_etudiant->setAttribute("name", $request->nom . ' ' . $request->prenoms);
+        $compte_etudiant->setAttribute("email", $request->email);
         $compte_etudiant->save();
 
         return redirect()->route('admin.etudiants')
             ->with('success', 'Modification effectuée avec succès');
-             
+
+    }
+
+    public function destroy($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $etudiant = Etudiants::where('id', $id)->get()->first();
+
+        $dossier = Dossiers::find($etudiant->dossier_id);
+        $personne = Personnes::find($dossier->personne_id);
+        $compte_etudiant = User::find($personne->compte_id);
+
+        try {
+            $etudiant->delete();
+            $dossier->delete();
+            $personne->delete();
+            $compte_etudiant->delete();
+            return redirect()->back()->with('success', 'Etudiant supprimé avec succès');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Impossible de supprimer cet étudiant');
+
+        }
     }
 }

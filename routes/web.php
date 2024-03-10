@@ -280,6 +280,7 @@ Route::get('admin/etudiant/edit/{id}', [AdminEtudiantController::class, 'edit'])
 Route::get('admin/etudiant/releve/{id}', [AdminEtudiantController::class, 'releve'])->name('admin.etudiant.releve');
 Route::get('admin/etudiant/mail/{id}', [AdminEtudiantController::class,'sendMail'])->name('admin.etudiant.mail');
 Route::put('admin/etudiant/update/{id}', [AdminEtudiantController::class, 'update'])->name('admin.etudiant.update');
+Route::delete('admin/etudiants/{id}', [AdminEtudiantController::class, 'destroy'])->name('admin.etudiants.destroy');
 // liste etudiant groupe pedagogique
 Route::get('admin/gp/{id}/etudiant', [GroupepedagogiquesController::class, 'listeEtudiant'])->name('groupepedagogiques.etudiants')->middleware("auth");
 // liste examen par gp groupepedagogiques.examens

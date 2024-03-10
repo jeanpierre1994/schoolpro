@@ -54,10 +54,68 @@
                                     </button>
                                 </form>
 
+                                <form action="{{ route('admin.etudiants.destroy', \Crypt::encrypt($etudiant->id)) }}" method="POST">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="dropdown-item d-flex align-items-center red">
+                                        <i class=" dropdown-item-icon" data-feather="edit"></i>Supprimer
+                                    </button>
+                                </form>
+{{--                                <a href="#" class="page-construction" data-bs-toggle="modal"--}}
+{{--                                   data-bs-target="#myModal_{{ $etudiant->id }}">--}}
+{{--                                    <button type="button" title="Supprimer" class="btn btn-sm btn-danger dropdown-item d-flex align-items-center">Supprimer / Delete--}}
+{{--                                    </button>--}}
+{{--                                </a>--}}
+
+{{--                                <!-- The Modal -->--}}
+{{--                                <div class="modal text-center" id="myModal_{{ $etudiant->id }}">--}}
+{{--                                    <div class="modal-dialog modal-md modal-dialog-centered">--}}
+{{--                                        <div class="modal-content text-center">--}}
+
+{{--                                            <!-- Modal Header -->--}}
+{{--                                            <div class="modal-header">--}}
+{{--                                                <h4 class="modal-title text-center"--}}
+{{--                                                    style="text-align: center;">Confirmer l'action <i--}}
+{{--                                                        class="bi bi-trash text-danger"></i></h4>--}}
+{{--                                                <button type="button" class="btn-close"--}}
+{{--                                                        data-bs-dismiss="modal"></button>--}}
+{{--                                            </div>--}}
+
+{{--                                            <!-- Modal body -->--}}
+{{--                                            <div class="modal-body">--}}
+{{--                                                <div class="row mt-2 mb-2">--}}
+{{--                                                    <div--}}
+{{--                                                        class="col-md-12 text-center font-weight-bold font-height-10">--}}
+{{--                                                        Voulez-vous vraiment supprimer cet élément ?--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+
+{{--                                            <!-- Modal footer -->--}}
+{{--                                            <div class="modal-footer">--}}
+
+{{--                                                <form action="{{ route('admin.etudiants.destroy',$etudiant->id) }}"--}}
+{{--                                                      method="post">--}}
+{{--                                                    @method("DELETE")--}}
+{{--                                                    @csrf--}}
+{{--                                                    <button type="submit" class="btn btn-danger btn-md"--}}
+{{--                                                            id=""--}}
+{{--                                                            value="">OUI--}}
+{{--                                                    </button>--}}
+{{--                                                    <button type="button" class="btn btn-md btn-secondary"--}}
+{{--                                                            data-bs-dismiss="modal">NON--}}
+{{--                                                    </button>--}}
+{{--                                                </form>--}}
+{{--                                            </div>--}}
+
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+
 
                                 <div class="dropdown-divider"></div>
                                 <form action="{{ route('admin.etudiant.releve',\Crypt::encrypt($etudiant->id)) }}" method="get">
-                                    
+
                                     <button class="dropdown-item d-flex align-items-center" href="#!">
                                         <i class=" dropdown-item-icon" data-feather="printer"></i>Relevé de notes
                                     </button>
