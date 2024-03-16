@@ -146,6 +146,7 @@ class AdminEtudiantController extends Controller
 
     public function destroy($id)
     {
+
         $id = \Crypt::decrypt($id);
         $etudiant = Etudiants::where('id', $id)->get()->first();
 
@@ -155,14 +156,20 @@ class AdminEtudiantController extends Controller
 
         try {
             $etudiant->delete();
-            $dossier->delete();
-            $personne->delete();
-            $compte_etudiant->delete();
+            if(\request()->supprimerDossier == 1)
+            {
+                $dossier->delete();
+                $personne->delete();
+                $compte_etudiant->delete();
+            }
+
             return redirect()->back()->with('success', 'Etudiant supprimé avec succès');
 
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Impossible de supprimer cet étudiant');
-
+            if($e->getCode() == 23000)
+                return redirect()->back()->with('error', "Impossible d'effectuer cette opération. Des notes ont été attribuées à cet étudiant");
+            else
+                return redirect()->back()->with('error', 'Impossible d\'effectuer cette opération. Annuler au préalable des paiements pour cet étudiant ');
         }
     }
 }

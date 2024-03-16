@@ -1,3 +1,5 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="table-responsive">
     <table id="table-etudiants" class="table table-striped table-hover table-bordered data-tables">
         <thead>
@@ -54,63 +56,50 @@
                                     </button>
                                 </form>
 
-                                <form action="{{ route('admin.etudiants.destroy', \Crypt::encrypt($etudiant->id)) }}" method="POST">
+                                <form id="deleteForm" action="{{ route('admin.etudiants.destroy', \Crypt::encrypt($etudiant->id)) }}" method="POST">
                                     @csrf
                                     @method("DELETE")
-                                    <button type="submit" class="dropdown-item d-flex align-items-center red">
-                                        <i class=" dropdown-item-icon" data-feather="edit"></i>Supprimer
+                                    <input type="hidden" name="supprimerDossier" id="supprimerDossier" value="0">
+                                    <button type="button" title="Supprimer" class="btn btn-sm btn-danger dropdown-item d-flex align-items-center delete_button">Supprimer / Delete
                                     </button>
                                 </form>
-{{--                                <a href="#" class="page-construction" data-bs-toggle="modal"--}}
-{{--                                   data-bs-target="#myModal_{{ $etudiant->id }}">--}}
-{{--                                    <button type="button" title="Supprimer" class="btn btn-sm btn-danger dropdown-item d-flex align-items-center">Supprimer / Delete--}}
-{{--                                    </button>--}}
+{{--                                <a class="page-construction" id="delete_button" >--}}
+{{--                                    --}}
 {{--                                </a>--}}
+                                <script>
+                                    $(document).ready(function() {
 
-{{--                                <!-- The Modal -->--}}
-{{--                                <div class="modal text-center" id="myModal_{{ $etudiant->id }}">--}}
-{{--                                    <div class="modal-dialog modal-md modal-dialog-centered">--}}
-{{--                                        <div class="modal-content text-center">--}}
+                                        $('.delete_button').on('click', function(e) {
+                                            e.preventDefault();
+                                            console.log('ok')
+                                            Swal.fire({
+                                                title: 'Êtes-vous sûr?',
+                                                text: "Vous ne pourrez pas revenir en arrière!",
+                                                icon: 'warning',
+                                                input: "checkbox",
+                                                inputValue: 0,
+                                                inputName: 'supprimerDossier',
+                                                inputPlaceholder: 'Supprimer le dossier également ?',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#3085d6',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'Oui, supprimez-le!',
+                                                cancelButtonText: 'Non, annulez!'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // Swal.fire(
+                                                    //     'Supprimé!',
+                                                    //     'Votre fichier a été supprimé.',
+                                                    //     'success'
+                                                    // )
+                                                    $('#supprimerDossier').val(result.value?1:0);
+                                                    $('#deleteForm').submit();
 
-{{--                                            <!-- Modal Header -->--}}
-{{--                                            <div class="modal-header">--}}
-{{--                                                <h4 class="modal-title text-center"--}}
-{{--                                                    style="text-align: center;">Confirmer l'action <i--}}
-{{--                                                        class="bi bi-trash text-danger"></i></h4>--}}
-{{--                                                <button type="button" class="btn-close"--}}
-{{--                                                        data-bs-dismiss="modal"></button>--}}
-{{--                                            </div>--}}
-
-{{--                                            <!-- Modal body -->--}}
-{{--                                            <div class="modal-body">--}}
-{{--                                                <div class="row mt-2 mb-2">--}}
-{{--                                                    <div--}}
-{{--                                                        class="col-md-12 text-center font-weight-bold font-height-10">--}}
-{{--                                                        Voulez-vous vraiment supprimer cet élément ?--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-
-{{--                                            <!-- Modal footer -->--}}
-{{--                                            <div class="modal-footer">--}}
-
-{{--                                                <form action="{{ route('admin.etudiants.destroy',$etudiant->id) }}"--}}
-{{--                                                      method="post">--}}
-{{--                                                    @method("DELETE")--}}
-{{--                                                    @csrf--}}
-{{--                                                    <button type="submit" class="btn btn-danger btn-md"--}}
-{{--                                                            id=""--}}
-{{--                                                            value="">OUI--}}
-{{--                                                    </button>--}}
-{{--                                                    <button type="button" class="btn btn-md btn-secondary"--}}
-{{--                                                            data-bs-dismiss="modal">NON--}}
-{{--                                                    </button>--}}
-{{--                                                </form>--}}
-{{--                                            </div>--}}
-
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                                }
+                                            })
+                                        });
+                                    });
+                                </script>
 
 
                                 <div class="dropdown-divider"></div>
@@ -139,10 +128,10 @@
         </tbody>
     </table>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Inclure jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <!-- Inclure les fichiers CSS et JavaScript de DataTables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -156,3 +145,4 @@
         });
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

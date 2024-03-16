@@ -110,9 +110,9 @@
                 </div>
                 <div class="invalid-feedbackx">
                   Le mot de passe doit contenir :
-                   <li>au moin 1 lettre majuscule</li>
-                   <li>au moin 1 lettre miniscule</li>
-                   <li>au moin 1 numéro</li>
+                   <li>au moins 1 lettre majuscule</li>
+                   <li>au moins 1 lettre miniscule</li>
+                   <li>au moins 1 numéro</li>
                    <li>Minimum 8 caractères</li>
                </div>
               </div>
